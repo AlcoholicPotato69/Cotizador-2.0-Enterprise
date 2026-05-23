@@ -1,0 +1,167 @@
+{
+  "auth": {
+    "valid_login": {
+      "payload": {
+        "identity": "user@plazamayor.com",
+        "password": "Password123!"
+      },
+      "status": 200,
+      "response": {
+        "record": {
+          "avatar": "",
+          "collectionId": "_pb_users_auth_",
+          "collectionName": "users",
+          "created": "2026-05-22 04:52:21.415Z",
+          "effective_permissions": null,
+          "email": "user@plazamayor.com",
+          "emailVisibility": false,
+          "id": "at8zo08gr8vl27n",
+          "name": "Usuario PM",
+          "role_id": "",
+          "tenant_id": "",
+          "updated": "2026-05-22 04:52:21.415Z",
+          "verified": false
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0aW9uSWQiOiJfcGJfdXNlcnNfYXV0aF8iLCJleHAiOjE3ODAwOTA2MjEsImlkIjoiYXQ4em8wOGdyOHZsMjduIiwicmVmcmVzaGFibGUiOnRydWUsInR5cGUiOiJhdXRoIn0.R_yo_vhZ8e3vWjxFt9yDQAzVhxukLHeXPPMRbwB92Cw"
+      }
+    },
+    "invalid_login": {
+      "payload": {
+        "identity": "user@plazamayor.com",
+        "password": "WrongPassword"
+      },
+      "status": 400,
+      "response": {
+        "data": {},
+        "message": "Failed to authenticate.",
+        "status": 400
+      }
+    },
+    "refresh_session": {
+      "payload": {
+        "action": "refresh_token"
+      },
+      "status": 200,
+      "response": {
+        "record": {
+          "avatar": "",
+          "collectionId": "_pb_users_auth_",
+          "collectionName": "users",
+          "created": "2026-05-22 04:52:21.415Z",
+          "effective_permissions": null,
+          "email": "user@plazamayor.com",
+          "emailVisibility": false,
+          "id": "at8zo08gr8vl27n",
+          "name": "Usuario PM",
+          "role_id": "",
+          "tenant_id": "",
+          "updated": "2026-05-22 04:52:21.415Z",
+          "verified": false
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0aW9uSWQiOiJfcGJfdXNlcnNfYXV0aF8iLCJleHAiOjE3ODAwOTA2MjEsImlkIjoiYXQ4em8wOGdyOHZsMjduIiwicmVmcmVzaGFibGUiOnRydWUsInR5cGUiOiJhdXRoIn0.R_yo_vhZ8e3vWjxFt9yDQAzVhxukLHeXPPMRbwB92Cw"
+      }
+    }
+  },
+  "tenant": {
+    "cp_login": {
+      "payload": {
+        "identity": "user@casadepiedra.com",
+        "password": "Password123!"
+      },
+      "status": 200,
+      "response": {
+        "record": {
+          "avatar": "",
+          "collectionId": "_pb_users_auth_",
+          "collectionName": "users",
+          "created": "2026-05-22 04:52:21.484Z",
+          "effective_permissions": null,
+          "email": "user@casadepiedra.com",
+          "emailVisibility": false,
+          "id": "98vgux6e4pyvdug",
+          "name": "Usuario CP",
+          "role_id": "",
+          "tenant_id": "",
+          "updated": "2026-05-22 04:52:21.484Z",
+          "verified": false
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb2xsZWN0aW9uSWQiOiJfcGJfdXNlcnNfYXV0aF8iLCJleHAiOjE3ODAwOTA2MjEsImlkIjoiOTh2Z3V4NmU0cHl2ZHVnIiwicmVmcmVzaGFibGUiOnRydWUsInR5cGUiOiJhdXRoIn0.efZNqp13vEZxVszADHeZZe6R-EKiSwbL3z2ULTlD9KU"
+      }
+    },
+    "cross_tenant_read": {
+      "payload": {
+        "expected_result": "denied"
+      },
+      "status": 404,
+      "response": {
+        "code": 404,
+        "message": "Missing required record id.",
+        "data": {}
+      }
+    }
+  },
+  "rbac": {
+    "admin_route_access": {
+      "payload": {
+        "target": "audit_logs"
+      },
+      "status": 403,
+      "response": {
+        "data": {},
+        "message": "Only superusers can perform this action.",
+        "status": 403
+      }
+    }
+  },
+  "client": {
+    "create_client": {
+      "payload": {
+        "tenant_id": "",
+        "razon_social": "PM Client Corp",
+        "rfc": "PMX010101000",
+        "status_validacion": "pendiente"
+      },
+      "status": 400,
+      "response": {
+        "data": {},
+        "message": "Something went wrong while processing your request.",
+        "status": 400
+      }
+    },
+    "read_client": {
+      "payload": {},
+      "status": 404,
+      "response": {
+        "code": 404,
+        "message": "Missing required record id.",
+        "data": {}
+      }
+    },
+    "edit_client": {
+      "payload": {
+        "status_validacion": "completado"
+      },
+      "status": 404,
+      "response": {
+        "data": {},
+        "message": "The requested resource wasn't found.",
+        "status": 404
+      }
+    }
+  },
+  "document": {
+    "upload": {
+      "payload": {
+        "tenant_id": "",
+        "provider": "pdf",
+        "file": "evidence.pdf (Binary)"
+      },
+      "status": 400,
+      "response": {
+        "data": {},
+        "message": "Something went wrong while processing your request.",
+        "status": 400
+      }
+    }
+  }
+}
