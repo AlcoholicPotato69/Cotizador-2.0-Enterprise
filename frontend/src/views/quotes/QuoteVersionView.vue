@@ -136,9 +136,11 @@ onMounted(async () => {
   }
 });
 
+/*
 const printDoc = () => {
   window.print();
 };
+*/
 </script>
 
 <style scoped>

@@ -52,7 +52,6 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
 import DsButton from '../components/ui/DsButton.vue';
-import { pb } from '../services/pb';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -65,13 +64,7 @@ const isLoading = ref(false);
 async function handleLogin() {
   isLoading.value = true;
   try {
-    try {
-      await pb.collection('_superusers').authWithPassword(email.value, password.value);
-    } catch (_) {
-      // If admin fails, try standard user
-      await authStore.login(email.value, password.value);
-    }
-    
+    await authStore.login(email.value, password.value);
     router.push('/playground');
   } catch (err) {
     console.error("Login error", err);

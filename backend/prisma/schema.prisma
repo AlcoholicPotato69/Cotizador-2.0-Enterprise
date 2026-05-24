@@ -1,0 +1,268 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ==========================================
+// FOUNDATIONAL DOMAINS
+// ==========================================
+model Tenant {
+  id        String    @id @default(uuid())
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  clients            Client[]
+  spaces             Space[]
+  occupancies        SpaceOccupancy[]
+  quotes             Quote[]
+  contracts          Contract[]
+  invoices           Invoice[]
+  payments           Payment[]
+  documents          Document[]
+  notificationQueues NotificationQueue[]
+}
+
+model AuditLog {
+  id           String   @id @default(uuid())
+  tenantId     String   @map("tenant_id")
+  action       String
+  payload      Json
+  previousHash String   @map("previous_hash")
+  currentHash  String   @map("current_hash")
+  chainHash    String   @unique @map("chain_hash")
+  createdAt    DateTime @default(now()) @map("created_at")
+}
+
+model Snapshot {
+  id          String   @id @default(uuid())
+  tenantId    String   @map("tenant_id")
+  entityType  String   @map("entity_type")
+  payloadHash String   @map("payload_hash")
+  payload     Json
+  createdAt   DateTime @default(now()) @map("created_at")
+}
+
+model FeatureFlag {
+  id                String  @id @default(uuid())
+  tenantId          String  @map("tenant_id")
+  featureKey        String  @map("feature_key")
+  enabled           Boolean @default(false)
+  rolloutPercentage Int     @default(100) @map("rollout_percentage")
+}
+
+model TaxConfiguration {
+  id         String    @id @default(uuid())
+  tenantId   String    @map("tenant_id")
+  taxName    String    @map("tax_name")
+  taxRate    Decimal   @map("tax_rate") @db.Decimal(5, 4)
+  validFrom  DateTime  @map("valid_from")
+  validUntil DateTime? @map("valid_until")
+  isDefault  Boolean   @default(false) @map("is_default")
+}
+
+model Currency {
+  code      String  @id
+  symbol    String
+  decimals  Int
+  isDefault Boolean @default(false) @map("is_default")
+}
+
+// ==========================================
+// CRM DOMAIN
+// ==========================================
+enum ClientStatus {
+  LEAD
+  PROSPECT
+  CLIENT
+  INACTIVE
+  ARCHIVED
+  BLACKLISTED
+}
+
+model Client {
+  id                String       @id @default(uuid())
+  tenantId          String       @map("tenant_id")
+  tenant            Tenant       @relation(fields: [tenantId], references: [id])
+  status            ClientStatus @default(LEAD)
+  isTaxValidated    Boolean      @default(false) @map("is_tax_validated")
+  isContractBlocked Boolean      @default(false) @map("is_contract_blocked")
+  isInvoiceBlocked  Boolean      @default(false) @map("is_invoice_blocked")
+  isPaymentBlocked  Boolean      @default(false) @map("is_payment_blocked")
+  createdAt         DateTime     @default(now()) @map("created_at")
+  deletedAt         DateTime?    @map("deleted_at")
+}
+
+// ==========================================
+// OPERATIONS DOMAIN (SPACES)
+// ==========================================
+enum SpaceStatus {
+  AVAILABLE
+  PRE_RESERVED
+  RESERVED
+  CONTRACTED
+  BLOCKED
+  MAINTENANCE
+  RELEASED
+  DECOMMISSIONED
+}
+
+model Space {
+  id               String      @id @default(uuid())
+  tenantId         String      @map("tenant_id")
+  tenant           Tenant      @relation(fields: [tenantId], references: [id])
+  name             String
+  capacity         Int
+  areaSqm          Decimal     @db.Decimal(10, 2)
+  basePricePerHour Decimal     @db.Decimal(12, 4)
+  status           SpaceStatus @default(AVAILABLE)
+
+  occupancies SpaceOccupancy[]
+}
+
+enum OccupancyStatus {
+  HOLD
+  RESERVED
+  CONTRACTED
+  COMPLETED
+  CANCELLED
+  EXPIRED
+  RELEASED
+}
+
+model SpaceOccupancy {
+  id                  String          @id @default(uuid())
+  tenantId            String          @map("tenant_id")
+  tenant              Tenant          @relation(fields: [tenantId], references: [id])
+  spaceId             String          @map("space_id")
+  space               Space           @relation(fields: [spaceId], references: [id])
+  occupancySourceType String          @map("occupancy_source_type")
+  occupancySourceId   String          @map("occupancy_source_id")
+  startTime           DateTime        @map("start_time")
+  endTime             DateTime        @map("end_time")
+  status              OccupancyStatus @default(HOLD)
+  createdAt           DateTime        @default(now()) @map("created_at")
+}
+
+// ==========================================
+// DOCUMENTS & COMMUNICATIONS DOMAIN
+// ==========================================
+model Document {
+  id                   String   @id @default(uuid())
+  tenantId             String   @map("tenant_id")
+  tenant               Tenant   @relation(fields: [tenantId], references: [id])
+  documentHash         String   @map("document_hash")
+  previousDocumentHash String?  @map("previous_document_hash")
+  chainHash            String   @unique @map("chain_hash")
+  legalHold            Boolean  @default(false) @map("legal_hold")
+  retentionUntil       DateTime? @map("retention_until")
+  createdAt            DateTime @default(now()) @map("created_at")
+}
+
+model NotificationQueue {
+  id        String   @id @default(uuid())
+  tenantId  String   @map("tenant_id")
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  type      String
+  recipient String
+  payload   Json
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now()) @map("created_at")
+}
+
+// ==========================================
+// COMMERCIAL & LEGAL DOMAIN
+// ==========================================
+enum QuoteStatus {
+  DRAFT
+  SENT
+  APPROVED
+  REJECTED
+  EXPIRED
+  CONTRACT_GENERATED
+}
+
+model Quote {
+  id                  String      @id @default(uuid())
+  tenantId            String      @map("tenant_id")
+  tenant              Tenant      @relation(fields: [tenantId], references: [id])
+  clientSnapshotId    String      @map("client_snapshot_id")
+  occupancySnapshotId String      @map("occupancy_snapshot_id")
+  currencyCode        String      @map("currency_code")
+  totalAmount         Decimal     @map("total_amount") @db.Decimal(15, 4)
+  status              QuoteStatus @default(DRAFT)
+}
+
+enum ContractStatus {
+  DRAFT
+  PENDING_SIGNATURE
+  SIGNED
+  ACTIVE
+  EXPIRED
+  TERMINATED
+}
+
+model Contract {
+  id              String         @id @default(uuid())
+  tenantId        String         @map("tenant_id")
+  tenant          Tenant         @relation(fields: [tenantId], references: [id])
+  quoteSnapshotId String         @map("quote_snapshot_id")
+  currencyCode    String         @map("currency_code")
+  templateVersion String         @map("template_version")
+  templateHash    String         @map("template_hash")
+  status          ContractStatus @default(DRAFT)
+}
+
+// ==========================================
+// FINANCIAL DOMAIN
+// ==========================================
+enum InvoiceStatus {
+  DRAFT
+  GENERATING
+  STAMPING
+  STAMPED
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  VOIDED
+  CANCELLED
+}
+
+model Invoice {
+  id                 String        @id @default(uuid())
+  tenantId           String        @map("tenant_id")
+  tenant             Tenant        @relation(fields: [tenantId], references: [id])
+  contractSnapshotId String        @map("contract_snapshot_id")
+  currencyCode       String        @map("currency_code")
+  totalAmount        Decimal       @map("total_amount") @db.Decimal(15, 4)
+  amountPaid         Decimal       @map("amount_paid") @db.Decimal(15, 4)
+  balanceDue         Decimal       @map("balance_due") @db.Decimal(15, 4)
+  paymentStatus      String        @map("payment_status")
+  status             InvoiceStatus @default(DRAFT)
+
+  payments Payment[]
+}
+
+enum PaymentStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  tenantId      String        @map("tenant_id")
+  tenant        Tenant        @relation(fields: [tenantId], references: [id])
+  invoiceId     String        @map("invoice_id")
+  invoice       Invoice       @relation(fields: [invoiceId], references: [id])
+  currencyCode  String        @map("currency_code")
+  paymentAmount Decimal       @map("payment_amount") @db.Decimal(15, 4)
+  status        PaymentStatus @default(PENDING)
+}

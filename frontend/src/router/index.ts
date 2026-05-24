@@ -48,13 +48,27 @@ router.beforeEach((to, _from, next) => {
 
   if (to.meta.requiresAuth && !isValidSession) {
     // If not authenticated, redirect to login
-    next('/login');
-  } else if (to.name === 'login' && isValidSession) {
+    return next('/login');
+  } 
+  
+  if (to.name === 'login' && isValidSession) {
     // If already authenticated, block access to login
-    next('/');
-  } else {
-    next();
+    return next('/');
   }
+
+  // RBAC Permission Check
+  if (isValidSession && to.meta.requiresAuth) {
+    const user = authStore.user || pb.authStore.model;
+    const effectivePermissions = user?.effective_permissions || [];
+    const requiredPermission = to.meta.permission as string;
+
+    if (requiredPermission && !effectivePermissions.includes(requiredPermission)) {
+      console.warn(`Access denied. Missing permission: ${requiredPermission}`);
+      return next('/');
+    }
+  }
+
+  next();
 });
 
 export default router;

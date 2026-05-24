@@ -69,13 +69,12 @@
       </main>
     </div>
 
-    <!-- DEV TOOLBAR INJECTION (Purged in Production) -->
-    <component :is="DevToolbar" v-if="isDev" />
+    <!-- DEV TOOLBAR INJECTION PURGED -->
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent } from 'vue';
+import { computed } from 'vue';
 import { useTenantStore } from '../stores/tenantStore';
 import { useThemeStore } from '../stores/themeStore';
 import { useAuthStore } from '../stores/authStore';
@@ -86,9 +85,6 @@ const tenantStore = useTenantStore();
 const themeStore = useThemeStore();
 const authStore = useAuthStore();
 const notificationStore = useNotificationStore();
-
-const isDev = computed(() => import.meta.env.VITE_APP_ENV === 'development');
-const DevToolbar = defineAsyncComponent(() => import('../components/dev/DevToolbar.vue'));
 
 const navItems = computed(() => getAuthorizedNavigation());
 </script>
