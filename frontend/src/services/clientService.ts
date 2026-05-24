@@ -1,22 +1,21 @@
-import { pb } from './pb';
+import { http } from '../api/http';
 
 export const clientService = {
     async getClients() {
-        return await pb.collection('clientes').getFullList({
-            sort: '-created',
-        });
+        const res = await http.get('/clients');
+        return res.data;
     },
     async getClientById(id: string) {
-        return await pb.collection('clientes').getOne(id);
+        const res = await http.get(`/clients/${id}`);
+        return res.data;
     },
     async createClient(data: any) {
-        // Ensure tenant is attached
-        if (!data.tenant_id && pb.authStore.model?.tenant_id) {
-            data.tenant_id = pb.authStore.model.tenant_id;
-        }
-        return await pb.collection('clientes').create(data);
+        // Tenant is automatically handled by the HTTP interceptor
+        const res = await http.post('/clients', data);
+        return res.data;
     },
     async updateClient(id: string, data: any) {
-        return await pb.collection('clientes').update(id, data);
+        const res = await http.patch(`/clients/${id}`, data);
+        return res.data;
     }
 };

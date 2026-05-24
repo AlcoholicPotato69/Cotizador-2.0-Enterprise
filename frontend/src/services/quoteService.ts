@@ -1,4 +1,4 @@
-import { pb } from '../services/pb';
+import { http } from '../api/http';
 
 export interface Quote {
     id?: string;
@@ -29,15 +29,18 @@ export interface QuoteItem {
 
 export const quoteService = {
     async getQuotes() {
-        return await pb.collection('quotes').getFullList({ sort: '-created' });
+        const res = await http.get('/quotes');
+        return res.data;
     },
 
     async getQuoteById(id: string) {
-        return await pb.collection('quotes').getOne(id);
+        const res = await http.get(`/quotes/${id}`);
+        return res.data;
     },
 
     async createQuote(quote: Partial<Quote>) {
-        return await pb.collection('quotes').create(quote);
+        const res = await http.post('/quotes', quote);
+        return res.data;
     },
 
     async updateQuote(id: string, updates: Partial<Quote>, bumpVersion: boolean = false, changeNotes: string = "") {
@@ -46,43 +49,44 @@ export const quoteService = {
             headers['X-Bump-Version'] = 'true';
             headers['X-Change-Notes'] = changeNotes;
         }
-        return await pb.collection('quotes').update(id, updates, { headers });
+        const res = await http.patch(`/quotes/${id}`, updates, { headers });
+        return res.data;
     },
 
     async getQuoteItems(quoteId: string) {
-        return await pb.collection('quote_items').getFullList({
-            filter: `quote_id = "${quoteId}"`,
-            sort: 'created'
-        });
+        const res = await http.get(`/quotes/${quoteId}/items`);
+        return res.data;
     },
 
     async saveQuoteItem(item: Partial<QuoteItem>) {
         if (item.id) {
-            return await pb.collection('quote_items').update(item.id, item);
+            const res = await http.patch(`/quotes/${item.quote_id}/items/${item.id}`, item);
+            return res.data;
         } else {
-            return await pb.collection('quote_items').create(item);
+            const res = await http.post(`/quotes/${item.quote_id}/items`, item);
+            return res.data;
         }
     },
 
-    async deleteQuoteItem(itemId: string) {
-        return await pb.collection('quote_items').delete(itemId);
+    async deleteQuoteItem(itemId: string, quoteId?: string) {
+        // Assume backend requires quoteId to access items, we pass it or the URL is flattened
+        const url = quoteId ? `/quotes/${quoteId}/items/${itemId}` : `/quote-items/${itemId}`;
+        const res = await http.delete(url);
+        return res.data;
     },
 
     async getQuoteVersions(quoteId: string) {
-        return await pb.collection('quote_versions').getFullList({
-            filter: `quote_id = "${quoteId}"`,
-            sort: '-version_number'
-        });
+        const res = await http.get(`/quotes/${quoteId}/versions`);
+        return res.data;
     },
 
     async getQuoteHistory(quoteId: string) {
-        return await pb.collection('quote_status_history').getFullList({
-            filter: `quote_id = "${quoteId}"`,
-            sort: '-created'
-        });
+        const res = await http.get(`/quotes/${quoteId}/history`);
+        return res.data;
     },
 
-    async createQuoteHistory(historyData: any) {
-        return await pb.collection('quote_status_history').create(historyData);
+    async transitionStatus(quoteId: string, newStatus: string, reason: string = "") {
+        const res = await http.post(`/quotes/${quoteId}/transition`, { newStatus, reason });
+        return res.data;
     }
 };

@@ -39,38 +39,11 @@ export const useQuoteStore = defineStore('quote', () => {
         return newQuote;
     };
 
-    const recalculateTotals = async () => {
+    const refreshSealedPayload = async () => {
         if (!currentQuote.value) return;
-        
-        let subtotal = 0;
-        let discount = 0;
-        
-        currentItems.value.forEach((item: QuoteItem) => {
-            if (item.type === 'discount') {
-                discount += (item.total_price || 0);
-            } else {
-                subtotal += (item.total_price || 0);
-            }
-        });
-        
-        const taxableAmount = subtotal - discount;
-        const tax = taxableAmount * 0.16; // Mexican VAT 16%
-        const total = taxableAmount + tax;
-        
-        // Round to 2 decimals
-        const subtotalRounded = Math.round(subtotal * 100) / 100;
-        const taxRounded = Math.round(tax * 100) / 100;
-        const totalRounded = Math.round(total * 100) / 100;
-        
-        await quoteService.updateQuote(currentQuote.value.id!, {
-            subtotal: subtotalRounded,
-            tax_amount: taxRounded,
-            total_amount: totalRounded
-        });
-        
-        currentQuote.value.subtotal = subtotalRounded;
-        currentQuote.value.tax_amount = taxRounded;
-        currentQuote.value.total_amount = totalRounded;
+        // The UI should NOT calculate anything. We request the sealed payload from the Backend.
+        // For now, we simulate fetching the updated quote from the backend.
+        currentQuote.value = await quoteService.getQuoteById(currentQuote.value.id!) as unknown as Quote;
     };
 
     const saveItem = async (item: Partial<QuoteItem>) => {
@@ -82,29 +55,22 @@ export const useQuoteStore = defineStore('quote', () => {
             if (index !== -1) currentItems.value[index] = saved;
         }
         
-        await recalculateTotals();
+        await refreshSealedPayload();
         return saved;
     };
 
     const removeItem = async (id: string) => {
         await quoteService.deleteQuoteItem(id);
         currentItems.value = currentItems.value.filter((i: QuoteItem) => i.id !== id);
-        await recalculateTotals();
+        await refreshSealedPayload();
     };
 
     const changeQuoteStatus = async (id: string, oldStatus: string, newStatus: string, userId: string) => {
-        await quoteService.updateQuote(id, { status: newStatus as any });
-        
-        await quoteService.createQuoteHistory({
-            quote_id: id,
-            old_status: oldStatus,
-            new_status: newStatus,
-            changed_by: userId,
-            reason: "Manual UI Change"
-        });
+        // Enviar la intención de transición al backend (Dumb Frontend)
+        const updatedQuote = await quoteService.transitionStatus(id, newStatus, "Manual UI Change");
         
         if (currentQuote.value && currentQuote.value.id === id) {
-            currentQuote.value.status = newStatus as any;
+            currentQuote.value = updatedQuote as unknown as Quote;
         }
     };
 

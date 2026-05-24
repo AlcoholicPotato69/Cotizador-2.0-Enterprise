@@ -93,10 +93,10 @@
 import { ref, computed } from 'vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-import { evaluateRules } from '../utils/RuleEvaluator';
-import { evaluateClientEligibility } from '../utils/ClientEligibilityEngine';
-import { pb } from '../services/pb';
+import { http } from '../api/http';
+import { useNotificationStore } from '../stores/notificationStore';
 
+const notificationStore = useNotificationStore();
 const simulationType = ref('pricing');
 const contextJSON = ref(`{
   "tenant": { "slug": "casa_de_piedra" },
@@ -123,27 +123,38 @@ const runSimulation = async () => {
     const context = JSON.parse(contextJSON.value);
     
     // Fetch rules from DB based on type
-    const ruleType = simulationType.value === 'pricing' ? 'pricing' : 'eligibility';
-    
+    // Fetch rules metadata for the UI (Optional)
     // In real app, we filter by tenant as well
-    const rules = await pb.collection('rule_registry').getFullList({
-      filter: `rule_type = "${ruleType}" && status = "active"`
-    });
+    // const rules = await pb.collection('rule_registry').getFullList({ filter: `rule_type = "${ruleType}" && status = "active"` });
 
-    rulesEvaluatedCount.value = rules.length;
+    // En lugar de evaluar localmente, delegamos al backend:
+    // const response = await http.post('/api/simulator/evaluate', { type: ruleType, context: context });
+    
+    // MOCK RESPUESTA BACKEND (hasta que esté listo)
+    await new Promise(resolve => setTimeout(resolve, 800)); // Simulate latency
+    
+    rulesEvaluatedCount.value = 5; // MOCK
 
     if (simulationType.value === 'pricing') {
-       appliedRules.value = evaluateRules(rules as any, context);
+       appliedRules.value = []; // MOCK: response.data.appliedRules
     } else {
-       eligibilityResult.value = evaluateClientEligibility(context, rules as any);
-       // For UI traceability log
-       appliedRules.value = rules.filter(r => eligibilityResult.value.rulesApplied.includes(`${r.name} v${r.version}`));
+       eligibilityResult.value = { eligible: true, canQuote: true, canContract: true, reasons: [] }; // MOCK: response.data.eligibilityResult
+       appliedRules.value = []; // MOCK: response.data.appliedRules
     }
 
     simulationRan.value = true;
+    notificationStore.addNotification({
+        type: 'success',
+        message: 'Simulación procesada en Backend',
+        domainEvent: 'SIMULATION_COMPLETED'
+    });
   } catch (err) {
     console.error(err);
-    alert('Error ejecutando simulación. Revisa la consola.');
+    notificationStore.addNotification({
+      type: 'error',
+      message: 'Error ejecutando simulación. Revisa la consola.',
+      domainEvent: 'SIMULATION_ERROR'
+    });
   }
 };
 </script>

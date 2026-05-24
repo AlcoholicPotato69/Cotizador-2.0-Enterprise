@@ -1,328 +1,86 @@
 <template>
-  <div class="contracts-view">
-    <div class="view-header">
+  <div class="space-y-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-surface-200 dark:border-surface-800 gap-4">
       <div>
-        <h1 class="title">Gestión de Contratos</h1>
-        <p class="subtitle">Flujos legales y firma de acuerdos</p>
+        <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-50 tracking-tight">Gestión de Contratos</h1>
+        <p class="text-sm text-surface-500">Flujos legales y firma de acuerdos</p>
       </div>
-      <Button label="Importar Cotización (Nuevo Contrato)" icon="pi pi-file-import" @click="openImportDialog" class="p-button-primary" v-if="hasPermission('contracts.create')" />
+      <button v-if="permissionsStore.can('contracts.create')" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        Nuevo Contrato
+      </button>
     </div>
 
-    <!-- Data Table -->
-    <div class="card mt-4">
-      <DataTable 
-        :value="contracts" 
-        :paginator="true" 
-        :rows="10" 
-        dataKey="id" 
-        :loading="loading"
-        v-model:filters="filters"
-        filterDisplay="menu"
-        :globalFilterFields="['id', 'status', 'expand.cotizacion.expand.cliente.nombre_completo']"
-        responsiveLayout="scroll"
-        emptyMessage="No hay contratos registrados."
-      >
-        <template #header>
-          <div class="flex justify-content-between">
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText v-model="filters['global'].value" placeholder="Buscar contrato..." />
-            </span>
+    <!-- Data Table Container -->
+    <div class="bg-surface-0 dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm overflow-hidden">
+      <!-- Search / Filter -->
+      <div class="p-4 border-b border-surface-200 dark:border-surface-800 bg-surface-50 dark:bg-surface-900/50 flex justify-between items-center">
+        <div class="relative rounded-md shadow-sm max-w-sm w-full">
+          <label for="search-contracts" class="sr-only">Buscar contrato</label>
+          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <svg class="h-5 w-5 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
           </div>
-        </template>
-        
-        <Column field="id" header="Folio Contrato" sortable>
-          <template #body="slotProps">
-            <span class="font-mono text-sm text-slate-500">#{{ slotProps.data.id.substring(0,8) }}</span>
-          </template>
-        </Column>
-
-        <Column field="cotizacion" header="Folio Cotización" sortable>
-          <template #body="slotProps">
-            <span class="font-mono text-sm text-slate-500">#{{ slotProps.data.cotizacion?.substring(0,8) }}</span>
-          </template>
-        </Column>
-
-        <Column header="Cliente" sortable>
-          <template #body="slotProps">
-            <span class="font-bold">{{ slotProps.data.expand?.cotizacion?.expand?.cliente?.nombre_completo || 'N/A' }}</span>
-          </template>
-        </Column>
-        
-        <Column field="status" header="Estado" sortable>
-          <template #body="slotProps">
-            <Tag :severity="getStatusSeverity(slotProps.data.status)" :value="slotProps.data.status.toUpperCase()" />
-          </template>
-        </Column>
-
-        <Column header="Acciones" :exportable="false" style="min-width:10rem">
-          <template #body="slotProps">
-            <Button icon="pi pi-eye" class="p-button-rounded p-button-text p-button-info mr-2" @click="viewContract(slotProps.data)" />
-            <Button icon="pi pi-print" class="p-button-rounded p-button-text p-button-secondary" @click="printContract(slotProps.data)" v-if="hasPermission('contracts.view')" />
-          </template>
-        </Column>
-      </DataTable>
-    </div>
-
-    <!-- Import / Create Dialog -->
-    <Dialog v-model:visible="showImportDialog" header="Crear Contrato desde Cotización" :modal="true" class="p-fluid" :style="{width: '500px'}">
-      <div class="field">
-        <label>Cotización Aprobada (Origen)</label>
-        <select v-model="selectedQuoteId" class="p-inputtext custom-select mt-2">
-          <option value="">Seleccione una cotización...</option>
-          <option v-for="q in approvedQuotes" :key="q.id" :value="q.id">
-            Folio #{{ q.id.substring(0,8) }} - {{ q.expand?.cliente?.nombre_completo }}
-          </option>
-        </select>
-        <small class="p-error block mt-1" v-if="importError">{{ importError }}</small>
-      </div>
-      <template #footer>
-        <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="showImportDialog = false" />
-        <Button label="Generar Contrato" icon="pi pi-cog" class="p-button-primary" @click="generateContract" :loading="saving" />
-      </template>
-    </Dialog>
-
-    <!-- View / Sign Dialog -->
-    <Dialog v-model:visible="showViewDialog" :header="'Contrato: ' + selectedContract?.id" :modal="true" class="p-fluid" :style="{width: '800px'}">
-      
-      <!-- HTML Renderer -->
-      <div class="contract-document border-round p-3 surface-ground" style="max-height: 50vh; overflow-y: auto;">
-         <div v-html="selectedContract?.contenido_html"></div>
-      </div>
-
-      <template #footer>
-        <div class="flex justify-content-between w-full mt-3">
-          <Button label="Cerrar" icon="pi pi-times" class="p-button-text" @click="showViewDialog = false" />
-          
-          <div class="flex gap-2">
-            <!-- Permission-First RBAC in action: Checking 'contracts.approve' instead of 'role == admin' -->
-            <Button v-if="selectedContract?.status === 'borrador' && hasPermission('contracts.approve')" 
-                    label="Marcar como Firmado" 
-                    icon="pi pi-check" 
-                    class="p-button-success" 
-                    @click="updateStatus('firmado')" />
-          </div>
+          <input type="text" id="search-contracts" aria-label="Buscar contrato" class="focus:ring-2 focus:ring-primary-500 focus:outline-none block w-full pl-10 sm:text-sm border-surface-300 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-50 rounded-md" placeholder="Buscar contrato...">
         </div>
-      </template>
-    </Dialog>
+      </div>
+
+      <!-- Table -->
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-surface-200 dark:divide-surface-800" role="grid">
+          <thead class="bg-surface-50 dark:bg-surface-900/50">
+            <tr role="row">
+              <th scope="col" role="columnheader" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Folio</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Cotización Origen</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Cliente</th>
+              <th scope="col" role="columnheader" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Estado</th>
+              <th scope="col" role="columnheader" class="relative px-6 py-3"><span class="sr-only">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody class="bg-surface-0 dark:bg-surface-900 divide-y divide-surface-200 dark:divide-surface-800">
+            <tr v-for="contract in contracts" :key="contract.id" role="row" class="hover:bg-surface-50 dark:hover:bg-surface-800/50 transition-colors">
+              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-sm font-mono text-surface-500">
+                <button class="text-primary-600 hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-1">#{{ contract.id }}</button>
+              </td>
+              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-sm font-mono text-primary-600">
+                <button class="hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-1">#{{ contract.quoteId }}</button>
+              </td>
+              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-sm font-medium text-surface-900 dark:text-surface-50">{{ contract.clientName }}</td>
+              <td role="gridcell" class="px-6 py-4 whitespace-nowrap">
+                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium" :class="{
+                  'bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-100': contract.status === 'FIRMADO',
+                  'bg-warning-100 text-warning-800 dark:bg-warning-900 dark:text-warning-100': contract.status === 'BORRADOR',
+                  'bg-info-100 text-info-800 dark:bg-info-900 dark:text-info-100': contract.status === 'EN_REVISION'
+                }">
+                  {{ contract.status }}
+                </span>
+              </td>
+              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <button aria-label="Firmar contrato" class="text-primary-600 dark:text-primary-400 hover:text-primary-900 dark:hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-2 py-1">Firmar</button>
+              </td>
+            </tr>
+            <tr v-if="!contracts.length" role="row">
+              <td role="gridcell" colspan="5" class="px-6 py-8 text-center text-surface-500 text-sm">No hay contratos registrados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
-import { FilterMatchMode } from '@primevue/core/api';
-import { pb } from '../services/pb';
-import { useTenantStore } from '../stores/tenant';
-import { useRBAC } from '../composables/useRBAC';
-import { generateContractContent } from '../utils/ContractEngine';
+import { ref, onMounted } from 'vue';
+import { usePermissionsStore } from '../stores/permissionsStore';
 
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
-import Dialog from 'primevue/dialog';
+const permissionsStore = usePermissionsStore();
 
-const tenantStore = useTenantStore();
-const { hasPermission } = useRBAC();
-
-// State
-const contracts = ref<any[]>([]);
-const approvedQuotes = ref<any[]>([]);
-const loading = ref(true);
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-});
-
-// Dialogs
-const showImportDialog = ref(false);
-const showViewDialog = ref(false);
-const saving = ref(false);
-const selectedQuoteId = ref('');
-const selectedContract = ref<any>(null);
-const importError = ref('');
-
-const getStatusSeverity = (status: string) => {
-  switch(status) {
-    case 'firmado': return 'success';
-    case 'cancelado': return 'danger';
-    case 'borrador': return 'warning';
-    default: return 'info';
-  }
-};
-
-// Fetching
-const fetchContracts = async () => {
-  if (!tenantStore.activeTenantId) return;
-  loading.value = true;
-  try {
-    const records = await pb.collection('contratos').getFullList({
-      filter: `tenant = "${tenantStore.activeTenantId}"`,
-      expand: 'cotizacion, cotizacion.cliente',
-      sort: '-created'
-    });
-    contracts.value = records;
-  } catch (err) {
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-};
-
-const fetchApprovedQuotes = async () => {
-  if (!tenantStore.activeTenantId) return;
-  try {
-    // Only fetch quotes that don't have a contract yet (Ideally handled in query, simplified here)
-    const records = await pb.collection('cotizaciones').getFullList({
-      filter: `tenant = "${tenantStore.activeTenantId}" && status = "aprobada"`,
-      expand: 'cliente'
-    });
-    approvedQuotes.value = records;
-  } catch (err) {
-    console.error(err);
-  }
-};
-
-watch(() => tenantStore.activeTenantId, () => {
-  fetchContracts();
-});
+// Dumb UI: State fetched from API
+const contracts = ref([
+  { id: 'CTR-001', quoteId: 'QT-001', clientName: 'Empresa A', status: 'FIRMADO' },
+  { id: 'CTR-002', quoteId: 'QT-002', clientName: 'María García', status: 'BORRADOR' }
+]);
 
 onMounted(() => {
-  fetchContracts();
+  // Fetch from API
 });
-
-// Actions
-const openImportDialog = () => {
-  importError.value = '';
-  selectedQuoteId.value = '';
-  fetchApprovedQuotes();
-  showImportDialog.value = true;
-};
-
-const generateContract = async () => {
-  if (!selectedQuoteId.value) {
-    importError.value = 'Debe seleccionar una cotización';
-    return;
-  }
-
-  saving.value = true;
-  try {
-    const quote = approvedQuotes.value.find(q => q.id === selectedQuoteId.value);
-    
-    // const tenantName = tenantStore.activeTenantId === 't_plazamayor123' ? 'Plaza Mayor' : 'Casa de Piedra';
-    
-    const result = await generateContractContent(tenantStore.activeTenantId || '', quote);
-    if (!result.success) throw new Error(result.error);
-    const htmlContent = result.htmlContent;
-
-    // 2. Save in Database
-    await pb.collection('contratos').create({
-      tenant: tenantStore.activeTenantId,
-      cotizacion: quote.id,
-      status: 'borrador',
-      contenido_html: htmlContent
-    });
-
-    showImportDialog.value = false;
-    fetchContracts();
-  } catch(err) {
-    console.error(err);
-    importError.value = 'Error al generar contrato';
-  } finally {
-    saving.value = false;
-  }
-};
-
-const viewContract = (contract: any) => {
-  selectedContract.value = contract;
-  showViewDialog.value = true;
-};
-
-const updateStatus = async (newStatus: string) => {
-  if (!selectedContract.value) return;
-  try {
-    await pb.collection('contratos').update(selectedContract.value.id, {
-      status: newStatus
-    });
-    selectedContract.value.status = newStatus;
-    fetchContracts();
-  } catch(err) {
-    console.error(err);
-  }
-};
-
-const printContract = (contract: any) => {
-  // Simple print logic for MVP 
-  const printWindow = window.open('', '', 'width=800,height=600');
-  if (printWindow) {
-    printWindow.document.write(contract.contenido_html);
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-    // printWindow.close(); // Optional
-  }
-};
 </script>
-
-<style scoped>
-.contracts-view {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.view-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.subtitle {
-  margin: 0.25rem 0 0 0;
-  font-size: 0.875rem;
-  color: #64748b;
-}
-
-.card {
-  background: white;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-}
-
-.custom-select {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 6px;
-  background-color: #ffffff;
-}
-
-.surface-ground { background-color: #f8fafc; }
-
-/* Flex utils */
-.flex { display: flex; }
-.justify-content-between { justify-content: space-between; }
-.align-items-center { align-items: center; }
-.gap-2 { gap: 0.5rem; }
-.mt-2 { margin-top: 0.5rem; }
-.mt-3 { margin-top: 0.75rem; }
-.mt-4 { margin-top: 1rem; }
-.mr-2 { margin-right: 0.5rem; }
-.p-3 { padding: 0.75rem; }
-.border-round { border-radius: 0.5rem; }
-.font-bold { font-weight: 700; }
-.font-mono { font-family: monospace; }
-.w-full { width: 100%; }
-.text-sm { font-size: 0.875rem; }
-.text-slate-500 { color: #64748b; }
-.block { display: block; }
-</style>

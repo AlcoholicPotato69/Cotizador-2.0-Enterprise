@@ -21,8 +21,21 @@ import { StorageModule } from './storage/storage.module';
 import { HealthModule } from './health/health.module';
 import { CommonModule } from './common/common.module';
 
+import { PricingModule } from './pricing/pricing.module';
+import { SpacesModule } from './spaces/spaces.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { ComplianceModule } from './compliance/compliance.module';
+import { SchedulerWorkerModule } from './common/scheduler/scheduler.module';
+import { FilesModule } from './files/files.module';
+
+import { EventEmitterModule } from '@nestjs/event-emitter';
+
 @Module({
   imports: [
+    EventEmitterModule.forRoot({
+      wildcard: true,
+      delimiter: '.',
+    }),
     CommonModule,
     AuthModule, 
     TenantsModule, 
@@ -41,7 +54,13 @@ import { CommonModule } from './common/common.module';
     PaymentsModule,
     FeatureFlagsModule,
     StorageModule,
-    HealthModule
+    HealthModule,
+    PricingModule,
+    SpacesModule,
+    ComplianceModule,
+    FilesModule,
+    ScheduleModule.forRoot(),
+    SchedulerWorkerModule
   ],
   controllers: [AppController],
   providers: [AppService],

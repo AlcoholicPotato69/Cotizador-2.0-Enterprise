@@ -8,17 +8,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommonModule = void 0;
 const common_1 = require("@nestjs/common");
-const tenant_context_service_1 = require("./tenant-context.service");
-const domain_event_publisher_1 = require("./domain-event.publisher");
-const audit_event_publisher_1 = require("./audit-event.publisher");
+const event_emitter_1 = require("@nestjs/event-emitter");
+const domain_event_publisher_1 = require("./events/domain-event-publisher");
+const fsm_validator_1 = require("./fsm.validator");
 let CommonModule = class CommonModule {
 };
 exports.CommonModule = CommonModule;
 exports.CommonModule = CommonModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
-        providers: [tenant_context_service_1.TenantContextService, domain_event_publisher_1.DomainEventPublisher, audit_event_publisher_1.AuditEventPublisher],
-        exports: [tenant_context_service_1.TenantContextService, domain_event_publisher_1.DomainEventPublisher, audit_event_publisher_1.AuditEventPublisher],
+        imports: [event_emitter_1.EventEmitterModule.forRoot()],
+        providers: [domain_event_publisher_1.DomainEventPublisher, fsm_validator_1.FsmValidator],
+        exports: [domain_event_publisher_1.DomainEventPublisher, event_emitter_1.EventEmitterModule, fsm_validator_1.FsmValidator],
     })
 ], CommonModule);
 //# sourceMappingURL=common.module.js.map

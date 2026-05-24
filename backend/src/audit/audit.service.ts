@@ -1,26 +1,41 @@
-import { Injectable } from '@nestjs/common';
-import { CreateAuditDto } from './dto/create-audit.dto';
-import { UpdateAuditDto } from './dto/update-audit.dto';
+import { Injectable, ConflictException } from '@nestjs/common';
+import { AuditRepository } from './audit.repository';
+import * as crypto from 'crypto';
+
+export interface CreateAuditLogDto {
+  tenantId: string;
+  action: string;
+  payload: any;
+}
 
 @Injectable()
 export class AuditService {
-  create(createAuditDto: CreateAuditDto) {
-    return 'This action adds a new audit';
-  }
+  constructor(private readonly repo: AuditRepository) {}
 
-  findAll() {
-    return `This action returns all audit`;
-  }
+  async logEvent(dto: CreateAuditLogDto) {
+    const payloadString = JSON.stringify(dto.payload);
+    const currentHash = crypto.createHash('sha256').update(`${dto.action}|${payloadString}`).digest('hex');
 
-  findOne(id: number) {
-    return `This action returns a #${id} audit`;
-  }
+    const lastLog = await this.repo.findLatest(dto.tenantId);
+    const previousHash = lastLog ? lastLog.chainHash : 'GENESIS';
+    const chainHash = crypto.createHash('sha256').update(previousHash + currentHash).digest('hex');
 
-  update(id: number, updateAuditDto: UpdateAuditDto) {
-    return `This action updates a #${id} audit`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} audit`;
+    try {
+      await this.repo.create({
+        tenantId: dto.tenantId,
+        action: dto.action,
+        payload: dto.payload,
+        currentHash,
+        previousHash,
+        chainHash,
+      });
+    } catch (error: any) {
+      if (error.code === 'P2002') {
+        // En un entorno asíncrono real, esto podría encolarse o reintentarse.
+        // Por simplicidad, arrojamos conflicto.
+        throw new ConflictException('Audit Hash Chain Collision detected.');
+      }
+      throw error;
+    }
   }
 }

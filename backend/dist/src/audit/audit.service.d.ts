@@ -1,9 +1,11 @@
-import { CreateAuditDto } from './dto/create-audit.dto';
-import { UpdateAuditDto } from './dto/update-audit.dto';
+import { AuditRepository } from './audit.repository';
+export interface CreateAuditLogDto {
+    tenantId: string;
+    action: string;
+    payload: any;
+}
 export declare class AuditService {
-    create(createAuditDto: CreateAuditDto): string;
-    findAll(): string;
-    findOne(id: number): string;
-    update(id: number, updateAuditDto: UpdateAuditDto): string;
-    remove(id: number): string;
+    private readonly repo;
+    constructor(repo: AuditRepository);
+    logEvent(dto: CreateAuditLogDto): Promise<void>;
 }

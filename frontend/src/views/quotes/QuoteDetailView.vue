@@ -124,16 +124,16 @@
         <div class="grid grid-cols-2 gap-4">
           <div class="flex flex-col gap-2">
             <label class="text-surface-300 text-sm">Cantidad</label>
-            <InputNumber v-model="editingItem.quantity" class="w-full" @input="calcTotal" />
+            <InputNumber v-model="editingItem.quantity" class="w-full" />
           </div>
           <div class="flex flex-col gap-2">
             <label class="text-surface-300 text-sm">Precio Unitario</label>
-            <InputNumber v-model="editingItem.unit_price" mode="currency" currency="MXN" class="w-full" @input="calcTotal" />
+            <InputNumber v-model="editingItem.unit_price" mode="currency" currency="MXN" class="w-full" />
           </div>
         </div>
         <div class="flex flex-col gap-2">
           <label class="text-surface-300 text-sm font-bold text-emerald-400">Total Importe</label>
-          <InputNumber v-model="editingItem.total_price" mode="currency" currency="MXN" class="w-full bg-surface-900" readonly />
+          <InputNumber v-model="editingItem.total_price" mode="currency" currency="MXN" class="w-full bg-surface-900" readonly placeholder="Calculado por backend" />
         </div>
       </div>
       <template #footer>
@@ -157,7 +157,13 @@
       </template>
     </Dialog>
 
-    <!-- View Snapshot Modal Removed. Using QuoteVersionView route -->
+    <!-- Delete Confirmation -->
+    <DsConfirmDialog 
+      v-model:visible="showDeleteConfirm" 
+      title="Eliminar Partida" 
+      message="¿Está seguro de eliminar esta partida?"
+      @confirm="executeRemoveItem"
+    />
 
   </div>
 </template>
@@ -170,7 +176,8 @@ import { useClientStore } from '../../stores/clientStore';
 import { quoteService, type QuoteItem } from '../../services/quoteService';
 import { useAuthStore } from '../../stores/authStore';
 import { usePermissionsStore } from '../../stores/permissionsStore';
-
+import { useNotificationStore } from '../../stores/notificationStore';
+import DsConfirmDialog from '../../components/ui/DsConfirmDialog.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -178,6 +185,7 @@ const quoteStore = useQuoteStore();
 const clientStore = useClientStore();
 const authStore = useAuthStore();
 const permissionsStore = usePermissionsStore();
+const notificationStore = useNotificationStore();
 
 const canUpdate = computed(() => permissionsStore.can('quotes.update'));
 
@@ -188,6 +196,9 @@ const history = ref<any[]>([]);
 const showItemModal = ref(false);
 const isSavingItem = ref(false);
 const editingItem = ref<Partial<QuoteItem>>({});
+
+const showDeleteConfirm = ref(false);
+const itemToDelete = ref<string | null>(null);
 
 const showSnapshot = ref(false);
 const snapshotNotes = ref('');
@@ -242,11 +253,7 @@ const openItemModal = (item?: QuoteItem) => {
   showItemModal.value = true;
 };
 
-const calcTotal = () => {
-  const q = editingItem.value.quantity || 0;
-  const p = editingItem.value.unit_price || 0;
-  editingItem.value.total_price = q * p;
-};
+// El cálculo del total fue removido (Dumb UI). El Backend lo calcula al guardar.
 
 const saveItem = async () => {
   isSavingItem.value = true;
@@ -257,9 +264,28 @@ const saveItem = async () => {
   isSavingItem.value = false;
 };
 
-const removeItem = async (id: string) => {
-  if(confirm("¿Eliminar partida?")) {
-    await quoteStore.removeItem(id);
+const removeItem = (id: string) => {
+  itemToDelete.value = id;
+  showDeleteConfirm.value = true;
+};
+
+const executeRemoveItem = async () => {
+  if (itemToDelete.value) {
+    try {
+      await quoteStore.removeItem(itemToDelete.value);
+      notificationStore.addNotification({
+        type: 'success',
+        message: 'Partida eliminada',
+        domainEvent: 'QUOTE_ITEM_DELETED'
+      });
+    } catch(e) { 
+      console.error(e); 
+      notificationStore.addNotification({
+        type: 'error',
+        message: 'Error al eliminar partida',
+        domainEvent: 'QUOTE_ITEM_DELETE_FAILED'
+      });
+    }
   }
 };
 

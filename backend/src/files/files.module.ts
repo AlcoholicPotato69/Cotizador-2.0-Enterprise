@@ -1,0 +1,58 @@
+import { Module } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+
+// Client File Engine
+import { ClientFileRepository } from './client-file/client-file.repository';
+import { ClientFileService } from './client-file/client-file.service';
+import { ClientFileController } from './client-file/client-file.controller';
+
+// Quote File Engine
+import { QuoteFileRepository } from './quote-file/quote-file.repository';
+import { QuoteFileService } from './quote-file/quote-file.service';
+import { QuoteFileController } from './quote-file/quote-file.controller';
+
+// Contract File Engine
+import { ContractFileRepository } from './contract-file/contract-file.repository';
+import { ContractFileService } from './contract-file/contract-file.service';
+import { ContractFileController } from './contract-file/contract-file.controller';
+
+// Financial File Engine
+import { FinancialFileRepository } from './financial-file/financial-file.repository';
+import { FinancialFileService } from './financial-file/financial-file.service';
+import { FinancialFileController } from './financial-file/financial-file.controller';
+
+// Document Viewer Engine
+import { DocumentViewerService } from './document-viewer/document-viewer.service';
+import { DocumentViewerController } from './document-viewer/document-viewer.controller';
+
+@Module({
+  imports: [
+    EventEmitterModule.forRoot(), // Note: Make sure it's available globally as requested by prompt
+  ],
+  controllers: [
+    ClientFileController,
+    QuoteFileController,
+    ContractFileController,
+    FinancialFileController,
+    DocumentViewerController,
+  ],
+  providers: [
+    ClientFileRepository,
+    ClientFileService,
+    QuoteFileRepository,
+    QuoteFileService,
+    ContractFileRepository,
+    ContractFileService,
+    FinancialFileRepository,
+    FinancialFileService,
+    DocumentViewerService,
+  ],
+  exports: [
+    ClientFileService,
+    QuoteFileService,
+    ContractFileService,
+    FinancialFileService,
+    DocumentViewerService,
+  ],
+})
+export class FilesModule {}

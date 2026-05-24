@@ -26,6 +26,26 @@
   --color-primary-900: var(--color-primary-900);
   --color-primary-950: var(--color-primary-950);
   --color-primary: var(--color-primary);
+
+  --color-success-100: var(--color-success-100);
+  --color-success-400: var(--color-success-400);
+  --color-success-800: var(--color-success-800);
+  --color-success-900: var(--color-success-900);
+
+  --color-warning-100: var(--color-warning-100);
+  --color-warning-400: var(--color-warning-400);
+  --color-warning-800: var(--color-warning-800);
+  --color-warning-900: var(--color-warning-900);
+
+  --color-danger-100: var(--color-danger-100);
+  --color-danger-400: var(--color-danger-400);
+  --color-danger-800: var(--color-danger-800);
+  --color-danger-900: var(--color-danger-900);
+
+  --color-info-100: var(--color-info-100);
+  --color-info-400: var(--color-info-400);
+  --color-info-800: var(--color-info-800);
+  --color-info-900: var(--color-info-900);
 }
 
 /* THEME ENGINE: CORE CSS VARIABLES */
@@ -58,6 +78,27 @@
     --color-primary-800: #1e293b;
     --color-primary-900: #0f172a;
     --color-primary-950: #020617;
+
+    /* Semantic Tokens (Light) */
+    --color-success-100: #dcfce7;
+    --color-success-400: #4ade80;
+    --color-success-800: #166534;
+    --color-success-900: #14532d;
+    
+    --color-warning-100: #fef9c3;
+    --color-warning-400: #facc15;
+    --color-warning-800: #854d0e;
+    --color-warning-900: #713f12;
+
+    --color-danger-100: #fee2e2;
+    --color-danger-400: #f87171;
+    --color-danger-800: #991b1b;
+    --color-danger-900: #7f1d1d;
+
+    --color-info-100: #dbeafe;
+    --color-info-400: #60a5fa;
+    --color-info-800: #1e40af;
+    --color-info-900: #1e3a8a;
   }
 
   /* DARK MODE SURFACE */
@@ -74,6 +115,22 @@
     --color-surface-800: #f1f5f9;
     --color-surface-900: #f8fafc;
     --color-surface-950: #ffffff;
+
+    --color-success-100: #14532d;
+    --color-success-800: #dcfce7;
+    --color-success-900: #4ade80;
+    
+    --color-warning-100: #713f12;
+    --color-warning-800: #fef9c3;
+    --color-warning-900: #facc15;
+
+    --color-danger-100: #7f1d1d;
+    --color-danger-800: #fee2e2;
+    --color-danger-900: #f87171;
+
+    --color-info-100: #1e3a8a;
+    --color-info-800: #dbeafe;
+    --color-info-900: #60a5fa;
   }
 
   /* TENANT: PLAZA MAYOR (Rojo Corporativo) */

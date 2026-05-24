@@ -1,27 +1,34 @@
-import { pb } from './pb';
+import { http } from '../api/http';
 
 export const authService = {
     async login(email: string, pass: string) {
-        return await pb.collection('users').authWithPassword(email, pass);
+        const response = await http.post('/auth/login', { email, password: pass });
+        // Assume NestJS returns { token, user: { id, email, tenant_id, ... } }
+        return {
+            token: response.data.token,
+            record: response.data.user
+        };
     },
     logout() {
-        pb.authStore.clear();
+        // Handled in store by clearing token
     },
     async refreshSession() {
-        if (pb.authStore.isValid) {
-            try {
-                return await pb.collection('users').authRefresh();
-            } catch (err) {
-                pb.authStore.clear();
-                throw err;
-            }
+        try {
+            const response = await http.post('/auth/refresh');
+            return {
+                token: response.data.token,
+                record: response.data.user
+            };
+        } catch (err) {
+            throw err;
         }
-        return null;
     },
     getCurrentUser() {
-        return pb.authStore.model;
+        // This is now managed by Pinia, so services shouldn't hold state.
+        return null; 
     },
     isValid() {
-        return pb.authStore.isValid;
+        // The store handles the token presence validation
+        return true; 
     }
 };

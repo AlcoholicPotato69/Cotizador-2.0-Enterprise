@@ -15,66 +15,39 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuditController = void 0;
 const common_1 = require("@nestjs/common");
 const audit_service_1 = require("./audit.service");
-const create_audit_dto_1 = require("./dto/create-audit.dto");
-const update_audit_dto_1 = require("./dto/update-audit.dto");
+const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
+const permissions_guard_1 = require("../auth/guards/permissions.guard");
+const require_permissions_decorator_1 = require("../auth/decorators/require-permissions.decorator");
 let AuditController = class AuditController {
     auditService;
     constructor(auditService) {
         this.auditService = auditService;
     }
-    create(createAuditDto) {
-        return this.auditService.create(createAuditDto);
-    }
     findAll() {
-        return this.auditService.findAll();
+        return [];
     }
     findOne(id) {
-        return this.auditService.findOne(+id);
-    }
-    update(id, updateAuditDto) {
-        return this.auditService.update(+id, updateAuditDto);
-    }
-    remove(id) {
-        return this.auditService.remove(+id);
+        return null;
     }
 };
 exports.AuditController = AuditController;
 __decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_audit_dto_1.CreateAuditDto]),
-    __metadata("design:returntype", void 0)
-], AuditController.prototype, "create", null);
-__decorate([
     (0, common_1.Get)(),
+    (0, require_permissions_decorator_1.RequirePermissions)('audit.read'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], AuditController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
+    (0, require_permissions_decorator_1.RequirePermissions)('audit.read'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], AuditController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __param(1, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_audit_dto_1.UpdateAuditDto]),
-    __metadata("design:returntype", void 0)
-], AuditController.prototype, "update", null);
-__decorate([
-    (0, common_1.Delete)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], AuditController.prototype, "remove", null);
 exports.AuditController = AuditController = __decorate([
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionsGuard),
     (0, common_1.Controller)('audit'),
     __metadata("design:paramtypes", [audit_service_1.AuditService])
 ], AuditController);

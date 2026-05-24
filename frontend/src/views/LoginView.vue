@@ -51,10 +51,12 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
+import { useNotificationStore } from '../stores/notificationStore';
 import DsButton from '../components/ui/DsButton.vue';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const notificationStore = useNotificationStore();
 
 const email = ref('');
 const password = ref('');
@@ -68,7 +70,11 @@ async function handleLogin() {
     router.push('/playground');
   } catch (err) {
     console.error("Login error", err);
-    alert("Credenciales incorrectas");
+    notificationStore.addNotification({
+      type: 'error',
+      message: 'Credenciales incorrectas',
+      domainEvent: 'AUTH_FAILED'
+    });
   } finally {
     isLoading.value = false;
   }

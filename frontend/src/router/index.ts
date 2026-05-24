@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
-import { pb } from '../services/pb';
 import clientsRoutes from './modules/clients';
 import devtoolsRoutes from './modules/devtools';
 import quotesRoutes from './modules/quotes';
+import dashboardRoutes from './modules/dashboard';
+import financeRoutes from './modules/finance';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +31,9 @@ const router = createRouter({
         },
         ...clientsRoutes,
         ...devtoolsRoutes,
-        ...quotesRoutes
+        ...quotesRoutes,
+        ...dashboardRoutes,
+        ...financeRoutes
       ]
     }
   ]
@@ -39,7 +42,7 @@ const router = createRouter({
 // Zero-Trust Navigation Guard
 router.beforeEach((to, _from, next) => {
   const authStore = useAuthStore();
-  const isValidSession = authStore.isAuthenticated || pb.authStore.isValid;
+  const isValidSession = authStore.isAuthenticated;
   
   // Playground Security (Dev Only)
   if (to.name === 'playground' && import.meta.env.PROD) {
@@ -58,7 +61,7 @@ router.beforeEach((to, _from, next) => {
 
   // RBAC Permission Check
   if (isValidSession && to.meta.requiresAuth) {
-    const user = authStore.user || pb.authStore.model;
+    const user = authStore.user;
     const effectivePermissions = user?.effective_permissions || [];
     const requiredPermission = to.meta.permission as string;
 

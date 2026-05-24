@@ -71,10 +71,12 @@
 import { ref, onMounted, computed } from 'vue';
 import { pb } from '../services/pb';
 import { useTenantStore } from '../stores/tenant';
+import { useNotificationStore } from '../stores/notificationStore';
 import PermissionSimulator from './PermissionSimulator.vue';
 import Button from 'primevue/button';
 
 const tenantStore = useTenantStore();
+const notificationStore = useNotificationStore();
 const roles = ref<any[]>([]);
 const allPermissions = ref<any[]>([]);
 const selectedRole = ref<any>(null);
@@ -142,7 +144,11 @@ const savePermissions = async () => {
        description: `Permisos actualizados para rol ${selectedRole.value.name}`
     });
 
-    alert("Permisos guardados y auditados exitosamente.");
+    notificationStore.addNotification({
+      type: 'success',
+      message: 'Permisos guardados y auditados exitosamente.',
+      domainEvent: 'PERMISSIONS_UPDATED'
+    });
   } catch (e) {
     console.error(e);
   } finally {

@@ -115,6 +115,14 @@
         <Button label="Guardar" icon="pi pi-check" class="p-button-primary" @click="saveSpace" :loading="saving" />
       </template>
     </Dialog>
+
+    <!-- Delete Confirmation -->
+    <DsConfirmDialog 
+      v-model:visible="showDeleteConfirm" 
+      title="Eliminar Espacio" 
+      :message="`¿Está seguro de eliminar el espacio ${spaceToDelete?.nombre}?`"
+      @confirm="executeDelete"
+    />
   </div>
 </template>
 
@@ -135,8 +143,11 @@ import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import Checkbox from 'primevue/checkbox';
 import Textarea from 'primevue/textarea';
+import DsConfirmDialog from '../components/ui/DsConfirmDialog.vue';
+import { useNotificationStore } from '../stores/notificationStore';
 
 const tenantStore = useTenantStore();
+const notificationStore = useNotificationStore();
 const activeUser = getActiveUser();
 const isAdmin = computed(() => activeUser?.role === 'admin');
 
@@ -149,6 +160,8 @@ const filters = ref({
 
 // Dialog
 const showDialog = ref(false);
+const showDeleteConfirm = ref(false);
+const spaceToDelete = ref<any>(null);
 const isEditing = ref(false);
 const submitted = ref(false);
 const saving = ref(false);
@@ -281,13 +294,28 @@ const saveSpace = async () => {
   }
 };
 
-const confirmDelete = async (space: any) => {
-  if (confirm(`¿Está seguro de eliminar el espacio ${space.nombre}?`)) {
+const confirmDelete = (space: any) => {
+  spaceToDelete.value = space;
+  showDeleteConfirm.value = true;
+};
+
+const executeDelete = async () => {
+  if (spaceToDelete.value) {
     try {
-      await pb.collection('espacios').delete(space.id);
+      await pb.collection('espacios').delete(spaceToDelete.value.id);
       fetchSpaces();
+      notificationStore.addNotification({
+        type: 'success',
+        message: 'Espacio eliminado',
+        domainEvent: 'SPACE_DELETED'
+      });
     } catch (err) {
       console.error(err);
+      notificationStore.addNotification({
+        type: 'error',
+        message: 'Error al eliminar',
+        domainEvent: 'SPACE_DELETE_FAILED'
+      });
     }
   }
 };

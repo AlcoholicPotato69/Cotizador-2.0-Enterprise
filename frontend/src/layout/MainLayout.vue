@@ -1,90 +1,134 @@
 <template>
-  <div class="main-layout" v-if="pb.authStore.isValid">
+  <div class="flex h-screen w-screen overflow-hidden bg-surface-50 text-surface-900 transition-colors duration-200 dark:bg-surface-950 dark:text-surface-50" v-if="authStore.isAuthenticated">
+    
     <!-- Sidebar -->
-    <aside class="sidebar" :class="{ 'collapsed': isSidebarCollapsed }">
-      <div class="sidebar-header">
-        <div class="logo-box">
-          <span class="logo-text" v-if="!isSidebarCollapsed">C2</span>
-          <span class="logo-text" v-else>C</span>
+    <aside 
+      class="flex flex-col bg-surface-900 text-surface-200 transition-all duration-300 border-r border-surface-800 dark:bg-surface-900"
+      :class="isSidebarCollapsed ? 'w-20' : 'w-64'"
+    >
+      <!-- Sidebar Header -->
+      <div class="h-16 flex items-center justify-between px-4 border-b border-surface-800">
+        <div class="w-10 h-10 rounded-md flex items-center justify-center bg-gradient-to-br from-primary-500 to-primary-700 shadow-sm">
+          <span class="text-white font-black tracking-wider text-lg">
+            {{ isSidebarCollapsed ? 'C' : 'C2' }}
+          </span>
         </div>
-        <Button 
-          icon="pi pi-bars" 
+        <button 
           @click="toggleSidebar" 
-          class="p-button-text p-button-plain sidebar-toggle"
-        />
+          class="text-surface-400 hover:text-surface-50 transition-colors focus:outline-none"
+        >
+          <i class="pi pi-bars text-xl"></i>
+        </button>
       </div>
 
-      <nav class="sidebar-nav">
-        <router-link to="/" class="nav-item" active-class="active">
-          <i class="pi pi-home"></i>
+      <!-- Navigation -->
+      <nav class="flex-1 flex flex-col gap-2 p-3 overflow-y-auto">
+        <router-link to="/" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-surface-400 font-semibold text-sm transition-all hover:bg-surface-800 hover:text-surface-50" active-class="bg-primary-500 text-white shadow-sm hover:bg-primary-600" :class="{'justify-center': isSidebarCollapsed}">
+          <i class="pi pi-home text-lg"></i>
           <span v-if="!isSidebarCollapsed">Dashboard</span>
         </router-link>
         
-        <router-link to="/catalog" class="nav-item" active-class="active" v-permission="'spaces.read'">
-          <i class="pi pi-box"></i>
+        <router-link to="/catalog" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-surface-400 font-semibold text-sm transition-all hover:bg-surface-800 hover:text-surface-50" active-class="bg-primary-500 text-white shadow-sm hover:bg-primary-600" v-permission="'spaces.read'" :class="{'justify-center': isSidebarCollapsed}">
+          <i class="pi pi-box text-lg"></i>
           <span v-if="!isSidebarCollapsed">Catálogo</span>
         </router-link>
         
-        <router-link to="/quotes" class="nav-item" active-class="active" v-permission="'quotes.read'">
-          <i class="pi pi-calculator"></i>
+        <router-link to="/quotes" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-surface-400 font-semibold text-sm transition-all hover:bg-surface-800 hover:text-surface-50" active-class="bg-primary-500 text-white shadow-sm hover:bg-primary-600" v-permission="'quotes.read'" :class="{'justify-center': isSidebarCollapsed}">
+          <i class="pi pi-calculator text-lg"></i>
           <span v-if="!isSidebarCollapsed">Cotizaciones</span>
         </router-link>
 
-        <router-link to="/clients" class="nav-item" active-class="active" v-permission="'clients.read'">
-          <i class="pi pi-users"></i>
+        <router-link to="/clients" class="flex items-center gap-3 px-3 py-2.5 rounded-md text-surface-400 font-semibold text-sm transition-all hover:bg-surface-800 hover:text-surface-50" active-class="bg-primary-500 text-white shadow-sm hover:bg-primary-600" v-permission="'clients.read'" :class="{'justify-center': isSidebarCollapsed}">
+          <i class="pi pi-users text-lg"></i>
           <span v-if="!isSidebarCollapsed">Clientes</span>
         </router-link>
 
-        <router-link to="/admin" class="nav-item mt-auto" active-class="active" v-permission="'config.manage'">
-          <i class="pi pi-cog"></i>
+        <router-link to="/admin" class="mt-auto flex items-center gap-3 px-3 py-2.5 rounded-md text-surface-400 font-semibold text-sm transition-all hover:bg-surface-800 hover:text-surface-50" active-class="bg-primary-500 text-white shadow-sm hover:bg-primary-600" v-permission="'config.manage'" :class="{'justify-center': isSidebarCollapsed}">
+          <i class="pi pi-cog text-lg"></i>
           <span v-if="!isSidebarCollapsed">TAC Admin</span>
         </router-link>
       </nav>
 
-      <div class="sidebar-footer">
-        <div class="user-info" v-if="!isSidebarCollapsed">
-          <div class="avatar">{{ userInitials }}</div>
-          <div class="details">
-            <span class="name">{{ user?.name || user?.username }}</span>
-            <span class="role">{{ user?.role }}</span>
+      <!-- Sidebar Footer -->
+      <div class="p-4 border-t border-surface-800 flex flex-col gap-4">
+        <div class="flex items-center gap-3" v-if="!isSidebarCollapsed">
+          <div class="w-9 h-9 rounded-full bg-surface-700 flex items-center justify-center font-bold text-sm text-surface-50">
+            {{ userInitials }}
+          </div>
+          <div class="flex flex-col">
+            <span class="text-sm font-bold text-surface-50">{{ user?.name || user?.username }}</span>
+            <span class="text-xs text-surface-400 uppercase tracking-wider">{{ user?.role }}</span>
           </div>
         </div>
-        <Button 
-          icon="pi pi-sign-out" 
+        <button 
           @click="handleLogout" 
-          class="p-button-text p-button-danger logout-btn" 
-          :label="isSidebarCollapsed ? '' : 'Salir'" 
-        />
+          class="flex items-center gap-3 px-3 py-2 rounded-md font-bold text-sm text-red-400 hover:bg-surface-800 hover:text-red-300 transition-colors w-full"
+          :class="{'justify-center': isSidebarCollapsed}"
+        >
+          <i class="pi pi-sign-out text-lg"></i>
+          <span v-if="!isSidebarCollapsed">Salir</span>
+        </button>
       </div>
     </aside>
 
-    <!-- Main Content Area -->
-    <div class="main-content">
-      <!-- Top Header -->
-      <header class="top-header">
-        <div class="breadcrumb">
-          <h2>{{ currentRouteName }}</h2>
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 bg-surface-50 dark:bg-surface-950">
+      
+      <!-- Topbar -->
+      <header class="h-16 bg-surface-0 border-b border-surface-200 flex items-center justify-between px-6 shadow-sm z-10 dark:bg-surface-900 dark:border-surface-800">
+        <!-- Left: Global Search / Breadcrumb -->
+        <div class="flex items-center gap-6 flex-1">
+          <h2 class="text-xl font-bold text-surface-900 dark:text-surface-50 hidden md:block whitespace-nowrap">
+            {{ currentRouteName }}
+          </h2>
+          
+          <div class="relative w-full max-w-md hidden sm:block">
+            <i class="pi pi-search absolute left-3 top-1/2 -translate-y-1/2 text-surface-400"></i>
+            <input 
+              type="text" 
+              placeholder="Buscar (Cmd/Ctrl + K)" 
+              class="w-full bg-surface-100 border border-surface-200 text-surface-900 rounded-full pl-10 pr-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500 dark:bg-surface-800 dark:border-surface-700 dark:text-surface-50 dark:placeholder-surface-400"
+            />
+          </div>
         </div>
         
-        <div class="tenant-selector" v-if="tenantStore.availableTenants.length > 0">
-          <i class="pi pi-building text-slate-400 mr-2"></i>
-          <select 
-            v-model="tenantStore.activeTenantId" 
-            @change="handleTenantChange($event)"
-            class="tenant-dropdown"
-          >
-            <option v-for="tenant in tenantStore.availableTenants" :key="tenant.id" :value="tenant.id">
-              {{ tenant.name }}
-            </option>
-          </select>
-          <span class="tenant-badge" :class="tenantBadgeClass">
-            {{ tenantStore.activeTenant?.slug === 'plaza_mayor' ? 'PM' : 'CP' }}
-          </span>
+        <!-- Right: Actions & Tenant Toggler -->
+        <div class="flex items-center gap-4">
+          <!-- Dark Mode Toggle -->
+          <button @click="toggleDarkMode" class="w-8 h-8 rounded-full flex items-center justify-center text-surface-500 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
+            <i :class="isDark ? 'pi pi-sun' : 'pi pi-moon'"></i>
+          </button>
+          
+          <!-- Notifications -->
+          <button class="relative w-8 h-8 rounded-full flex items-center justify-center text-surface-500 hover:bg-surface-100 dark:hover:bg-surface-800 transition-colors">
+            <i class="pi pi-bell"></i>
+            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+
+          <div class="w-px h-6 bg-surface-200 mx-1 dark:bg-surface-700"></div>
+
+          <!-- Tenant Toggler (Plaza Mayor / Casa de Piedra) -->
+          <div class="flex items-center bg-surface-100 rounded-full px-4 py-1.5 border border-surface-200 dark:bg-surface-800 dark:border-surface-700" v-if="tenantStore.availableTenants.length > 0">
+            <i class="pi pi-building text-surface-400 mr-2 text-sm"></i>
+            <select 
+              v-model="tenantStore.activeTenantId" 
+              @change="handleTenantChange($event)"
+              class="bg-transparent border-none outline-none font-bold text-surface-900 text-sm cursor-pointer appearance-none pr-6 dark:text-surface-50"
+              style="background-image: url('data:image/svg+xml;utf8,<svg fill=\'none\' stroke=\'%2364748b\' viewBox=\'0 0 24 24\' xmlns=\'http://www.w3.org/2000/svg\'><path stroke-linecap=\'round\' stroke-linejoin=\'round\' stroke-width=\'2\' d=\'M19 9l-7 7-7-7\'></path></svg>'); background-repeat: no-repeat; background-position: right center; background-size: 1rem;"
+            >
+              <option v-for="tenant in tenantStore.availableTenants" :key="tenant.id" :value="tenant.id">
+                {{ tenant.name }}
+              </option>
+            </select>
+            <span class="ml-3 text-xs font-black px-2 py-0.5 rounded-md" :class="tenantBadgeClass">
+              {{ tenantStore.activeTenant?.slug === 'plaza_mayor' ? 'PM' : 'CP' }}
+            </span>
+          </div>
         </div>
       </header>
 
-      <!-- Page View -->
-      <main class="page-container">
+      <!-- Page Content -->
+      <main class="flex-1 p-6 overflow-y-auto">
         <router-view />
       </main>
     </div>
@@ -94,21 +138,22 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
-import { pb, getActiveUser } from '../services/pb';
+import { useAuthStore } from '../stores/authStore';
 import { useTenantStore } from '../stores/tenant';
 import { usePermissionsStore } from '../stores/permissions';
-import Button from 'primevue/button';
 
 const router = useRouter();
 const route = useRoute();
 const tenantStore = useTenantStore();
 const permissionsStore = usePermissionsStore();
+const authStore = useAuthStore();
 
 const isSidebarCollapsed = ref(false);
-const user = getActiveUser();
+const isDark = ref(false);
+const user = computed(() => authStore.user);
 
 const userInitials = computed(() => {
-  const name = user?.name || user?.username || 'U';
+  const name = user.value?.name || user.value?.username || 'U';
   return name.substring(0, 2).toUpperCase();
 });
 
@@ -123,263 +168,54 @@ const currentRouteName = computed(() => {
 });
 
 const tenantBadgeClass = computed(() => {
-  return tenantStore.activeTenant?.slug === 'plaza_mayor' ? 'badge-pm' : 'badge-cp';
+  return tenantStore.activeTenant?.slug === 'plaza_mayor' 
+    ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300' 
+    : 'bg-pink-100 text-pink-800 dark:bg-pink-900/50 dark:text-pink-300';
 });
 
 const toggleSidebar = () => {
   isSidebarCollapsed.value = !isSidebarCollapsed.value;
 };
 
+const toggleDarkMode = () => {
+  isDark.value = !isDark.value;
+  if (isDark.value) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+};
+
 const handleTenantChange = async (event: any) => {
   tenantStore.setActiveTenant(event.target.value);
   await permissionsStore.loadPermissions();
+  
+  // Theme Engine: Switch CSS class on body based on tenant
+  document.body.classList.remove('tenant-pm', 'tenant-cp');
+  if (tenantStore.activeTenant?.slug === 'plaza_mayor') {
+    document.body.classList.add('tenant-pm');
+  } else {
+    document.body.classList.add('tenant-cp');
+  }
 };
 
 const handleLogout = () => {
-  pb.authStore.clear();
+  authStore.logout();
   permissionsStore.clearPermissions();
   router.push({ name: 'login' });
 };
 
 onMounted(async () => {
-  if (pb.authStore.isValid) {
+  if (authStore.isAuthenticated) {
     await tenantStore.fetchTenants();
     await permissionsStore.loadPermissions();
+    
+    // Initialize Theme
+    if (tenantStore.activeTenant?.slug === 'plaza_mayor') {
+      document.body.classList.add('tenant-pm');
+    } else {
+      document.body.classList.add('tenant-cp');
+    }
   }
 });
 </script>
-
-<style scoped>
-.main-layout {
-  display: flex;
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
-  background-color: #f8fafc;
-}
-
-/* Sidebar Styles */
-.sidebar {
-  width: 260px;
-  background-color: #0f172a;
-  color: #e2e8f0;
-  display: flex;
-  flex-direction: column;
-  transition: width 0.3s ease;
-  border-right: 1px solid #1e293b;
-}
-
-.sidebar.collapsed {
-  width: 80px;
-}
-
-.sidebar-header {
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1rem;
-  border-bottom: 1px solid #1e293b;
-}
-
-.logo-box {
-  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo-text {
-  font-weight: 900;
-  color: white;
-  font-size: 1.2rem;
-  letter-spacing: 1px;
-}
-
-.sidebar-toggle {
-  color: #94a3b8 !important;
-}
-
-.sidebar-nav {
-  flex: 1;
-  padding: 1.5rem 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.nav-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.75rem 1rem;
-  color: #94a3b8;
-  text-decoration: none;
-  border-radius: 0.75rem;
-  font-weight: 600;
-  font-size: 0.9rem;
-  transition: all 0.2s;
-}
-
-.sidebar.collapsed .nav-item {
-  justify-content: center;
-  padding: 0.75rem;
-}
-
-.nav-item:hover {
-  background-color: #1e293b;
-  color: #f8fafc;
-}
-
-.nav-item.active {
-  background-color: #10b981;
-  color: white;
-  box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.2);
-}
-
-.nav-item i {
-  font-size: 1.2rem;
-}
-
-.sidebar-footer {
-  padding: 1rem;
-  border-top: 1px solid #1e293b;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.user-info {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-
-.avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background-color: #334155;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: 0.9rem;
-  color: white;
-}
-
-.details {
-  display: flex;
-  flex-direction: column;
-}
-
-.name {
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #f8fafc;
-}
-
-.role {
-  font-size: 0.7rem;
-  color: #64748b;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.logout-btn {
-  width: 100%;
-  justify-content: flex-start;
-  font-weight: bold;
-}
-
-.sidebar.collapsed .logout-btn {
-  justify-content: center;
-}
-
-/* Main Content Styles */
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.top-header {
-  height: 70px;
-  background-color: white;
-  border-bottom: 1px solid #e2e8f0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  z-index: 10;
-}
-
-.breadcrumb h2 {
-  margin: 0;
-  font-size: 1.25rem;
-  font-weight: 800;
-  color: #1e293b;
-}
-
-.tenant-selector {
-  display: flex;
-  align-items: center;
-  background-color: #f1f5f9;
-  padding: 0.5rem 1rem;
-  border-radius: 999px;
-  border: 1px solid #e2e8f0;
-}
-
-.mr-2 {
-  margin-right: 0.5rem;
-}
-
-.text-slate-400 {
-  color: #94a3b8;
-}
-
-.tenant-dropdown {
-  background: transparent;
-  border: none;
-  outline: none;
-  font-weight: 700;
-  color: #334155;
-  font-size: 0.9rem;
-  cursor: pointer;
-  appearance: none;
-  padding-right: 1.5rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2364748b'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 0.2rem center;
-  background-size: 1rem;
-}
-
-.tenant-badge {
-  margin-left: 1rem;
-  font-size: 0.7rem;
-  font-weight: 900;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-}
-
-.badge-pm {
-  background-color: #dbeafe;
-  color: #1e3a8a;
-}
-
-.badge-cp {
-  background-color: #fce7f3;
-  color: #831843;
-}
-
-.page-container {
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
-}
-</style>

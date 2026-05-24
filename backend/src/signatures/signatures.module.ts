@@ -1,12 +1,11 @@
 import { Module } from '@nestjs/common';
 import { SignaturesService } from './signatures.service';
-import { SignaturesController } from './signatures.controller';
+import { SignaturesRepository } from './signatures.repository';
 import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [SignaturesController],
-  providers: [SignaturesService],
-  exports: [SignaturesService],
+  providers: [SignaturesRepository, SignaturesService],
+  exports: [SignaturesRepository, SignaturesService],
 })
 export class SignaturesModule {}

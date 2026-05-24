@@ -1,34 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { AuditService } from './audit.service';
-import { CreateAuditDto } from './dto/create-audit.dto';
-import { UpdateAuditDto } from './dto/update-audit.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { PermissionsGuard } from '../auth/guards/permissions.guard';
+import { RequirePermissions } from '../auth/decorators/require-permissions.decorator';
 
+@UseGuards(JwtAuthGuard, PermissionsGuard)
 @Controller('audit')
 export class AuditController {
   constructor(private readonly auditService: AuditService) {}
 
-  @Post()
-  create(@Body() createAuditDto: CreateAuditDto) {
-    return this.auditService.create(createAuditDto);
-  }
-
   @Get()
+  @RequirePermissions('audit.read')
   findAll() {
-    return this.auditService.findAll();
+    return []; // TODO: Implement if needed
   }
 
   @Get(':id')
+  @RequirePermissions('audit.read')
   findOne(@Param('id') id: string) {
-    return this.auditService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAuditDto: UpdateAuditDto) {
-    return this.auditService.update(+id, updateAuditDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.auditService.remove(+id);
+    return null; // TODO: Implement if needed
   }
 }

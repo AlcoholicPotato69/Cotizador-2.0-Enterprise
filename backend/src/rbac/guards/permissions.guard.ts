@@ -1,46 +1,43 @@
 import { Injectable, CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-// import { PrismaService } from '../../prisma/prisma.service';
+import { PERMISSIONS_KEY } from '../decorators/permissions.decorator';
 
 @Injectable()
 export class PermissionsGuard implements CanActivate {
-  constructor(private reflector: Reflector /*, private prisma: PrismaService*/) {}
+  constructor(private reflector: Reflector) {}
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const requiredPermissions = this.reflector.get<string[]>('permissions', context.getHandler());
+  canActivate(context: ExecutionContext): boolean {
+    const requiredPermissions = this.reflector.getAllAndOverride<string[]>(PERMISSIONS_KEY, [
+      context.getHandler(),
+      context.getClass(),
+    ]);
+    
+    // Si la ruta no tiene permisos requeridos, permitimos el acceso
     if (!requiredPermissions) {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
-    const user = request.user;
-    const tenantId = request.tenantId;
-
-    if (!user || !tenantId) {
-      throw new ForbiddenException('No user or tenant in context');
+    const { user } = context.switchToHttp().getRequest();
+    
+    if (!user) {
+      throw new ForbiddenException('User context is missing');
     }
 
-    // Logic to query real permissions
-    /*
-    const userRoles = await this.prisma.userRole.findMany({
-      where: { userId: user.sub },
-      include: {
-        role: {
-          include: { permissions: { include: { permission: true } } }
-        }
-      }
-    });
+    // Los permisos efectivos deben estar en el payload del token (inyectado en user)
+    // Para simplificar, asumimos que el JWT incluye un arreglo 'permissions'
+    const userPermissions: string[] = user.permissions || [];
 
-    const userPermissions = userRoles.flatMap(ur => 
-      ur.role.permissions.map(rp => rp.permission.action)
+    // Verificamos si el usuario tiene TODOS los permisos requeridos
+    const hasAllPermissions = requiredPermissions.every((permission) =>
+      userPermissions.includes(permission),
     );
 
-    const hasPermission = requiredPermissions.every(rp => userPermissions.includes(rp));
-    if (!hasPermission) {
-      throw new ForbiddenException('Insufficient permissions');
+    if (!hasAllPermissions) {
+      throw new ForbiddenException(
+        `Insufficient permissions. Required: ${requiredPermissions.join(', ')}`,
+      );
     }
-    */
 
-    return true; // Si cumple, pasa.
+    return true;
   }
 }

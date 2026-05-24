@@ -1,11 +1,12 @@
-import { Global, Module } from '@nestjs/common';
-import { TenantContextService } from './tenant-context.service';
-import { DomainEventPublisher } from './domain-event.publisher';
-import { AuditEventPublisher } from './audit-event.publisher';
+import { Module, Global } from '@nestjs/common';
+import { EventEmitterModule } from '@nestjs/event-emitter';
+import { DomainEventPublisher } from './events/domain-event-publisher';
+import { FsmValidator } from './fsm.validator';
 
 @Global()
 @Module({
-  providers: [TenantContextService, DomainEventPublisher, AuditEventPublisher],
-  exports: [TenantContextService, DomainEventPublisher, AuditEventPublisher],
+  imports: [EventEmitterModule.forRoot()],
+  providers: [DomainEventPublisher, FsmValidator],
+  exports: [DomainEventPublisher, EventEmitterModule, FsmValidator],
 })
 export class CommonModule {}

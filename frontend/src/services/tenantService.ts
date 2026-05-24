@@ -1,10 +1,11 @@
-import { pb } from './pb';
+import { http } from '../api/http';
 
 export const tenantService = {
     async getTenantById(id: string) {
         if (!id) return null;
         try {
-            return await pb.collection('tenants').getOne(id);
+            const res = await http.get(`/tenants/${id}`);
+            return res.data;
         } catch (err) {
             console.error("Error fetching tenant", err);
             return null;

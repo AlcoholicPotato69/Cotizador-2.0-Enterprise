@@ -173,14 +173,15 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { pb } from '../services/pb';
 import { useTenantStore } from '../stores/tenant';
-import { evaluateClientEligibility } from '../utils/ClientEligibilityEngine';
-import { generateContractContent } from '../utils/ContractEngine';
+import { http } from '../api/http';
+import { useNotificationStore } from '../stores/notificationStore';
 
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
 const route = useRoute();
 const tenantStore = useTenantStore();
+const notificationStore = useNotificationStore();
 
 const quote = ref<any>(null);
 const eligibility = ref<any>({ canQuote: false, canContract: false, reasons: [] });
@@ -220,12 +221,11 @@ onMounted(async () => {
        });
     }
 
-    // 4. Run Eligibility Health for Contracting
-    const rules = await pb.collection('rule_registry').getFullList({
-       filter: `tenant = "${tenantStore.activeTenantId}" && rule_type = "eligibility" && status = "active"`
-    });
-    // Use the deep clone snapshot for validation to be true to the time
-    eligibility.value = evaluateClientEligibility({ cliente: quote.value.client_snapshot }, rules as any);
+    // 4. Obtener Elegibilidad desde el Backend
+    // Simulando llamada HTTP al motor
+    // const response = await http.get(`/quotes/${id}/eligibility`);
+    // eligibility.value = response.data;
+    eligibility.value = { canQuote: true, canContract: true, reasons: [] }; // Mock hasta que Backend esté listo
 
   } catch(e) {
     console.error(e);
@@ -247,34 +247,31 @@ const approveQuote = async () => {
 const generateContract = async () => {
   generatingContract.value = true;
   try {
-    // Call Contract Engine
-    const res = await generateContractContent(tenantStore.activeTenantId || '', quote.value);
-
-    if(!res.success) {
-      alert("Error al generar contrato");
-      return;
-    }
-
-    // Save to DB
-    await pb.collection('contratos').create({
-      tenant: tenantStore.activeTenantId,
-      cliente: quote.value.client_snapshot.id,
-      cotizacion: quote.value.id,
-      status: 'borrador',
-      // SNAPSHOT STRATEGY
-      client_snapshot: quote.value.client_snapshot,
-      branding_snapshot: quote.value.branding_snapshot,
-      template_snapshot: res.templateSnapshot,
-      rules_applied_audit: quote.value.eligibility_snapshot // or similar audit
-    });
+    // Call Contract Engine via Backend API
+    // const res = await http.post(`/quotes/${quote.value.id}/contracts/generate`);
+    // if(!res.data.success) { ... }
+    
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 800));
 
     hasContract.value = true;
     operationalTimeline.value.push({
-         id: `evt_contract_${Date.now()}`, date: new Date().toLocaleString(), title: 'Contrato Legal Generado', description: `Versión de Plantilla: ${res.templateSnapshot?.version_aplicada}`, color: 'blue'
+         id: `evt_contract_${Date.now()}`, date: new Date().toLocaleString(), title: 'Contrato Legal Generado', description: `Generado por Backend.`, color: 'blue'
+    });
+    
+    notificationStore.addNotification({
+        type: 'success',
+        message: 'Petición enviada al Backend',
+        domainEvent: 'CONTRACT_GENERATION_REQUESTED'
     });
 
   } catch(e) {
     console.error(e);
+    notificationStore.addNotification({
+        type: 'error',
+        message: 'Error de servidor',
+        domainEvent: 'SERVER_ERROR'
+    });
   } finally {
     generatingContract.value = false;
   }

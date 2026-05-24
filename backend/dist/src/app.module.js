@@ -29,12 +29,23 @@ const feature_flags_module_1 = require("./feature-flags/feature-flags.module");
 const storage_module_1 = require("./storage/storage.module");
 const health_module_1 = require("./health/health.module");
 const common_module_1 = require("./common/common.module");
+const pricing_module_1 = require("./pricing/pricing.module");
+const spaces_module_1 = require("./spaces/spaces.module");
+const schedule_1 = require("@nestjs/schedule");
+const compliance_module_1 = require("./compliance/compliance.module");
+const scheduler_module_1 = require("./common/scheduler/scheduler.module");
+const files_module_1 = require("./files/files.module");
+const event_emitter_1 = require("@nestjs/event-emitter");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            event_emitter_1.EventEmitterModule.forRoot({
+                wildcard: true,
+                delimiter: '.',
+            }),
             common_module_1.CommonModule,
             auth_module_1.AuthModule,
             tenants_module_1.TenantsModule,
@@ -53,7 +64,13 @@ exports.AppModule = AppModule = __decorate([
             payments_module_1.PaymentsModule,
             feature_flags_module_1.FeatureFlagsModule,
             storage_module_1.StorageModule,
-            health_module_1.HealthModule
+            health_module_1.HealthModule,
+            pricing_module_1.PricingModule,
+            spaces_module_1.SpacesModule,
+            compliance_module_1.ComplianceModule,
+            files_module_1.FilesModule,
+            schedule_1.ScheduleModule.forRoot(),
+            scheduler_module_1.SchedulerWorkerModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

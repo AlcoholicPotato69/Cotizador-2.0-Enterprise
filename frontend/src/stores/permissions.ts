@@ -1,26 +1,26 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { calculateEffectivePermissions } from '../utils/EffectivePermissionsEngine';
-import { pb } from '../services/pb';
+import { http } from '../api/http';
 import { useTenantStore } from './tenant';
+import { useAuthStore } from './authStore';
 
 export const usePermissionsStore = defineStore('permissions', () => {
   const permissions = ref<Set<string>>(new Set());
   const isLoading = ref(false);
 
   const loadPermissions = async () => {
-    if (!pb.authStore.isValid || !pb.authStore.model) return;
+    const authStore = useAuthStore();
+    if (!authStore.isAuthenticated || !authStore.user) return;
     
     const tenantStore = useTenantStore();
     if (!tenantStore.activeTenantId) return;
 
     isLoading.value = true;
     try {
-      const permsSet = await calculateEffectivePermissions({
-        userId: pb.authStore.model.id,
-        tenantId: tenantStore.activeTenantId
-      });
-      permissions.value = permsSet.permissions;
+      const res = await http.get(`/users/${authStore.user.id}/permissions`);
+      permissions.value = new Set(res.data.permissions || []);
+    } catch (e) {
+      console.error(e);
     } finally {
       isLoading.value = false;
     }

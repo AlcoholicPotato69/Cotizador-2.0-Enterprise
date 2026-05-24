@@ -149,11 +149,13 @@ import { ref, computed, onMounted } from 'vue';
 import { pb } from '../services/pb';
 import { useTenantStore } from '../stores/tenant';
 import { usePermissionsStore } from '../stores/permissions';
+import { useNotificationStore } from '../stores/notificationStore';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
 const tenantStore = useTenantStore();
 const permissionsStore = usePermissionsStore();
+const notificationStore = useNotificationStore();
 const rules = ref<any[]>([]);
 const activeRule = ref<any>(null);
 const searchQuery = ref('');
@@ -243,10 +245,18 @@ const saveRule = async () => {
       activeRule.value = saved;
       rules.value.unshift(saved);
     }
-    alert("Regla guardada y versionada correctamente.");
+    notificationStore.addNotification({
+      type: 'success',
+      message: 'Regla guardada y versionada correctamente.',
+      domainEvent: 'RULE_SAVED'
+    });
   } catch(e) {
     console.error(e);
-    alert("Error al guardar regla.");
+    notificationStore.addNotification({
+      type: 'error',
+      message: 'Error al guardar regla.',
+      domainEvent: 'RULE_SAVE_FAILED'
+    });
   } finally {
     saving.value = false;
   }

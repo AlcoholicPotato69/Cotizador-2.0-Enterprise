@@ -35,6 +35,30 @@ export default {
           800: 'var(--color-surface-800)',
           900: 'var(--color-surface-900)',
           950: 'var(--color-surface-950)',
+        },
+        success: {
+          100: 'var(--color-success-100)',
+          400: 'var(--color-success-400)',
+          800: 'var(--color-success-800)',
+          900: 'var(--color-success-900)',
+        },
+        warning: {
+          100: 'var(--color-warning-100)',
+          400: 'var(--color-warning-400)',
+          800: 'var(--color-warning-800)',
+          900: 'var(--color-warning-900)',
+        },
+        danger: {
+          100: 'var(--color-danger-100)',
+          400: 'var(--color-danger-400)',
+          800: 'var(--color-danger-800)',
+          900: 'var(--color-danger-900)',
+        },
+        info: {
+          100: 'var(--color-info-100)',
+          400: 'var(--color-info-400)',
+          800: 'var(--color-info-800)',
+          900: 'var(--color-info-900)',
         }
       },
       fontFamily: {

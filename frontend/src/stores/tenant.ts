@@ -1,21 +1,20 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
-import { pb } from '../services/pb';
+import { http } from '../api/http';
 
 export const useTenantStore = defineStore('tenant', () => {
     const activeTenantId = ref<string | null>(null);
     const availableTenants = ref<any[]>([]);
 
     const fetchTenants = async () => {
-        if (!pb.authStore.isValid) return;
         try {
             // Fetch tenants allowed for the user
-            const records = await pb.collection('tenants').getFullList();
-            availableTenants.value = records;
+            const res = await http.get('/tenants');
+            availableTenants.value = res.data;
             
             // Set default if none selected
-            if (!activeTenantId.value && records.length > 0) {
-                activeTenantId.value = records[0].id;
+            if (!activeTenantId.value && res.data.length > 0) {
+                activeTenantId.value = res.data[0].id;
             }
         } catch (e) {
             console.error('Error fetching tenants', e);

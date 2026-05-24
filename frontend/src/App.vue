@@ -1,4 +1,5 @@
 <template>
+  <DsNotificationPanel />
   <router-view></router-view>
 </template>
 
@@ -6,6 +7,7 @@
 import { onMounted } from 'vue';
 import { useAuthStore } from './stores/authStore';
 import { useThemeStore } from './stores/themeStore';
+import DsNotificationPanel from './components/ui/DsNotificationPanel.vue';
 
 const authStore = useAuthStore();
 const themeStore = useThemeStore();

@@ -17,15 +17,142 @@ model Tenant {
   deletedAt DateTime? @map("deleted_at")
   deletedBy String?   @map("deleted_by")
 
+  users              User[]
+  roles              Role[]
+  permissions        Permission[]
   clients            Client[]
   spaces             Space[]
   occupancies        SpaceOccupancy[]
   quotes             Quote[]
   contracts          Contract[]
+  signatures         Signature[]
   invoices           Invoice[]
   payments           Payment[]
+  paymentEvidences   PaymentEvidence[]
   documents          Document[]
   notificationQueues NotificationQueue[]
+
+  clientFiles              ClientFile[]
+  clientFileDocuments      ClientFileDocument[]
+  quoteFiles               QuoteFile[]
+  contractFiles            ContractFile[]
+  financialFiles           FinancialFile[]
+  agreementFiles           AgreementFile[]
+  agreements               Agreement[]
+  agreementVersions        AgreementVersion[]
+  agreementItems           AgreementItem[]
+  agreementApprovals       AgreementApproval[]
+  agreementSignatures      AgreementSignature[]
+  agreementEvidences       AgreementEvidence[]
+  agreementSnapshots       AgreementSnapshot[]
+  documentReviews          DocumentReview[]
+  documentReviewSteps      DocumentReviewStep[]
+  documentReviewDecisions  DocumentReviewDecision[]
+  customerCreditBalances   CustomerCreditBalance[]
+  creditTransactions       CreditTransaction[]
+  creditApplications       CreditApplication[]
+  catalogCategories        CatalogCategory[]
+  catalogItems             CatalogItem[]
+  catalogPrices            CatalogPrice[]
+  catalogVersions          CatalogVersion[]
+  catalogSnapshots         CatalogSnapshot[]
+  contractTemplates        ContractTemplate[]
+  contractTemplateVersions ContractTemplateVersion[]
+  contractClauses          ContractClause[]
+  clauseVersions           ClauseVersion[]
+  templateVariables        TemplateVariable[]
+  quoteTemplates           QuoteTemplate[]
+  invoiceTemplates         InvoiceTemplate[]
+  receiptTemplates         ReceiptTemplate[]
+  regulationTemplates      RegulationTemplate[]
+  regulations              Regulation[]
+  regulationVersions       RegulationVersion[]
+  regulationAcceptances    RegulationAcceptance[]
+  calendarEvents           CalendarEvent[]
+  spaceConfigurations      SpaceConfiguration[]
+  spaceRules               SpaceRule[]
+  spaceAvailabilityRules   SpaceAvailabilityRule[]
+  signatureEvidences       SignatureEvidence[]
+}
+
+model User {
+  id           String  @id @default(uuid())
+  tenantId     String  @map("tenant_id")
+  tenant       Tenant  @relation(fields: [tenantId], references: [id])
+  email        String  @unique
+  passwordHash String  @map("password_hash")
+  firstName    String  @map("first_name")
+  lastName     String  @map("last_name")
+  isActive     Boolean @default(true) @map("is_active")
+
+  roles UserRole[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  @@index([tenantId])
+}
+
+model Role {
+  id          String  @id @default(uuid())
+  tenantId    String  @map("tenant_id")
+  tenant      Tenant  @relation(fields: [tenantId], references: [id])
+  name        String
+  description String?
+
+  permissions RolePermission[]
+  users       UserRole[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  @@unique([tenantId, name])
+}
+
+model Permission {
+  id       String @id @default(uuid())
+  tenantId String @map("tenant_id")
+  tenant   Tenant @relation(fields: [tenantId], references: [id])
+  name     String
+  action   String
+  resource String
+
+  roles RolePermission[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  @@unique([tenantId, name])
+}
+
+model UserRole {
+  id     String @id @default(uuid())
+  userId String @map("user_id")
+  roleId String @map("role_id")
+  user   User   @relation(fields: [userId], references: [id])
+  role   Role   @relation(fields: [roleId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, roleId])
+}
+
+model RolePermission {
+  id           String     @id @default(uuid())
+  roleId       String     @map("role_id")
+  permissionId String     @map("permission_id")
+  role         Role       @relation(fields: [roleId], references: [id])
+  permission   Permission @relation(fields: [permissionId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([roleId, permissionId])
 }
 
 model AuditLog {
@@ -37,23 +164,34 @@ model AuditLog {
   currentHash  String   @map("current_hash")
   chainHash    String   @unique @map("chain_hash")
   createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, previousHash])
 }
 
 model Snapshot {
-  id          String   @id @default(uuid())
-  tenantId    String   @map("tenant_id")
-  entityType  String   @map("entity_type")
-  payloadHash String   @map("payload_hash")
-  payload     Json
-  createdAt   DateTime @default(now()) @map("created_at")
+  id           String   @id @default(uuid())
+  tenantId     String   @map("tenant_id")
+  entityType   String   @map("entity_type")
+  payloadHash  String   @map("payload_hash")
+  previousHash String?  @map("previous_hash")
+  chainHash    String   @unique @map("chain_hash")
+  version      Int      @default(1)
+  payload      Json
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@unique([tenantId, entityType, previousHash])
 }
 
 model FeatureFlag {
-  id                String  @id @default(uuid())
-  tenantId          String  @map("tenant_id")
-  featureKey        String  @map("feature_key")
-  enabled           Boolean @default(false)
-  rolloutPercentage Int     @default(100) @map("rollout_percentage")
+  id                String    @id @default(uuid())
+  tenantId          String    @map("tenant_id")
+  featureKey        String    @map("feature_key")
+  enabled           Boolean   @default(false)
+  rolloutPercentage Int       @default(100) @map("rollout_percentage")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+  deletedAt         DateTime? @map("deleted_at")
+  deletedBy         String?   @map("deleted_by")
 }
 
 model TaxConfiguration {
@@ -64,13 +202,21 @@ model TaxConfiguration {
   validFrom  DateTime  @map("valid_from")
   validUntil DateTime? @map("valid_until")
   isDefault  Boolean   @default(false) @map("is_default")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  deletedBy  String?   @map("deleted_by")
 }
 
 model Currency {
-  code      String  @id
+  code      String    @id
   symbol    String
   decimals  Int
-  isDefault Boolean @default(false) @map("is_default")
+  isDefault Boolean   @default(false) @map("is_default")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
 }
 
 // ==========================================
@@ -90,12 +236,20 @@ model Client {
   tenantId          String       @map("tenant_id")
   tenant            Tenant       @relation(fields: [tenantId], references: [id])
   status            ClientStatus @default(LEAD)
+  bankReference     String?      @unique @map("bank_reference")
   isTaxValidated    Boolean      @default(false) @map("is_tax_validated")
   isContractBlocked Boolean      @default(false) @map("is_contract_blocked")
   isInvoiceBlocked  Boolean      @default(false) @map("is_invoice_blocked")
   isPaymentBlocked  Boolean      @default(false) @map("is_payment_blocked")
   createdAt         DateTime     @default(now()) @map("created_at")
+  updatedAt         DateTime     @updatedAt @map("updated_at")
   deletedAt         DateTime?    @map("deleted_at")
+  deletedBy         String?      @map("deleted_by")
+
+  clientFiles        ClientFile[]
+  creditBalances     CustomerCreditBalance[]
+  creditTransactions CreditTransaction[]
+  creditApplications CreditApplication[]
 }
 
 // ==========================================
@@ -120,9 +274,22 @@ model Space {
   capacity         Int
   areaSqm          Decimal     @db.Decimal(10, 2)
   basePricePerHour Decimal     @db.Decimal(12, 4)
+  configB2b        Json        @map("config_b2b")
+  preciosPorDia    Json        @map("precios_por_dia")
+  diasBloqueados   Json        @map("dias_bloqueados")
+  impuestosIds     String[]    @map("impuestos_ids")
   status           SpaceStatus @default(AVAILABLE)
 
   occupancies SpaceOccupancy[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  spaceConfigurations    SpaceConfiguration[]
+  spaceRules             SpaceRule[]
+  spaceAvailabilityRules SpaceAvailabilityRule[]
 }
 
 enum OccupancyStatus {
@@ -147,32 +314,43 @@ model SpaceOccupancy {
   endTime             DateTime        @map("end_time")
   status              OccupancyStatus @default(HOLD)
   createdAt           DateTime        @default(now()) @map("created_at")
+  updatedAt           DateTime        @updatedAt @map("updated_at")
+  deletedAt           DateTime?       @map("deleted_at")
+  deletedBy           String?         @map("deleted_by")
 }
 
 // ==========================================
 // DOCUMENTS & COMMUNICATIONS DOMAIN
 // ==========================================
 model Document {
-  id                   String   @id @default(uuid())
-  tenantId             String   @map("tenant_id")
-  tenant               Tenant   @relation(fields: [tenantId], references: [id])
-  documentHash         String   @map("document_hash")
-  previousDocumentHash String?  @map("previous_document_hash")
-  chainHash            String   @unique @map("chain_hash")
-  legalHold            Boolean  @default(false) @map("legal_hold")
-  retentionUntil       DateTime? @map("retention_until")
-  createdAt            DateTime @default(now()) @map("created_at")
+  id             String    @id @default(uuid())
+  tenantId       String    @map("tenant_id")
+  tenant         Tenant    @relation(fields: [tenantId], references: [id])
+  currentHash    String    @map("current_hash")
+  previousHash   String?   @map("previous_hash")
+  chainHash      String    @unique @map("chain_hash")
+  legalHold      Boolean   @default(false) @map("legal_hold")
+  retentionUntil DateTime? @map("retention_until")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+  deletedBy      String?   @map("deleted_by")
+
+  @@unique([tenantId, previousHash])
 }
 
 model NotificationQueue {
-  id        String   @id @default(uuid())
-  tenantId  String   @map("tenant_id")
-  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
   type      String
   recipient String
   payload   Json
-  status    String   @default("PENDING")
-  createdAt DateTime @default(now()) @map("created_at")
+  status    String    @default("PENDING")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
 }
 
 // ==========================================
@@ -195,7 +373,14 @@ model Quote {
   occupancySnapshotId String      @map("occupancy_snapshot_id")
   currencyCode        String      @map("currency_code")
   totalAmount         Decimal     @map("total_amount") @db.Decimal(15, 4)
+  desglosePrecios     Json        @map("desglose_precios")
   status              QuoteStatus @default(DRAFT)
+  createdAt           DateTime    @default(now()) @map("created_at")
+  updatedAt           DateTime    @updatedAt @map("updated_at")
+  deletedAt           DateTime?   @map("deleted_at")
+  deletedBy           String?     @map("deleted_by")
+
+  quoteFiles QuoteFile[]
 }
 
 enum ContractStatus {
@@ -205,6 +390,8 @@ enum ContractStatus {
   ACTIVE
   EXPIRED
   TERMINATED
+  REJECTED
+  CANCELLED
 }
 
 model Contract {
@@ -216,6 +403,32 @@ model Contract {
   templateVersion String         @map("template_version")
   templateHash    String         @map("template_hash")
   status          ContractStatus @default(DRAFT)
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+  deletedAt       DateTime?      @map("deleted_at")
+  deletedBy       String?        @map("deleted_by")
+
+  signatures Signature[]
+
+  contractFiles ContractFile[]
+}
+
+model Signature {
+  id              String   @id @default(uuid())
+  tenantId        String   @map("tenant_id")
+  tenant          Tenant   @relation(fields: [tenantId], references: [id])
+  contractId      String   @map("contract_id")
+  contract        Contract @relation(fields: [contractId], references: [id])
+  participantName String   @map("participant_name")
+  participantRole String   @map("participant_role")
+  signatureHash   String   @map("signature_hash")
+  ipAddress       String?  @map("ip_address")
+  signedAt        DateTime @default(now()) @map("signed_at")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
 }
 
 // ==========================================
@@ -247,22 +460,652 @@ model Invoice {
   status             InvoiceStatus @default(DRAFT)
 
   payments Payment[]
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  financialFiles FinancialFile[]
 }
 
 enum PaymentStatus {
+  DRAFT
   PENDING
   UNDER_REVIEW
   APPROVED
   REJECTED
+  CANCELLED
+  REFUNDED
 }
 
 model Payment {
-  id            String        @id @default(uuid())
-  tenantId      String        @map("tenant_id")
-  tenant        Tenant        @relation(fields: [tenantId], references: [id])
-  invoiceId     String        @map("invoice_id")
-  invoice       Invoice       @relation(fields: [invoiceId], references: [id])
-  currencyCode  String        @map("currency_code")
-  paymentAmount Decimal       @map("payment_amount") @db.Decimal(15, 4)
-  status        PaymentStatus @default(PENDING)
+  id                 String        @id @default(uuid())
+  tenantId           String        @map("tenant_id")
+  tenant             Tenant        @relation(fields: [tenantId], references: [id])
+  invoiceId          String        @map("invoice_id")
+  invoice            Invoice       @relation(fields: [invoiceId], references: [id])
+  currencyCode       String        @map("currency_code")
+  paymentAmount      Decimal       @map("payment_amount") @db.Decimal(15, 4)
+  status             PaymentStatus @default(DRAFT)
+  invoiceSnapshotId  String?       @map("invoice_snapshot_id")
+  contractSnapshotId String?       @map("contract_snapshot_id")
+  clientSnapshotId   String?       @map("client_snapshot_id")
+  rejectionReason    String?       @map("rejection_reason")
+  createdAt          DateTime      @default(now()) @map("created_at")
+  updatedAt          DateTime      @updatedAt @map("updated_at")
+  deletedAt          DateTime?     @map("deleted_at")
+  deletedBy          String?       @map("deleted_by")
+
+  evidences PaymentEvidence[]
+}
+
+model PaymentEvidence {
+  id                   String   @id @default(uuid())
+  tenantId             String   @map("tenant_id")
+  tenant               Tenant   @relation(fields: [tenantId], references: [id])
+  paymentId            String   @map("payment_id")
+  payment              Payment  @relation(fields: [paymentId], references: [id])
+  url                  String
+  documentHash         String   @map("document_hash")
+  previousDocumentHash String?  @map("previous_document_hash")
+  chainHash            String   @unique @map("chain_hash")
+  createdAt            DateTime @default(now()) @map("created_at")
+}
+
+// ==========================================
+// ENTERPRISE FILE ENGINES
+// ==========================================
+model ClientFile {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  clientId  String    @map("client_id")
+  client    Client    @relation(fields: [clientId], references: [id])
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  documents ClientFileDocument[]
+}
+
+model ClientFileDocument {
+  id           String     @id @default(uuid())
+  tenantId     String     @map("tenant_id")
+  tenant       Tenant     @relation(fields: [tenantId], references: [id])
+  clientFileId String     @map("client_file_id")
+  clientFile   ClientFile @relation(fields: [clientFileId], references: [id])
+  url          String
+  documentType String     @map("document_type")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  deletedAt    DateTime?  @map("deleted_at")
+  deletedBy    String?    @map("deleted_by")
+}
+
+model QuoteFile {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  quoteId   String    @map("quote_id")
+  quote     Quote     @relation(fields: [quoteId], references: [id])
+  url       String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+}
+
+model ContractFile {
+  id         String    @id @default(uuid())
+  tenantId   String    @map("tenant_id")
+  tenant     Tenant    @relation(fields: [tenantId], references: [id])
+  contractId String    @map("contract_id")
+  contract   Contract  @relation(fields: [contractId], references: [id])
+  url        String
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  deletedBy  String?   @map("deleted_by")
+}
+
+model FinancialFile {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  invoiceId String    @map("invoice_id")
+  invoice   Invoice   @relation(fields: [invoiceId], references: [id])
+  url       String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+}
+
+model AgreementFile {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  agreementId String    @map("agreement_id")
+  agreement   Agreement @relation(fields: [agreementId], references: [id])
+  url         String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+}
+
+// ==========================================
+// AGREEMENT ENGINE
+// ==========================================
+model Agreement {
+  id            String    @id @default(uuid())
+  tenantId      String    @map("tenant_id")
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])
+  title         String
+  status        String
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+  deletedBy     String?   @map("deleted_by")
+  correlationId String?   @map("correlation_id")
+  traceId       String?   @map("trace_id")
+
+  versions   AgreementVersion[]
+  items      AgreementItem[]
+  approvals  AgreementApproval[]
+  signatures AgreementSignature[]
+  evidences  AgreementEvidence[]
+  snapshots  AgreementSnapshot[]
+  files      AgreementFile[]
+}
+
+model AgreementVersion {
+  id            String    @id @default(uuid())
+  tenantId      String    @map("tenant_id")
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])
+  agreementId   String    @map("agreement_id")
+  agreement     Agreement @relation(fields: [agreementId], references: [id])
+  versionNumber Int       @map("version_number")
+  contentHash   String    @map("content_hash")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+  deletedBy     String?   @map("deleted_by")
+}
+
+model AgreementItem {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  agreementId String    @map("agreement_id")
+  agreement   Agreement @relation(fields: [agreementId], references: [id])
+  description String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+}
+
+model AgreementApproval {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  agreementId String    @map("agreement_id")
+  agreement   Agreement @relation(fields: [agreementId], references: [id])
+  approverId  String    @map("approver_id")
+  status      String
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+}
+
+model AgreementSignature {
+  id            String    @id @default(uuid())
+  tenantId      String    @map("tenant_id")
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])
+  agreementId   String    @map("agreement_id")
+  agreement     Agreement @relation(fields: [agreementId], references: [id])
+  signerId      String    @map("signer_id")
+  signatureData String    @map("signature_data")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+  deletedBy     String?   @map("deleted_by")
+}
+
+model AgreementEvidence {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  agreementId String    @map("agreement_id")
+  agreement   Agreement @relation(fields: [agreementId], references: [id])
+  evidenceUrl String    @map("evidence_url")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+}
+
+model AgreementSnapshot {
+  id           String    @id @default(uuid())
+  tenantId     String    @map("tenant_id")
+  tenant       Tenant    @relation(fields: [tenantId], references: [id])
+  agreementId  String    @map("agreement_id")
+  agreement    Agreement @relation(fields: [agreementId], references: [id])
+  snapshotData Json      @map("snapshot_data")
+  createdAt    DateTime  @default(now()) @map("created_at")
+}
+
+// ==========================================
+// WORKFLOW & REVIEWS
+// ==========================================
+model DocumentReview {
+  id         String    @id @default(uuid())
+  tenantId   String    @map("tenant_id")
+  tenant     Tenant    @relation(fields: [tenantId], references: [id])
+  documentId String    @map("document_id")
+  status     String
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+  deletedAt  DateTime? @map("deleted_at")
+  deletedBy  String?   @map("deleted_by")
+
+  steps     DocumentReviewStep[]
+  decisions DocumentReviewDecision[]
+}
+
+model DocumentReviewStep {
+  id               String         @id @default(uuid())
+  tenantId         String         @map("tenant_id")
+  tenant           Tenant         @relation(fields: [tenantId], references: [id])
+  documentReviewId String         @map("document_review_id")
+  documentReview   DocumentReview @relation(fields: [documentReviewId], references: [id])
+  stepOrder        Int            @map("step_order")
+  status           String
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  deletedAt        DateTime?      @map("deleted_at")
+  deletedBy        String?        @map("deleted_by")
+}
+
+model DocumentReviewDecision {
+  id               String         @id @default(uuid())
+  tenantId         String         @map("tenant_id")
+  tenant           Tenant         @relation(fields: [tenantId], references: [id])
+  documentReviewId String         @map("document_review_id")
+  documentReview   DocumentReview @relation(fields: [documentReviewId], references: [id])
+  reviewerId       String         @map("reviewer_id")
+  decision         String
+  comments         String?
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  deletedAt        DateTime?      @map("deleted_at")
+  deletedBy        String?        @map("deleted_by")
+}
+
+// ==========================================
+// CUSTOMER CREDIT ENGINE
+// ==========================================
+model CustomerCreditBalance {
+  id            String    @id @default(uuid())
+  tenantId      String    @map("tenant_id")
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])
+  clientId      String    @map("client_id")
+  client        Client    @relation(fields: [clientId], references: [id])
+  balanceAmount Decimal   @map("balance_amount") @db.Decimal(15, 4)
+  currencyCode  String    @map("currency_code")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+  deletedBy     String?   @map("deleted_by")
+}
+
+model CreditTransaction {
+  id              String    @id @default(uuid())
+  tenantId        String    @map("tenant_id")
+  tenant          Tenant    @relation(fields: [tenantId], references: [id])
+  clientId        String    @map("client_id")
+  client          Client    @relation(fields: [clientId], references: [id])
+  amount          Decimal   @db.Decimal(15, 4)
+  transactionType String    @map("transaction_type")
+  correlationId   String?   @map("correlation_id")
+  traceId         String?   @map("trace_id")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+  deletedBy       String?   @map("deleted_by")
+}
+
+model CreditApplication {
+  id              String    @id @default(uuid())
+  tenantId        String    @map("tenant_id")
+  tenant          Tenant    @relation(fields: [tenantId], references: [id])
+  clientId        String    @map("client_id")
+  client          Client    @relation(fields: [clientId], references: [id])
+  requestedAmount Decimal   @map("requested_amount") @db.Decimal(15, 4)
+  status          String
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+  deletedAt       DateTime? @map("deleted_at")
+  deletedBy       String?   @map("deleted_by")
+}
+
+// ==========================================
+// CATALOG ENGINE V5
+// ==========================================
+model CatalogCategory {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  name        String
+  description String?
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+
+  items CatalogItem[]
+}
+
+model CatalogItem {
+  id                     String          @id @default(uuid())
+  tenantId               String          @map("tenant_id")
+  tenant                 Tenant          @relation(fields: [tenantId], references: [id])
+  categoryId             String          @map("category_id")
+  category               CatalogCategory @relation(fields: [categoryId], references: [id])
+  name                   String
+  description            String?
+  spaceCode              String?         @map("space_code")
+  locationPlanDocumentId String?         @map("location_plan_document_id")
+  createdAt              DateTime        @default(now()) @map("created_at")
+  updatedAt              DateTime        @updatedAt @map("updated_at")
+  deletedAt              DateTime?       @map("deleted_at")
+  deletedBy              String?         @map("deleted_by")
+
+  prices CatalogPrice[]
+}
+
+model CatalogPrice {
+  id            String      @id @default(uuid())
+  tenantId      String      @map("tenant_id")
+  tenant        Tenant      @relation(fields: [tenantId], references: [id])
+  catalogItemId String      @map("catalog_item_id")
+  catalogItem   CatalogItem @relation(fields: [catalogItemId], references: [id])
+  amount        Decimal     @db.Decimal(15, 4)
+  currencyCode  String      @map("currency_code")
+  validFrom     DateTime    @map("valid_from")
+  validTo       DateTime?   @map("valid_to")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+  deletedAt     DateTime?   @map("deleted_at")
+  deletedBy     String?     @map("deleted_by")
+}
+
+model CatalogVersion {
+  id            String    @id @default(uuid())
+  tenantId      String    @map("tenant_id")
+  tenant        Tenant    @relation(fields: [tenantId], references: [id])
+  version       String
+  effectiveDate DateTime  @map("effective_date")
+  createdAt     DateTime  @default(now()) @map("created_at")
+  updatedAt     DateTime  @updatedAt @map("updated_at")
+  deletedAt     DateTime? @map("deleted_at")
+  deletedBy     String?   @map("deleted_by")
+}
+
+model CatalogSnapshot {
+  id           String   @id @default(uuid())
+  tenantId     String   @map("tenant_id")
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
+  snapshotData Json     @map("snapshot_data")
+  createdAt    DateTime @default(now()) @map("created_at")
+}
+
+// ==========================================
+// TEMPLATE ENGINE V3
+// ==========================================
+model ContractTemplate {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  name      String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  versions ContractTemplateVersion[]
+}
+
+model ContractTemplateVersion {
+  id                 String           @id @default(uuid())
+  tenantId           String           @map("tenant_id")
+  tenant             Tenant           @relation(fields: [tenantId], references: [id])
+  contractTemplateId String           @map("contract_template_id")
+  contractTemplate   ContractTemplate @relation(fields: [contractTemplateId], references: [id])
+  version            String
+  content            String
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+  deletedAt          DateTime?        @map("deleted_at")
+  deletedBy          String?          @map("deleted_by")
+}
+
+model ContractClause {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  title     String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  versions ClauseVersion[]
+}
+
+model ClauseVersion {
+  id               String         @id @default(uuid())
+  tenantId         String         @map("tenant_id")
+  tenant           Tenant         @relation(fields: [tenantId], references: [id])
+  contractClauseId String         @map("contract_clause_id")
+  contractClause   ContractClause @relation(fields: [contractClauseId], references: [id])
+  content          String
+  version          String
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+  deletedAt        DateTime?      @map("deleted_at")
+  deletedBy        String?        @map("deleted_by")
+}
+
+model TemplateVariable {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  name        String
+  mappedField String    @map("mapped_field")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+}
+
+model QuoteTemplate {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  name      String
+  content   String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+}
+
+model InvoiceTemplate {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  name      String
+  content   String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+}
+
+model ReceiptTemplate {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  name      String
+  content   String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+}
+
+model RegulationTemplate {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  name      String
+  content   String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+}
+
+// ==========================================
+// REGULATION ENGINE
+// ==========================================
+model Regulation {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  title     String
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+
+  versions    RegulationVersion[]
+  acceptances RegulationAcceptance[]
+}
+
+model RegulationVersion {
+  id           String     @id @default(uuid())
+  tenantId     String     @map("tenant_id")
+  tenant       Tenant     @relation(fields: [tenantId], references: [id])
+  regulationId String     @map("regulation_id")
+  regulation   Regulation @relation(fields: [regulationId], references: [id])
+  version      String
+  content      String
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  deletedAt    DateTime?  @map("deleted_at")
+  deletedBy    String?    @map("deleted_by")
+}
+
+model RegulationAcceptance {
+  id           String     @id @default(uuid())
+  tenantId     String     @map("tenant_id")
+  tenant       Tenant     @relation(fields: [tenantId], references: [id])
+  regulationId String     @map("regulation_id")
+  regulation   Regulation @relation(fields: [regulationId], references: [id])
+  acceptedBy   String     @map("accepted_by")
+  ipAddress    String     @map("ip_address")
+  userAgent    String?    @map("user_agent")
+  acceptedAt   DateTime   @default(now()) @map("accepted_at")
+  version      String
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  deletedAt    DateTime?  @map("deleted_at")
+  deletedBy    String?    @map("deleted_by")
+}
+
+// ==========================================
+// CALENDAR & SPACES
+// ==========================================
+model CalendarEvent {
+  id        String    @id @default(uuid())
+  tenantId  String    @map("tenant_id")
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
+  title     String
+  startTime DateTime  @map("start_time")
+  endTime   DateTime  @map("end_time")
+  spaceId   String?   @map("space_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+  deletedBy String?   @map("deleted_by")
+}
+
+model SpaceConfiguration {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  spaceId     String    @map("space_id")
+  space       Space     @relation(fields: [spaceId], references: [id])
+  configKey   String    @map("config_key")
+  configValue Json      @map("config_value")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+}
+
+model SpaceRule {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  spaceId     String    @map("space_id")
+  space       Space     @relation(fields: [spaceId], references: [id])
+  ruleType    String    @map("rule_type")
+  ruleDetails Json      @map("rule_details")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+}
+
+model SpaceAvailabilityRule {
+  id          String    @id @default(uuid())
+  tenantId    String    @map("tenant_id")
+  tenant      Tenant    @relation(fields: [tenantId], references: [id])
+  spaceId     String    @map("space_id")
+  space       Space     @relation(fields: [spaceId], references: [id])
+  dayOfWeek   Int?      @map("day_of_week")
+  isAvailable Boolean   @map("is_available")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  deletedAt   DateTime? @map("deleted_at")
+  deletedBy   String?   @map("deleted_by")
+}
+
+// ==========================================
+// SIGNATURE ENGINE V2
+// ==========================================
+model SignatureEvidence {
+  id             String    @id @default(uuid())
+  tenantId       String    @map("tenant_id")
+  tenant         Tenant    @relation(fields: [tenantId], references: [id])
+  ipAddress      String    @map("ip_address")
+  timestamp      DateTime  @default(now())
+  userAgent      String?   @map("user_agent")
+  deviceMetadata Json?     @map("device_metadata")
+  email          String
+  auditHash      String    @map("audit_hash")
+  signatureHash  String    @map("signature_hash")
+  documentHash   String    @map("document_hash")
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+  deletedBy      String?   @map("deleted_by")
 }

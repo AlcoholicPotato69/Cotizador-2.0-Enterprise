@@ -1,40 +1,62 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, BadRequestException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { Prisma, InvoiceStatus } from '@prisma/client';
+import { InvoicesRepository } from './invoices.repository';
+
+import { DomainEventPublisher } from '../common/events/domain-event-publisher';
+import { FsmValidator } from '../common/fsm.validator';
+import { InvoiceStatus, ContractStatus } from '@prisma/client';
+import { tenantContext } from '../prisma/tenant-context';
+import { Prisma } from '@prisma/client';
+
+export interface GenerateInvoiceDto {
+  contractId: string;
+  totalAmount: Prisma.Decimal;
+}
 
 @Injectable()
 export class InvoicesService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly invoicesRepo: InvoicesRepository,
+    private readonly eventPublisher: DomainEventPublisher,
+    private readonly fsmValidator: FsmValidator
+  ) {}
 
-  async create(tenantId: string, data: Omit<Prisma.InvoiceCreateInput, 'tenant' | 'tenantId' | 'status'>) {
-    return this.prisma.invoice.create({
-      data: {
-        ...data,
+  async generateInvoice(dto: GenerateInvoiceDto & { currencyCode: string }): Promise<string> {
+    const ctx = tenantContext.getStore();
+    if (!ctx || !ctx.tenantId) throw new ConflictException('Tenant context required');
+
+    return await this.prisma.$transaction(async (tx: Prisma.TransactionClient) => {
+      // Set Postgres variables for RLS / Audit if any
+      await tx.$executeRaw`
+        SELECT 
+          set_config('app.current_tenant_id', ${ctx.tenantId}, TRUE),
+          set_config('app.current_user_id', ${ctx.userId || ''}, TRUE),
+          set_config('app.current_role', ${ctx.role || ''}, TRUE)
+      `;
+
+      // Create invoice
+      const invoice = await this.invoicesRepo.create(tx, {
+        tenantId: ctx.tenantId,
+        contractSnapshotId: dto.contractId, // using contract id as snapshot ref
+        currencyCode: dto.currencyCode,
+        totalAmount: dto.totalAmount,
+        amountPaid: new Prisma.Decimal(0),
+        balanceDue: dto.totalAmount,
+        paymentStatus: 'UNPAID',
         status: InvoiceStatus.DRAFT,
-        tenant: { connect: { id: tenantId } },
-      },
-    });
-  }
+      });
 
-  async findOne(tenantId: string, id: string) {
-    const invoice = await this.prisma.invoice.findFirst({
-      where: { id, tenantId },
-    });
-    if (!invoice) throw new NotFoundException('Invoice not found');
-    return invoice;
-  }
+      // 3. Emit domain event
+      await this.eventPublisher.publish({
+        eventName: 'invoice.generated',
+        tenantId: ctx.tenantId,
+        payload: { invoiceId: invoice.id, contractId: dto.contractId, totalAmount: dto.totalAmount },
+        timestamp: new Date()
+      });
 
-  async findAll(tenantId: string) {
-    return this.prisma.invoice.findMany({
-      where: { tenantId },
-    });
-  }
-
-  async updateStatus(tenantId: string, id: string, status: InvoiceStatus) {
-    await this.findOne(tenantId, id);
-    return this.prisma.invoice.update({
-      where: { id },
-      data: { status },
+      return invoice.id;
     });
   }
 }
+

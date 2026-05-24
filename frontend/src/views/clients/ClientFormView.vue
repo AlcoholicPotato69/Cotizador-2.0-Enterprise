@@ -46,9 +46,11 @@ import DsFormField from '../../components/ui/DsFormField.vue';
 import DsInput from '../../components/ui/DsInput.vue';
 import DsSelect from '../../components/ui/DsSelect.vue';
 import DsButton from '../../components/ui/DsButton.vue';
+import { useNotificationStore } from '../../stores/notificationStore';
 
 const router = useRouter();
 const clientStore = useClientStore();
+const notificationStore = useNotificationStore();
 
 const type = ref('moral');
 const rfc = ref('');
@@ -69,7 +71,11 @@ async function handleSave() {
     });
     router.push('/clients');
   } catch (err) {
-    alert("Error al guardar cliente");
+    notificationStore.addNotification({
+      type: 'error',
+      message: 'Error al guardar cliente',
+      domainEvent: 'CLIENT_SAVE_FAILED'
+    });
   } finally {
     isSaving.value = false;
   }
