@@ -1,12 +1,13 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { tenantService } from '../services/tenantService';
+import { tenantService, type Tenant } from '../services/tenantService';
+import type { User } from '../types/user';
 
 export const useTenantStore = defineStore('tenant', () => {
-    const activeTenant = ref<any>(null); // Real Tenant data
-    const activeTenantSlug = ref<'pm' | 'cp' | null>(null);
+    const activeTenant = ref<Tenant | null>(null);
+    const activeTenantSlug = ref<'plaza-mayor' | 'casa-piedra' | null>(null);
 
-    async function syncWithUser(user: any) {
+    async function syncWithUser(user: User | null) {
         if (!user || !user.tenant_id) {
             clearTenant();
             return;
@@ -14,19 +15,15 @@ export const useTenantStore = defineStore('tenant', () => {
         const tenant = await tenantService.getTenantById(user.tenant_id);
         if (tenant) {
             activeTenant.value = tenant;
-            // Map tenant.name to slug logic or if tenant.slug exists
-            activeTenantSlug.value = tenant.name.toLowerCase().includes('plaza') ? 'pm' : 'cp';
-            
-            // Set body class for Theme Engine
-            document.body.classList.remove('tenant-pm', 'tenant-cp');
-            document.body.classList.add(`tenant-${activeTenantSlug.value}`);
+            activeTenantSlug.value = tenant.name.toLowerCase().includes('plaza') ? 'plaza-mayor' : 'casa-piedra';
+            document.documentElement.setAttribute('data-tenant', activeTenantSlug.value);
         }
     }
 
     function clearTenant() {
         activeTenant.value = null;
         activeTenantSlug.value = null;
-        document.body.classList.remove('tenant-pm', 'tenant-cp');
+        document.documentElement.removeAttribute('data-tenant');
     }
 
     return { activeTenant, activeTenantSlug, syncWithUser, clearTenant };

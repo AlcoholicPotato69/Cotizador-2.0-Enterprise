@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class ComplianceEngineService {
   async canCreateContract(clientSnapshotId: string): Promise<boolean> {
     // Validates against BLACKLISTED and isContractBlocked
-    return true; 
+    return true;
   }
 
   async canGenerateInvoice(contractSnapshotId: string): Promise<boolean> {

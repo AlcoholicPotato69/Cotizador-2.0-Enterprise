@@ -7,7 +7,9 @@ export class ExpirationEngineService {
 
   // El tx inyectado es delegado por el SchedulerWorker (aislado del HTTP)
   async scanExpirations(tx: Prisma.TransactionClient) {
-    this.logger.log('Escaneando expiraciones de documentos y configs fiscales...');
+    this.logger.log(
+      'Escaneando expiraciones de documentos y configs fiscales...',
+    );
 
     const now = new Date();
     const thirtyDaysFromNow = new Date();
@@ -23,11 +25,13 @@ export class ExpirationEngineService {
       },
     });
 
-    this.logger.log(`Found ${expiringDocuments.length} documents expiring soon.`);
+    this.logger.log(
+      `Found ${expiringDocuments.length} documents expiring soon.`,
+    );
 
-    for (const doc of expiringDocuments) {
-      await tx.notificationQueue.create({
-        data: {
+    if (expiringDocuments.length > 0) {
+      await tx.notificationQueue.createMany({
+        data: expiringDocuments.map((doc) => ({
           tenantId: doc.tenantId,
           type: 'DOCUMENT_EXPIRATION_WARNING',
           recipient: 'TENANT_ADMIN',
@@ -37,7 +41,7 @@ export class ExpirationEngineService {
             message: `Document ${doc.id} retention period will expire soon.`,
           },
           status: 'PENDING',
-        },
+        })),
       });
     }
 
@@ -51,11 +55,13 @@ export class ExpirationEngineService {
       },
     });
 
-    this.logger.log(`Found ${expiringTaxes.length} tax configurations expiring soon.`);
+    this.logger.log(
+      `Found ${expiringTaxes.length} tax configurations expiring soon.`,
+    );
 
-    for (const tax of expiringTaxes) {
-      await tx.notificationQueue.create({
-        data: {
+    if (expiringTaxes.length > 0) {
+      await tx.notificationQueue.createMany({
+        data: expiringTaxes.map((tax) => ({
           tenantId: tax.tenantId,
           type: 'TAX_CONFIG_EXPIRATION_WARNING',
           recipient: 'FINANCE_MANAGER',
@@ -66,7 +72,7 @@ export class ExpirationEngineService {
             message: `Tax configuration ${tax.taxName} validity will expire soon.`,
           },
           status: 'PENDING',
-        },
+        })),
       });
     }
 

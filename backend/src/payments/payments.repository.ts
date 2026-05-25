@@ -6,11 +6,18 @@ import { Prisma, Payment } from '@prisma/client';
 export class PaymentsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(tx: Prisma.TransactionClient, data: Prisma.PaymentUncheckedCreateInput): Promise<Payment> {
-    return tx.payment.create({ data }) as any;
+  async create(
+    tx: Prisma.TransactionClient,
+    data: Prisma.PaymentUncheckedCreateInput,
+  ): Promise<Payment> {
+    return tx.payment.create({ data });
   }
 
-  async findByIdForUpdate(tx: Prisma.TransactionClient, tenantId: string, id: string): Promise<Payment> {
+  async findByIdForUpdate(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    id: string,
+  ): Promise<Payment> {
     const result = await tx.$queryRaw<Payment[]>`
       SELECT * FROM "Payment"
       WHERE id = ${id}::uuid
@@ -23,16 +30,26 @@ export class PaymentsRepository {
     return result[0];
   }
 
-  async findById(tx: Prisma.TransactionClient, tenantId: string, id: string): Promise<Payment | null> {
+  async findById(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    id: string,
+  ): Promise<Payment | null> {
     return tx.payment.findFirst({
-      where: { id, tenantId } as any
-    }) as any;
+      where: { id, tenantId },
+    });
   }
 
-  async update(tx: Prisma.TransactionClient, tenantId: string, id: string, data: Prisma.PaymentUpdateInput): Promise<Payment> {
-    return tx.payment.update({
-      where: { id, tenantId } as any,
+  async update(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+    id: string,
+    data: Prisma.PaymentUpdateInput,
+  ): Promise<Payment> {
+    await tx.payment.updateMany({
+      where: { id, tenantId },
       data,
-    }) as any;
+    });
+    return this.findById(tx, tenantId, id) as Promise<Payment>;
   }
 }

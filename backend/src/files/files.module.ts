@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { EventEmitterModule } from '@nestjs/event-emitter';
 
 // Client File Engine
 import { ClientFileRepository } from './client-file/client-file.repository';
@@ -16,6 +15,11 @@ import { ContractFileRepository } from './contract-file/contract-file.repository
 import { ContractFileService } from './contract-file/contract-file.service';
 import { ContractFileController } from './contract-file/contract-file.controller';
 
+// Agreement File Engine
+import { AgreementFileRepository } from './agreement-file/agreement-file.repository';
+import { AgreementFileService } from './agreement-file/agreement-file.service';
+import { AgreementFileController } from './agreement-file/agreement-file.controller';
+
 // Financial File Engine
 import { FinancialFileRepository } from './financial-file/financial-file.repository';
 import { FinancialFileService } from './financial-file/financial-file.service';
@@ -26,13 +30,12 @@ import { DocumentViewerService } from './document-viewer/document-viewer.service
 import { DocumentViewerController } from './document-viewer/document-viewer.controller';
 
 @Module({
-  imports: [
-    EventEmitterModule.forRoot(), // Note: Make sure it's available globally as requested by prompt
-  ],
+  imports: [],
   controllers: [
     ClientFileController,
     QuoteFileController,
     ContractFileController,
+    AgreementFileController,
     FinancialFileController,
     DocumentViewerController,
   ],
@@ -43,6 +46,8 @@ import { DocumentViewerController } from './document-viewer/document-viewer.cont
     QuoteFileService,
     ContractFileRepository,
     ContractFileService,
+    AgreementFileRepository,
+    AgreementFileService,
     FinancialFileRepository,
     FinancialFileService,
     DocumentViewerService,
@@ -51,6 +56,7 @@ import { DocumentViewerController } from './document-viewer/document-viewer.cont
     ClientFileService,
     QuoteFileService,
     ContractFileService,
+    AgreementFileService,
     FinancialFileService,
     DocumentViewerService,
   ],

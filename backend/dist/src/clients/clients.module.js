@@ -9,7 +9,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ClientsModule = void 0;
 const common_1 = require("@nestjs/common");
 const eligibility_service_1 = require("./eligibility.service");
+const compliance_service_1 = require("./compliance.service");
 const clients_repository_1 = require("./clients.repository");
+const clients_controller_1 = require("./clients.controller");
+const clients_service_1 = require("./clients.service");
 const prisma_module_1 = require("../prisma/prisma.module");
 let ClientsModule = class ClientsModule {
 };
@@ -17,8 +20,19 @@ exports.ClientsModule = ClientsModule;
 exports.ClientsModule = ClientsModule = __decorate([
     (0, common_1.Module)({
         imports: [prisma_module_1.PrismaModule],
-        providers: [clients_repository_1.ClientsRepository, eligibility_service_1.EligibilityEngineService],
-        exports: [clients_repository_1.ClientsRepository, eligibility_service_1.EligibilityEngineService],
+        controllers: [clients_controller_1.ClientsController],
+        providers: [
+            clients_repository_1.ClientsRepository,
+            clients_service_1.ClientsService,
+            eligibility_service_1.EligibilityEngineService,
+            compliance_service_1.ComplianceService,
+        ],
+        exports: [
+            clients_repository_1.ClientsRepository,
+            clients_service_1.ClientsService,
+            eligibility_service_1.EligibilityEngineService,
+            compliance_service_1.ComplianceService,
+        ],
     })
 ], ClientsModule);
 //# sourceMappingURL=clients.module.js.map

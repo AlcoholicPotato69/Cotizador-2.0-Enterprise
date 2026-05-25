@@ -7,10 +7,11 @@ export interface Document {
 
 @Injectable()
 export class DocumentPolicyService {
-  
   canDelete(document: Document): boolean {
     if (document.legalHold) {
-      throw new ForbiddenException('POLICY_ERROR: El documento está sujeto a Retención Legal (Legal Hold). Borrado lógico y físico bloqueado.');
+      throw new ForbiddenException(
+        'POLICY_ERROR: El documento está sujeto a Retención Legal (Legal Hold). Borrado lógico y físico bloqueado.',
+      );
     }
     return true;
   }
@@ -23,11 +24,13 @@ export class DocumentPolicyService {
   canPurge(document: Document): boolean {
     // Para destrucción definitiva
     this.canDelete(document); // Valida Legal Hold primero
-    
+
     if (document.retentionUntil && new Date() < document.retentionUntil) {
-      throw new ForbiddenException(`POLICY_ERROR: Periodo de retención legal activo hasta ${document.retentionUntil.toISOString()}`);
+      throw new ForbiddenException(
+        `POLICY_ERROR: Periodo de retención legal activo hasta ${document.retentionUntil.toISOString()}`,
+      );
     }
-    
+
     return true;
   }
 }

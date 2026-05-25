@@ -7,6 +7,7 @@ describe('Financial Reconciliation Engine (e2e)', () => {
   let app: INestApplication;
 
   beforeAll(async () => {
+    process.env.DOCUMENT_SIGNING_SECRET = 'test-secret';
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();

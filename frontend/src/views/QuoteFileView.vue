@@ -172,15 +172,15 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { pb } from '../services/pb';
-import { useTenantStore } from '../stores/tenant';
-import { http } from '../api/http';
+// import { useTenantStore } from '../stores/tenant';
+// import { http } from '../api/http';
 import { useNotificationStore } from '../stores/notificationStore';
 
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 
 const route = useRoute();
-const tenantStore = useTenantStore();
+// const tenantStore = useTenantStore();
 const notificationStore = useNotificationStore();
 
 const quote = ref<any>(null);
@@ -199,7 +199,7 @@ onMounted(async () => {
   const id = route.params.id as string;
   try {
     // 1. Fetch Quote
-    quote.value = await pb.collection('cotizaciones').getOne(id);
+    quote.value = await (pb.collection('cotizaciones') as any).getOne(id);
 
     // 2. Build Timeline
     operationalTimeline.value.push({

@@ -80,8 +80,8 @@ onMounted(async () => {
 });
 
 const getClientName = (id: string) => {
-  const c = clientStore.clients.find((x: any) => x.id === id);
-  return c ? c.razon_social : 'Desconocido';
+  const client = clientStore.clients.find((x: any) => x.id === id);
+  return client ? client.name : 'Desconocido';
 };
 
 const getStatusClass = (status: string) => {

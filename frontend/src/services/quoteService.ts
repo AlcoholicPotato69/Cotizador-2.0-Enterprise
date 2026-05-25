@@ -1,4 +1,5 @@
 import { http } from '../api/http';
+import type { QueryParams, PaginatedResponse } from './types';
 
 export interface Quote {
     id?: string;
@@ -28,22 +29,22 @@ export interface QuoteItem {
 }
 
 export const quoteService = {
-    async getQuotes() {
-        const res = await http.get('/quotes');
+    async getQuotes(params?: QueryParams): Promise<PaginatedResponse<Quote>> {
+        const res = await http.get('/quotes', { params });
         return res.data;
     },
 
-    async getQuoteById(id: string) {
+    async getQuoteById(id: string): Promise<Quote> {
         const res = await http.get(`/quotes/${id}`);
         return res.data;
     },
 
-    async createQuote(quote: Partial<Quote>) {
+    async createQuote(quote: Partial<Quote>): Promise<Quote> {
         const res = await http.post('/quotes', quote);
         return res.data;
     },
 
-    async updateQuote(id: string, updates: Partial<Quote>, bumpVersion: boolean = false, changeNotes: string = "") {
+    async updateQuote(id: string, updates: Partial<Quote>, bumpVersion: boolean = false, changeNotes: string = ""): Promise<Quote> {
         const headers: Record<string, string> = {};
         if (bumpVersion) {
             headers['X-Bump-Version'] = 'true';
@@ -53,12 +54,12 @@ export const quoteService = {
         return res.data;
     },
 
-    async getQuoteItems(quoteId: string) {
+    async getQuoteItems(quoteId: string): Promise<QuoteItem[]> {
         const res = await http.get(`/quotes/${quoteId}/items`);
         return res.data;
     },
 
-    async saveQuoteItem(item: Partial<QuoteItem>) {
+    async saveQuoteItem(item: Partial<QuoteItem>): Promise<QuoteItem> {
         if (item.id) {
             const res = await http.patch(`/quotes/${item.quote_id}/items/${item.id}`, item);
             return res.data;
@@ -68,24 +69,24 @@ export const quoteService = {
         }
     },
 
-    async deleteQuoteItem(itemId: string, quoteId?: string) {
+    async deleteQuoteItem(itemId: string, quoteId?: string): Promise<any> {
         // Assume backend requires quoteId to access items, we pass it or the URL is flattened
         const url = quoteId ? `/quotes/${quoteId}/items/${itemId}` : `/quote-items/${itemId}`;
         const res = await http.delete(url);
         return res.data;
     },
 
-    async getQuoteVersions(quoteId: string) {
-        const res = await http.get(`/quotes/${quoteId}/versions`);
+    async getQuoteVersions(quoteId: string, params?: QueryParams): Promise<any[]> {
+        const res = await http.get(`/quotes/${quoteId}/versions`, { params });
         return res.data;
     },
 
-    async getQuoteHistory(quoteId: string) {
-        const res = await http.get(`/quotes/${quoteId}/history`);
+    async getQuoteHistory(quoteId: string, params?: QueryParams): Promise<any[]> {
+        const res = await http.get(`/quotes/${quoteId}/history`, { params });
         return res.data;
     },
 
-    async transitionStatus(quoteId: string, newStatus: string, reason: string = "") {
+    async transitionStatus(quoteId: string, newStatus: string, reason: string = ""): Promise<Quote> {
         const res = await http.post(`/quotes/${quoteId}/transition`, { newStatus, reason });
         return res.data;
     }

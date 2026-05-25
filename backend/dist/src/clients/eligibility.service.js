@@ -34,12 +34,14 @@ let EligibilityEngineService = class EligibilityEngineService {
         }
         const client = await this.clientsRepo.findFirst({
             id: clientId,
-            tenantId: tenantId
+            tenantId: tenantId,
         });
         if (!client) {
             throw new common_1.NotFoundException(`Client ${clientId} not found in current tenant`);
         }
-        if (client.status === client_1.ClientStatus.INACTIVE || client.status === client_1.ClientStatus.ARCHIVED || client.status === client_1.ClientStatus.BLACKLISTED) {
+        if (client.status === client_1.ClientStatus.INACTIVE ||
+            client.status === client_1.ClientStatus.ARCHIVED ||
+            client.status === client_1.ClientStatus.BLACKLISTED) {
             throw new common_1.ForbiddenException(`Client ${clientId} is in a non-eligible status: ${client.status}`);
         }
         switch (transactionType) {

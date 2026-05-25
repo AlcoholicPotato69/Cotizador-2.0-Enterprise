@@ -218,7 +218,7 @@ const saveRule = async () => {
       // 3. Auditoría obligatoria
       await pb.collection('admin_audit_log').create({
          tenant: tenantStore.activeTenantId,
-         user: pb.authStore.model?.id,
+         user: (pb as any).authStore?.model?.id || 'system',
          action: 'RULE_VERSION_UPDATE',
          entity_type: 'rule_registry',
          entity_id: saved.id,
@@ -235,7 +235,7 @@ const saveRule = async () => {
       
       await pb.collection('admin_audit_log').create({
          tenant: tenantStore.activeTenantId,
-         user: pb.authStore.model?.id,
+         user: (pb as any).authStore?.model?.id || 'system',
          action: 'RULE_CREATE',
          entity_type: 'rule_registry',
          entity_id: saved.id,

@@ -8,14 +8,16 @@ export class SnapshotsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Prisma.SnapshotCreateInput): Promise<Snapshot> {
-    return this.prisma.snapshot.create({ data }) as any;
+    return this.prisma.snapshot.create({ data });
   }
 
-  async findLatestByType(entityType: string, tenantId: string): Promise<Snapshot | null> {
+  async findLatestByType(
+    entityType: string,
+    tenantId: string,
+  ): Promise<Snapshot | null> {
     return this.prisma.snapshot.findFirst({
-      where: { entityType, tenantId } as any,
-      orderBy: { createdAt: 'desc' } as any,
-    }) as any;
+      where: { entityType, tenantId },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 }
-

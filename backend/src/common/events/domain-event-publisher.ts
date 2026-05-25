@@ -13,7 +13,7 @@ export interface DomainEvent {
 export class DomainEventPublisher {
   constructor(
     private readonly eventEmitter: EventEmitter2,
-    private readonly auditService: AuditService
+    private readonly auditService: AuditService,
   ) {}
 
   async publish(event: DomainEvent) {
@@ -21,7 +21,7 @@ export class DomainEventPublisher {
     await this.auditService.logEvent({
       tenantId: event.tenantId,
       action: event.eventName,
-      payload: event.payload
+      payload: event.payload,
     });
 
     // 2. Publish to the event bus

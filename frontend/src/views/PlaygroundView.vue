@@ -11,7 +11,7 @@
         Toggle Mode ({{ themeStore.mode }})
       </DsButton>
       <DsButton @click="toggleTenant" variant="outline">
-        Switch Tenant ({{ tenantStore.activeTenant === 'pm' ? 'Plaza Mayor' : 'Casa de Piedra' }})
+        Switch Tenant ({{ tenantStore.activeTenant?.id === 'pm' ? 'Plaza Mayor' : 'Casa de Piedra' }})
       </DsButton>
     </section>
 
@@ -110,6 +110,6 @@ const showConfirm = ref(false);
 const showWorkspace = ref(false);
 
 function toggleTenant() {
-  console.log("Tenant switching disabled in secure mode.");
+  // Tenant switching disabled in secure mode.
 }
 </script>

@@ -93,7 +93,7 @@
 import { ref, computed } from 'vue';
 import Button from 'primevue/button';
 import Tag from 'primevue/tag';
-import { http } from '../api/http';
+// import { http } from '../api/http';
 import { useNotificationStore } from '../stores/notificationStore';
 
 const notificationStore = useNotificationStore();
@@ -120,7 +120,7 @@ const isValidJSON = computed(() => {
 
 const runSimulation = async () => {
   try {
-    const context = JSON.parse(contextJSON.value);
+    JSON.parse(contextJSON.value);
     
     // Fetch rules from DB based on type
     // Fetch rules metadata for the UI (Optional)

@@ -1,0 +1,87 @@
+import { AgendaService } from './agenda.service';
+import { CreateReservationDto } from './dto/create-reservation.dto';
+import { RescheduleReservationDto } from './dto/reschedule-reservation.dto';
+export declare class AgendaController {
+    private readonly agendaService;
+    constructor(agendaService: AgendaService);
+    reserve(createReservationDto: CreateReservationDto, req: any): Promise<{
+        id: string;
+        tenantId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        deletedBy: string | null;
+        status: import(".prisma/client").$Enums.OccupancyStatus;
+        correlationId: string | null;
+        traceId: string | null;
+        spaceId: string;
+        occupancySourceType: string;
+        occupancySourceId: string;
+        startTime: Date;
+        endTime: Date;
+    }>;
+    reschedule(id: string, rescheduleDto: RescheduleReservationDto, req: any): Promise<{
+        id: string;
+        tenantId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        deletedBy: string | null;
+        status: import(".prisma/client").$Enums.OccupancyStatus;
+        correlationId: string | null;
+        traceId: string | null;
+        spaceId: string;
+        occupancySourceType: string;
+        occupancySourceId: string;
+        startTime: Date;
+        endTime: Date;
+    }>;
+    release(id: string, req: any): Promise<{
+        id: string;
+        tenantId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        deletedBy: string | null;
+        status: import(".prisma/client").$Enums.OccupancyStatus;
+        correlationId: string | null;
+        traceId: string | null;
+        spaceId: string;
+        occupancySourceType: string;
+        occupancySourceId: string;
+        startTime: Date;
+        endTime: Date;
+    }>;
+    cancel(id: string, req: any): Promise<{
+        id: string;
+        tenantId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        deletedBy: string | null;
+        status: import(".prisma/client").$Enums.OccupancyStatus;
+        correlationId: string | null;
+        traceId: string | null;
+        spaceId: string;
+        occupancySourceType: string;
+        occupancySourceId: string;
+        startTime: Date;
+        endTime: Date;
+    }>;
+    expire(id: string, req: any): Promise<{
+        id: string;
+        tenantId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        deletedBy: string | null;
+        status: import(".prisma/client").$Enums.OccupancyStatus;
+        correlationId: string | null;
+        traceId: string | null;
+        spaceId: string;
+        occupancySourceType: string;
+        occupancySourceId: string;
+        startTime: Date;
+        endTime: Date;
+    }>;
+}

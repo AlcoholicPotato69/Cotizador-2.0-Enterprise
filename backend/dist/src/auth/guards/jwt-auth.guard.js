@@ -12,28 +12,44 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.JwtAuthGuard = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const core_1 = require("@nestjs/core");
+const public_decorator_1 = require("../decorators/public.decorator");
 let JwtAuthGuard = class JwtAuthGuard {
     jwtService;
-    constructor(jwtService) {
+    reflector;
+    constructor(jwtService, reflector) {
         this.jwtService = jwtService;
+        this.reflector = reflector;
     }
     async canActivate(context) {
+        const isPublic = this.reflector.getAllAndOverride(public_decorator_1.IS_PUBLIC_KEY, [
+            context.getHandler(),
+            context.getClass(),
+        ]);
+        if (isPublic) {
+            return true;
+        }
         const request = context.switchToHttp().getRequest();
         const token = this.extractTokenFromHeader(request);
         if (!token) {
             throw new common_1.UnauthorizedException('Token not found');
         }
         try {
+            const secret = process.env.JWT_SECRET;
+            if (!secret)
+                throw new Error('JWT_SECRET is not configured');
             const payload = await this.jwtService.verifyAsync(token, {
-                secret: process.env.JWT_SECRET || 'super-secret',
+                secret,
             });
-            request['user'] = {
-                id: payload.sub,
-                tenantId: payload.tenantId,
-                role: payload.role,
-                email: payload.email,
-                permissions: payload.permissions || [],
-            };
+            Object.assign(request, {
+                user: {
+                    id: payload.sub,
+                    tenantId: payload.tenantId,
+                    role: payload.role,
+                    email: payload.email,
+                    permissions: payload.permissions || [],
+                },
+            });
         }
         catch {
             throw new common_1.UnauthorizedException('Invalid token');
@@ -48,6 +64,7 @@ let JwtAuthGuard = class JwtAuthGuard {
 exports.JwtAuthGuard = JwtAuthGuard;
 exports.JwtAuthGuard = JwtAuthGuard = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [jwt_1.JwtService])
+    __metadata("design:paramtypes", [jwt_1.JwtService,
+        core_1.Reflector])
 ], JwtAuthGuard);
 //# sourceMappingURL=jwt-auth.guard.js.map

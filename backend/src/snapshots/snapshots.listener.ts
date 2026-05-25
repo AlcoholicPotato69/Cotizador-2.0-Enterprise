@@ -18,17 +18,27 @@ export class SnapshotsListener {
     if (!event || !event.tenantId || !event.payload) return;
 
     // Use AsyncLocalStorage to set tenant context for the async background job
-    tenantContext.run({ tenantId: event.tenantId, userId: 'SYSTEM', role: 'SYSTEM' }, async () => {
-      try {
-        const entityType = event.eventName ? event.eventName.split('.')[0] : 'Unknown';
-        await this.snapshotsService.createSnapshot({
-          entityType: entityType.toUpperCase(),
-          payload: event.payload
-        });
-        this.logger.log(`Snapshot saved for event: ${event.eventName || 'unknown'}`);
-      } catch (error) {
-        this.logger.error(`Failed to save snapshot for event: ${event.eventName}`, error);
-      }
-    });
+    tenantContext.run(
+      { tenantId: event.tenantId, userId: 'SYSTEM', role: 'SYSTEM' },
+      async () => {
+        try {
+          const entityType = event.eventName
+            ? event.eventName.split('.')[0]
+            : 'Unknown';
+          await this.snapshotsService.createSnapshot({
+            entityType: entityType.toUpperCase(),
+            payload: event.payload,
+          });
+          this.logger.log(
+            `Snapshot saved for event: ${event.eventName || 'unknown'}`,
+          );
+        } catch (error) {
+          this.logger.error(
+            `Failed to save snapshot for event: ${event.eventName}`,
+            error,
+          );
+        }
+      },
+    );
   }
 }

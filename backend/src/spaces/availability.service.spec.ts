@@ -22,6 +22,10 @@ describe('AvailabilityEngineService', () => {
         {
           provide: PrismaService,
           useValue: {
+            $transaction: jest.fn().mockImplementation(async (cb) => {
+              const tx = { $executeRaw: jest.fn() };
+              return await cb(tx);
+            }),
             client: {
               $transaction: jest.fn((callback) => {
                 const tx = {
@@ -55,10 +59,10 @@ describe('AvailabilityEngineService', () => {
     }).compile();
 
     service = module.get<AvailabilityEngineService>(AvailabilityEngineService);
-    prisma = module.get(PrismaService) as any;
-    spacesRepo = module.get(SpacesRepository) as any;
-    occupancyRepo = module.get(OccupancyRepository) as any;
-    eventPublisher = module.get(DomainEventPublisher) as any;
+    prisma = module.get(PrismaService);
+    spacesRepo = module.get(SpacesRepository);
+    occupancyRepo = module.get(OccupancyRepository);
+    eventPublisher = module.get(DomainEventPublisher);
   });
 
   afterEach(() => {
@@ -79,34 +83,58 @@ describe('AvailabilityEngineService', () => {
     const sourceType = 'Quote';
 
     it('should throw ConflictException if tenant context is missing', async () => {
-      await expect(service.reserveSpace(request, sourceId, sourceType)).rejects.toThrow(ConflictException);
+      await expect(
+        service.reserveSpace(request, sourceId, sourceType),
+      ).rejects.toThrow(ConflictException);
     });
 
     it('should throw ConflictException if startTime >= endTime', async () => {
-      const invalidReq = { ...request, startTime: new Date('2026-06-01T12:00:00Z'), endTime: new Date('2026-06-01T10:00:00Z') };
+      const invalidReq = {
+        ...request,
+        startTime: new Date('2026-06-01T12:00:00Z'),
+        endTime: new Date('2026-06-01T10:00:00Z'),
+      };
       await tenantContext.run({ tenantId: 'tenant-1' }, async () => {
-        await expect(service.reserveSpace(invalidReq, sourceId, sourceType)).rejects.toThrow('Start time must be before end time');
+        await expect(
+          service.reserveSpace(invalidReq, sourceId, sourceType),
+        ).rejects.toThrow('Start time must be before end time');
       });
     });
 
     it('should throw ConflictException if space is reserved by another transaction (concurrency collision)', async () => {
-      spacesRepo.findByIdForUpdate.mockResolvedValue({ id: 'space-1', diasBloqueados: [] } as any);
-      occupancyRepo.findOverlapping.mockResolvedValue({ id: 'existing-occupancy' } as any);
+      spacesRepo.findByIdForUpdate.mockResolvedValue({
+        id: 'space-1',
+        diasBloqueados: [],
+      } as any);
+      occupancyRepo.findOverlapping.mockResolvedValue({
+        id: 'existing-occupancy',
+      } as any);
 
       await tenantContext.run({ tenantId: 'tenant-1' }, async () => {
-        await expect(service.reserveSpace(request, sourceId, sourceType)).rejects.toThrow('Concurrency conflict: Space was reserved by another transaction.');
+        await expect(
+          service.reserveSpace(request, sourceId, sourceType),
+        ).rejects.toThrow(
+          'Concurrency conflict: Space was reserved by another transaction.',
+        );
       });
 
       expect(occupancyRepo.create).not.toHaveBeenCalled();
     });
 
     it('should successfully reserve a space when no overlaps exist', async () => {
-      spacesRepo.findByIdForUpdate.mockResolvedValue({ id: 'space-1', diasBloqueados: [] } as any);
+      spacesRepo.findByIdForUpdate.mockResolvedValue({
+        id: 'space-1',
+        diasBloqueados: [],
+      } as any);
       occupancyRepo.findOverlapping.mockResolvedValue(null);
       occupancyRepo.create.mockResolvedValue({ id: 'occ-1' } as any);
 
       await tenantContext.run({ tenantId: 'tenant-1' }, async () => {
-        const result = await service.reserveSpace(request, sourceId, sourceType);
+        const result = await service.reserveSpace(
+          request,
+          sourceId,
+          sourceType,
+        );
 
         expect(result).toBe('occ-1');
         expect(spacesRepo.findByIdForUpdate).toHaveBeenCalled();

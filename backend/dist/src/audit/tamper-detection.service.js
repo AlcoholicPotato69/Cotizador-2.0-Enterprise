@@ -60,28 +60,49 @@ let TamperDetectionService = TamperDetectionService_1 = class TamperDetectionSer
     async verifyAuditChain() {
         this.logger.log('Iniciando verificación criptográfica de la cadena de auditoría (Scheduled Job)...');
         const tenants = await this.prisma.tenant.findMany();
+        const verificationResults = [];
         for (const tenant of tenants) {
-            const logs = await this.prisma.auditLog.findMany({
-                where: { tenantId: tenant.id },
-                orderBy: { createdAt: 'asc' }
-            });
-            let previousHash = 'GENESIS';
-            for (const log of logs) {
-                const payloadString = JSON.stringify(log.payload);
-                const expectedCurrentHash = crypto.createHash('sha256').update(`${log.action}|${payloadString}`).digest('hex');
-                const expectedChainHash = crypto.createHash('sha256').update(previousHash + expectedCurrentHash).digest('hex');
-                if (log.currentHash !== expectedCurrentHash || log.chainHash !== expectedChainHash) {
-                    this.logger.error(`¡CORRUPCIÓN DETECTADA en Tenant ${tenant.id}! AuditLog ID: ${log.id}`);
-                    await this.eventBus.publish({
-                        eventName: 'SYSTEM_TAMPERED',
-                        tenantId: tenant.id,
-                        payload: { logId: log.id, issue: 'AUDIT_CHAIN_BROKEN' },
-                        timestamp: new Date()
-                    });
-                    return false;
+            try {
+                const logs = await this.prisma.auditLog.findMany({
+                    where: { tenantId: tenant.id },
+                    orderBy: { createdAt: 'asc' },
+                });
+                let previousHash = 'GENESIS';
+                let tenantValid = true;
+                for (const log of logs) {
+                    const payloadString = JSON.stringify(log.payload);
+                    const expectedCurrentHash = crypto
+                        .createHash('sha256')
+                        .update(`${log.action}|${payloadString}`)
+                        .digest('hex');
+                    const expectedChainHash = crypto
+                        .createHash('sha256')
+                        .update(previousHash + expectedCurrentHash)
+                        .digest('hex');
+                    if (log.currentHash !== expectedCurrentHash ||
+                        log.chainHash !== expectedChainHash) {
+                        this.logger.error(`¡CORRUPCIÓN DETECTADA en Tenant ${tenant.id}! AuditLog ID: ${log.id}`);
+                        await this.eventBus.publish({
+                            eventName: 'SYSTEM_TAMPERED',
+                            tenantId: tenant.id,
+                            payload: { logId: log.id, issue: 'AUDIT_CHAIN_BROKEN' },
+                            timestamp: new Date(),
+                        });
+                        tenantValid = false;
+                        break;
+                    }
+                    previousHash = log.chainHash;
                 }
-                previousHash = log.chainHash;
+                verificationResults.push(tenantValid);
             }
+            catch (err) {
+                this.logger.error(`Error procesando tenant ${tenant.id}`, err);
+                verificationResults.push(false);
+            }
+        }
+        if (verificationResults.includes(false)) {
+            this.logger.error('Validación finalizada con errores de integridad en algunos tenants.');
+            return false;
         }
         this.logger.log('Cadena de auditoría validada exitosamente. Sin alteraciones.');
         return true;
@@ -96,6 +117,7 @@ __decorate([
 ], TamperDetectionService.prototype, "verifyAuditChain", null);
 exports.TamperDetectionService = TamperDetectionService = TamperDetectionService_1 = __decorate([
     (0, common_1.Injectable)(),
-    __metadata("design:paramtypes", [prisma_service_1.PrismaService, domain_event_publisher_1.DomainEventPublisher])
+    __metadata("design:paramtypes", [prisma_service_1.PrismaService,
+        domain_event_publisher_1.DomainEventPublisher])
 ], TamperDetectionService);
 //# sourceMappingURL=tamper-detection.service.js.map

@@ -8,18 +8,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CommonModule = void 0;
 const common_1 = require("@nestjs/common");
-const event_emitter_1 = require("@nestjs/event-emitter");
 const domain_event_publisher_1 = require("./events/domain-event-publisher");
 const fsm_validator_1 = require("./fsm.validator");
+const outbox_module_1 = require("./outbox/outbox.module");
+const inbox_module_1 = require("./inbox/inbox.module");
+const jobs_module_1 = require("./jobs/jobs.module");
 let CommonModule = class CommonModule {
 };
 exports.CommonModule = CommonModule;
 exports.CommonModule = CommonModule = __decorate([
     (0, common_1.Global)(),
     (0, common_1.Module)({
-        imports: [event_emitter_1.EventEmitterModule.forRoot()],
+        imports: [outbox_module_1.OutboxModule, inbox_module_1.InboxModule, jobs_module_1.JobsModule],
         providers: [domain_event_publisher_1.DomainEventPublisher, fsm_validator_1.FsmValidator],
-        exports: [domain_event_publisher_1.DomainEventPublisher, event_emitter_1.EventEmitterModule, fsm_validator_1.FsmValidator],
+        exports: [
+            domain_event_publisher_1.DomainEventPublisher,
+            fsm_validator_1.FsmValidator,
+            outbox_module_1.OutboxModule,
+            inbox_module_1.InboxModule,
+            jobs_module_1.JobsModule,
+        ],
     })
 ], CommonModule);
 //# sourceMappingURL=common.module.js.map

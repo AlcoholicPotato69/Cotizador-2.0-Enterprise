@@ -6,16 +6,15 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview",
-    "seed:dev": "node scripts/seed/index.js",
-    "reset:dev": "node scripts/seed/reset.js"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "@primevue/themes": "^4.5.4",
+    "@primevue/core": "^4.5.5",
     "axios": "^1.16.1",
     "lucide-vue-next": "^1.0.0",
     "pinia": "^3.0.4",
     "primevue": "^4.5.5",
+    "secure-ls": "^2.0.0",
     "vue": "^3.5.34",
     "vue-router": "^5.0.7"
   },
@@ -26,6 +25,7 @@
     "@vitejs/plugin-vue": "^6.0.6",
     "@vue/tsconfig": "^0.9.1",
     "autoprefixer": "^10.5.0",
+    "playwright": "^1.60.0",
     "postcss": "^8.5.15",
     "tailwindcss": "^4.3.0",
     "typescript": "~6.0.2",

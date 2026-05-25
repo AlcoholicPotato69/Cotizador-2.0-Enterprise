@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Contrato de Arrendamiento</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 40px; }
+    h1 { text-align: center; }
+    .content { margin-top: 20px; line-height: 1.6; }
+    .footer { margin-top: 50px; text-align: center; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>CONTRATO DE ARRENDAMIENTO</h1>
+  <div class="content">
+    <p>En la ciudad de <strong>{{ciudad}}</strong>, a <strong>{{fecha}}</strong>.</p>
+    <p>Por una parte, <strong>{{arrendador}}</strong>, en adelante "El Arrendador".</p>
+    <p>Por otra parte, <strong>{{arrendatario}}</strong>, en adelante "El Arrendatario".</p>
+    <p>Ambas partes acuerdan sujetarse a las siguientes cláusulas respecto al inmueble ubicado en <strong>{{direccion_inmueble}}</strong>.</p>
+    <p>Monto mensual: <strong>${{monto}}</strong></p>
+  </div>
+  <div class="footer">
+    <p>Generado automáticamente - ID de Contrato: {{contratoId}}</p>
+  </div>
+</body>
+</html>

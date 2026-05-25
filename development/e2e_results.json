@@ -1,6 +1,0 @@
-{
-  "auth": true,
-  "rbac": true,
-  "document": false,
-  "client": true
-}

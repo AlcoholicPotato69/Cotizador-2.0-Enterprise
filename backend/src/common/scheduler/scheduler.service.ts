@@ -9,12 +9,14 @@ export class SchedulerService {
 
   constructor(
     private readonly prisma: PrismaService,
-    private readonly expirationEngine: ExpirationEngineService
+    private readonly expirationEngine: ExpirationEngineService,
   ) {}
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async executeNightlySweeps() {
-    this.logger.log('Iniciando cron jobs nocturnos desde el SchedulerWorker centralizado...');
+    this.logger.log(
+      'Iniciando cron jobs nocturnos desde el SchedulerWorker centralizado...',
+    );
 
     try {
       // El Scheduler centralizado es el ÚNICO componente autorizado a elevar
@@ -30,7 +32,7 @@ export class SchedulerService {
         // Llamamos a los motores pasándoles la transacción ya elevada
         // para que no puedan ser invocados de forma autónoma elevando privilegios
         await this.expirationEngine.scanExpirations(tx);
-        
+
         // Aquí se podrían agregar más sweeps de otros dominios
       });
 

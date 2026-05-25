@@ -1,9 +1,9 @@
-<template>
+﻿<template>
   <div class="catalog-view">
     <div class="view-header">
       <div>
-        <h1 class="title">Catálogo de Espacios</h1>
-        <p class="subtitle">Gestión de inventario físico y publicitario</p>
+        <h1 class="title">CatÃ¡logo de Espacios</h1>
+        <p class="subtitle">GestiÃ³n de inventario fÃ­sico y publicitario</p>
       </div>
       <Button label="Nuevo Espacio" icon="pi pi-plus" @click="openNew" class="p-button-primary" v-if="isAdmin" />
     </div>
@@ -71,7 +71,7 @@
     <Dialog v-model:visible="showDialog" :header="isEditing ? 'Editar Espacio' : 'Nuevo Espacio'" :modal="true" class="p-fluid" :style="{width: '600px'}">
       
       <TabView>
-        <TabPanel header="Información General" value="0">
+        <TabPanel header="InformaciÃ³n General" value="0">
           <div class="field mb-3">
             <label for="nombre">Nombre</label>
             <InputText id="nombre" v-model.trim="spaceForm.nombre" required="true" autofocus />
@@ -81,7 +81,7 @@
           <div class="field mb-3">
             <label for="tipo">Tipo de Espacio</label>
             <select v-model="spaceForm.tipo" id="tipo" class="p-inputtext p-component custom-select">
-              <option value="Salon Físico">Salón Físico</option>
+              <option value="Salon FÃ­sico">SalÃ³n FÃ­sico</option>
               <option value="Cartelera">Cartelera Publicitaria</option>
               <option value="Pantalla Digital">Pantalla Digital</option>
               <option value="Explanada">Explanada / Abierto</option>
@@ -90,7 +90,7 @@
 
           <div class="field mb-4">
             <label for="precio_base">Precio Base (MXN)</label>
-            <InputNumber id="precio_base" v-model="spaceForm.precio_base" mode="currency" currency="MXN" locale="es-MX" />
+            <InputNumber inputId="precio_base" v-model="spaceForm.precio_base" mode="currency" currency="MXN" locale="es-MX" />
           </div>
 
           <div class="field-checkbox">
@@ -99,9 +99,9 @@
           </div>
         </TabPanel>
 
-        <TabPanel header="Configuración B2B (Avanzado)" value="1">
+        <TabPanel header="ConfiguraciÃ³n B2B (Avanzado)" value="1">
           <p class="text-sm text-slate-500 mb-3">
-            Configura reglas de negocio en formato JSON para este espacio (ej. reglas de premontaje, horas extra, bloqueos de días).
+            Configura reglas de negocio en formato JSON para este espacio (ej. reglas de premontaje, horas extra, bloqueos de dÃ­as).
           </p>
           <div class="field">
             <Textarea v-model="b2bConfigText" rows="10" class="font-mono text-sm" placeholder='{\n  "aplica_premontaje": true,\n  "premontaje_pct": 25\n}' />
@@ -120,7 +120,7 @@
     <DsConfirmDialog 
       v-model:visible="showDeleteConfirm" 
       title="Eliminar Espacio" 
-      :message="`¿Está seguro de eliminar el espacio ${spaceToDelete?.nombre}?`"
+      :message="`Â¿EstÃ¡ seguro de eliminar el espacio ${spaceToDelete?.nombre}?`"
       @confirm="executeDelete"
     />
   </div>
@@ -170,7 +170,7 @@ const jsonError = ref('');
 const spaceForm = ref({
   id: '',
   nombre: '',
-  tipo: 'Salon Físico',
+  tipo: 'Salon FÃ­sico',
   precio_base: 0,
   activo: true
 });
@@ -196,11 +196,11 @@ const getTypeSeverity = (type: string) => {
 
 // Fetching
 const fetchSpaces = async () => {
-  if (!tenantStore.activeTenantId) return;
+  if (!tenantStore.activeTenant?.id) return;
   loading.value = true;
   try {
     const records = await pb.collection('espacios').getFullList({
-      filter: `tenant = "${tenantStore.activeTenantId}"`,
+      filter: `tenant = "${tenantStore.activeTenant?.id}"`,
       sort: '-created'
     });
     espacios.value = records;
@@ -211,7 +211,7 @@ const fetchSpaces = async () => {
   }
 };
 
-watch(() => tenantStore.activeTenantId, () => {
+watch(() => tenantStore.activeTenant?.id, () => {
   fetchSpaces();
 });
 
@@ -224,7 +224,7 @@ const openNew = () => {
   spaceForm.value = {
     id: '',
     nombre: '',
-    tipo: 'Salon Físico',
+    tipo: 'Salon FÃ­sico',
     precio_base: 0,
     activo: true
   };
@@ -264,14 +264,14 @@ const saveSpace = async () => {
   try {
     parsedConfig = JSON.parse(b2bConfigText.value || '{}');
   } catch (e) {
-    jsonError.value = 'Formato JSON inválido. Verifique la sintaxis.';
+    jsonError.value = 'Formato JSON invÃ¡lido. Verifique la sintaxis.';
     return;
   }
 
   saving.value = true;
   try {
     const data = {
-      tenant: tenantStore.activeTenantId,
+      tenant: tenantStore.activeTenant?.id,
       nombre: spaceForm.value.nombre,
       tipo: spaceForm.value.tipo,
       precio_base: spaceForm.value.precio_base,
@@ -379,3 +379,4 @@ const executeDelete = async () => {
 .ml-2 { margin-left: 0.5rem; }
 .text-primary { color: #3b82f6; }
 </style>
+

@@ -1,0 +1,1696 @@
+[
+  {
+    "id": "9a5966f3-fdb9-431a-a4f0-d1f0e2711637",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Muro a un lado de Coloso y Zara",
+    "code": "Z1-2",
+    "capacity": 1,
+    "areaSqm": 6.204,
+    "basePricePerHour": 27000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 1 en el acceso a Zona 3, a un costado de Coloso y Zara.",
+    "color": "#d270ff",
+    "tags": [
+      "Muro",
+      "Pasillo",
+      "Lona sobre bastidor"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona sobre bastidor",
+    "width": 2.2,
+    "height": 2.82,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "muro_samsung_y_zara_6suakekx9o.webp",
+      "muro_samsung_y_zara_sin_logo_ctteh107vf.webp",
+      "muro_a_un_lado_de_coloso_y_zara_01b286eb09.webp"
+    ]
+  },
+  {
+    "id": "23baaaf9-0cae-48ab-a311-af4b3f3acaab",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Muro Espectacular entre Zara y Massimo Dutti",
+    "code": "Z1-9",
+    "capacity": 1,
+    "areaSqm": 39.0,
+    "basePricePerHour": 50000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 3, frente a Sears, de cara al domo principal.",
+    "color": "#ff0000",
+    "tags": [
+      "Muro",
+      "Espectacular",
+      "Pasillo",
+      "Lona sobre bastidor"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona sobre bastidor",
+    "width": 13.0,
+    "height": 3.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "pasillo_zara_xj4uwkh3fd.webp",
+      "muro_espectacular_entre_zara_y_massimo_dut_cb816536b2.webp"
+    ]
+  },
+  {
+    "id": "dc46d4fb-ec48-4ec2-852a-87c0c8ba8c8f",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Antepecho Pasillo a C&A",
+    "code": "Z2-1",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 58500.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en el pasillo de salida de Zona 2 y entrada a Zona 1 por la pista de hielo.",
+    "color": "#1f3db2",
+    "tags": [
+      "Antepecho",
+      "Pasillo",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cartel_pasillo_de_pista_de_hielo_86y381tuh5.webp",
+      "cartel_pasillo_de_pista_de_hielo_sin_logo_rkd2wo5ww1.webp",
+      "antepecho_pasillo_a_c_a_9ba4e3de78.webp"
+    ]
+  },
+  {
+    "id": "1b5dd698-dca8-479a-9077-1aaf6a54097c",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Escaleras del Domo Principal",
+    "code": "Z3-5",
+    "capacity": 1,
+    "areaSqm": 5.4719999999999995,
+    "basePricePerHour": 40000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 3, frente a Sears, Zara, Liverpool y la isla de Starbucks (se incluyen las 2 caras).",
+    "color": "#02d911",
+    "tags": [
+      "Escaleras",
+      "Domo",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 9.6,
+    "height": 0.57,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "escaleras_del_domo_principal_2_caras_6bf0a3ddb1.webp"
+    ]
+  },
+  {
+    "id": "f85208e7-8c14-43de-b17f-d6561868307d",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Paquete de 10 pendones interiores",
+    "code": "Z3-6",
+    "capacity": 1,
+    "areaSqm": 3.5,
+    "basePricePerHour": 50000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicados en los principales pasillos de Zona 3, visibles desde primer y segundo piso.",
+    "color": "#0760ed",
+    "tags": [
+      "Pendones",
+      "Paquete",
+      "Aéreo",
+      "Lona"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona",
+    "width": 0.7,
+    "height": 5.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "pendones_sin_logo_i8pl3hz3px.webp",
+      "paquete_de_10_pendones_interiores_fadbe230df.webp"
+    ]
+  },
+  {
+    "id": "b131c59a-59dd-4c8f-a22f-93a8bb5e2169",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Puente en Pasillo principal",
+    "code": "Z3-08",
+    "capacity": 1,
+    "areaSqm": 8.6632,
+    "basePricePerHour": 42000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en el pasillo principal de Zona 3, visible desde primer y segundo piso.",
+    "color": "#0d59d3",
+    "tags": [
+      "Puente",
+      "Aéreo",
+      "Pasillo",
+      "Lona sobre bastidor"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona sobre bastidor",
+    "width": 7.28,
+    "height": 1.19,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "puente_en_pasillo_principal_ed894cf2b4.webp"
+    ]
+  },
+  {
+    "id": "d75c5a90-4840-44e0-a39d-248699ffc148",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Espectacular sobre balcón Sears",
+    "code": "Z3-12",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 45000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 1, entre Zara y Massimo Dutti, con vista al pórtico 1.",
+    "color": "#045be7",
+    "tags": [
+      "Espectacular",
+      "Aéreo",
+      "Lona sobre bastidor"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona sobre bastidor",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "espectacular_sobre_balcon_sears_47335bf92f.webp"
+    ]
+  },
+  {
+    "id": "3a543884-e947-4058-b775-d0dc1af2f624",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Ave en Domo Principal",
+    "code": "Z3-21",
+    "capacity": 1,
+    "areaSqm": 15.0,
+    "basePricePerHour": 51000.0,
+    "configB2b": {
+      "digital_media": {
+        "enabled": false,
+        "media_type": "imagen",
+        "duration_value": null,
+        "duration_unit": "segundos",
+        "pixel_width": null,
+        "pixel_height": null
+      }
+    },
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado debajo del domo principal en Zona 3.",
+    "color": "#00a8f0",
+    "tags": [
+      "Aéreo",
+      "Domo",
+      "Lona sobre bastidor"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona sobre bastidor",
+    "width": 3.0,
+    "height": 5.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "df26869_dictamen_juridico_cp_2026_19777_56dotac0jx.pdf",
+    "isDigital": false,
+    "images": [
+      "ave_domo_principal_a7u61n2nt6.webp",
+      "ave_en_domo_principal_d32e124b2a.webp"
+    ]
+  },
+  {
+    "id": "17d2859f-d230-4145-a028-99e8cc875278",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Cristales Interiores Escaleras Eléctricas",
+    "code": "Z4-1",
+    "capacity": 1,
+    "areaSqm": 8.778,
+    "basePricePerHour": 40000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 4, frente al acceso del pórtico 4, y acceso a segunda planta hacia Cinemex.",
+    "color": "#59ff00",
+    "tags": [
+      "Cristal",
+      "Escaleras",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 2.66,
+    "height": 3.3,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cristales_interiores_de_escaleras_electric_faa64b43a0.webp"
+    ]
+  },
+  {
+    "id": "024f139b-2ae1-4897-b212-541684abdac9",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Cristal Superior Zona de Cajeros",
+    "code": "Z4-03",
+    "capacity": 1,
+    "areaSqm": 4.8,
+    "basePricePerHour": 30000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "1 Vinil normal mate impreso en alta resolución, en medida 480 cm x 100\r\ncm.\r\nIncluye Instalación en altura de 4 a 5 m.\r\nIncluye desinstalación.",
+    "color": "#58c80e",
+    "tags": [
+      "Cristal",
+      "Muro",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 4.8,
+    "height": 1.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cristal_superior_zona_de_cajeros_c8c4de2a55.webp"
+    ]
+  },
+  {
+    "id": "36095209-680f-4095-a100-80b55c9733b7",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Paquete de 5 pendones de estacionamiento",
+    "code": "EST 253 E-F",
+    "capacity": 1,
+    "areaSqm": 3.7199999999999998,
+    "basePricePerHour": 25000.0,
+    "configB2b": {
+      "digital_media": {
+        "enabled": false,
+        "media_type": "imagen",
+        "duration_value": null,
+        "duration_unit": "segundos",
+        "pixel_width": null,
+        "pixel_height": null
+      }
+    },
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Variedad de zonas.",
+    "color": "#2f75e4",
+    "tags": [
+      "Pendones",
+      "Paquete",
+      "Lona"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona",
+    "width": 1.2,
+    "height": 3.1,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "613525095_1280050267492925_3802905010041011932_n_99hxe50omj.jpg",
+    "isDigital": false,
+    "images": [
+      "paquete_de_5_pendones_de_estacionamiento_da33da7874.webp"
+    ]
+  },
+  {
+    "id": "00451376-0423-4950-89e8-7776e9b92a85",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Puente entre Banamex y Sanborn's",
+    "code": "Z1-01",
+    "capacity": 1,
+    "areaSqm": 18.48,
+    "basePricePerHour": 40000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado entre Banamex y Sanborns, de cara al pórtico 1.",
+    "color": "#8400f0",
+    "tags": [
+      "Puente",
+      "Aéreo",
+      "Lona"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona",
+    "width": 6.0,
+    "height": 3.08,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "puente_entre_banamex_y_samborns_ph0dfusuwy.webp",
+      "puente_entre_banamex_y_samborns_2_zden1per7q.webp",
+      "imagen_2026_03_23_151352603_oscq07yg63.png"
+    ]
+  },
+  {
+    "id": "548a039d-eacc-41aa-b663-1a59350fe416",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Ave en Domo Suburbia",
+    "code": "Z1-3",
+    "capacity": 1,
+    "areaSqm": 15.0,
+    "basePricePerHour": 49000.0,
+    "configB2b": {
+      "digital_media": {
+        "enabled": false,
+        "media_type": "imagen",
+        "duration_value": null,
+        "duration_unit": "segundos",
+        "pixel_width": null,
+        "pixel_height": null
+      }
+    },
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado debajo del domo principal en Zona 1.",
+    "color": "#e65c00",
+    "tags": [
+      "Aéreo",
+      "Domo",
+      "Lona sobre bastidor"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona sobre bastidor",
+    "width": 3.0,
+    "height": 5.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "constancia_liquidacion_pm_bemxoz_1776901927390_2y23nzh7ks.pdf",
+    "isDigital": false,
+    "images": [
+      "ave_51uve7chbd.webp",
+      "ave_en_domo_suburbia_d39a264985.webp"
+    ]
+  },
+  {
+    "id": "be27164b-041d-4599-8732-08b51f3f7dd8",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Cristales Exteriores Escaleras Eléctricas",
+    "code": "Z4-02",
+    "capacity": 1,
+    "areaSqm": 10.1105,
+    "basePricePerHour": 45000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 4, frente al acceso del pórtico 4, y acceso a segunda planta hacia Cinemex.",
+    "color": "#29d1c6",
+    "tags": [
+      "Cristal",
+      "Escaleras",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 2.77,
+    "height": 3.65,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cristales_exteriores_de_escaleras_electric_86edecf724.webp"
+    ]
+  },
+  {
+    "id": "5f881350-8188-4b34-a418-e36b6758dbf3",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Elevador Panorámico",
+    "code": "Z5-12",
+    "capacity": 1,
+    "areaSqm": 20.9078,
+    "basePricePerHour": 47000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 5, frente al acceso del pórtico 4, y acceso a segunda planta hacia Cinemex.",
+    "color": "#cf7207",
+    "tags": [
+      "Elevador",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 2.14,
+    "height": 9.77,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "elevador_panoramico_de75c24bf0.webp"
+    ]
+  },
+  {
+    "id": "7555898f-e923-47ba-b3d9-637afe1a4093",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Cristales laterales escaleras Banana Republic",
+    "code": "Z6-1",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 40000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 6, de cara al pasillo principal frente a Banana Republic, Stradivarius, etc.",
+    "color": "#ff2600",
+    "tags": [
+      "Cristal",
+      "Escaleras",
+      "Pasillo",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cristales_laterales_de_escaleras_banana_re_06cb20f009.webp"
+    ]
+  },
+  {
+    "id": "8b16f1ea-ea23-4ad0-af9a-05dd7d5ef726",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Cristales Exteriores Escaleras Eléctricas (Zara Home)",
+    "code": "Z4-09",
+    "capacity": 1,
+    "areaSqm": 8.616,
+    "basePricePerHour": 40000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 4 frente a Zara Home en el acceso a Zona Moda.",
+    "color": "#ff0000",
+    "tags": [
+      "Cristal",
+      "Escaleras",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 2.4,
+    "height": 3.59,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cristales_exteriores_de_escaleras_electric_489bc908e2.webp"
+    ]
+  },
+  {
+    "id": "6b88c37a-7cf2-452d-a3e7-830780c47f10",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Cristal Exterior Escaleras Eléctricas (H&M / Zona Moda)",
+    "code": "Z4-14",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 35000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 4 frente a H&M en el acceso a Zona Moda.",
+    "color": "#f26363",
+    "tags": [
+      "Cristal",
+      "Escaleras",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cristal_exterior_de_escaleras_electricas_h_e62601c549.webp"
+    ]
+  },
+  {
+    "id": "e2431d4d-fd28-42f4-80cc-d23c675d3bda",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Puente Central de Pasillo",
+    "code": "Z7-12",
+    "capacity": 1,
+    "areaSqm": 12.0,
+    "basePricePerHour": 40000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "2 Vinil normal mate impreso en alta resolución con tintas con protección\r\nUV, en medida 12 m x 1 m.\r\nIncluye Instalación en altura de 5 a 6 m.\r\nIncluye desinstalación.",
+    "color": "#e511e8",
+    "tags": [
+      "Puente",
+      "Aéreo",
+      "Pasillo",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 12.0,
+    "height": 1.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "puente_central_de_pasillo_cara_a_zona_de_c_52686f022f.webp"
+    ]
+  },
+  {
+    "id": "8e91db83-1b21-4f3d-b3e0-98a883282f93",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Dorso de Elevador Zona 6",
+    "code": "Z6-4",
+    "capacity": 1,
+    "areaSqm": 27.159999999999997,
+    "basePricePerHour": 50000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 6, a la salida del subterráneo, de cara al pasillo principal.",
+    "color": "#5a00a3",
+    "tags": [
+      "Elevador",
+      "Subterráneo",
+      "Pasillo",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 2.8,
+    "height": 9.7,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "dorso_de_elevador_zona_6_64326599fc.webp"
+    ]
+  },
+  {
+    "id": "13351c06-73a3-4a1d-901b-11acddadb13e",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Escaleras Eléctricas Subterráneo Liverpool",
+    "code": "Z7-11",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 32000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicado en Zona 7 a la salida del subterráneo que da a Liverpool, Hills y al foro de ZM (se incluyen ambas caras laterales).",
+    "color": "#8affb7",
+    "tags": [
+      "Escaleras",
+      "Subterráneo",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "escaleras_electricas_subterraneo_liverpool_7207bb7a63.webp"
+    ]
+  },
+  {
+    "id": "0f831ff3-4575-4618-9cae-805e3baa244a",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Paquete de 10 plumas Estacionamiento",
+    "code": "EST 254 E-G",
+    "capacity": 1,
+    "areaSqm": 0.39,
+    "basePricePerHour": 40000.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Variedad de zonas.",
+    "color": "#e6a800",
+    "tags": [
+      "Paquete",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 1.3,
+    "height": 0.3,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "paquete_de_10_plumas_de_estacionamiento_31677bdc33.webp"
+    ]
+  },
+  {
+    "id": "8ff9ffb2-3f85-4e24-94f1-f428b5236831",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "Salón Principal",
+    "code": "02",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 119000.0,
+    "configB2b": {
+      "precio_hora_extra": 119000,
+      "horarios": [
+        {
+          "nombre": "prueba",
+          "start": "13:00",
+          "end": "17:00"
+        },
+        {
+          "nombre": "prueba 2",
+          "start": "08:00",
+          "end": "12:00"
+        }
+      ]
+    },
+    "preciosPorDia": [
+      {
+        "min": 1,
+        "max": 400,
+        "precios": {
+          "lunes": 47000,
+          "martes": 47000,
+          "miercoles": 47000,
+          "jueves": 47000,
+          "viernes": 79000,
+          "sabado": 96000,
+          "domingo": 36500
+        }
+      },
+      {
+        "min": 401,
+        "max": 800,
+        "precios": {
+          "lunes": 60000,
+          "martes": 60000,
+          "miercoles": 60000,
+          "jueves": 60000,
+          "viernes": 85000,
+          "sabado": 119000,
+          "domingo": 48500
+        }
+      }
+    ],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Un espacio privado y agradable, techado, con gran iluminación y delimitado por elegantes muros apanelados, con capacidad para 1000 personas, se convierte en el escenario perfecto para eventos como bodas, xv años, conferencias y eventos corporativos.\r\n\r\nMedidas: Por definir.",
+    "color": "#f10463",
+    "tags": [
+      "Salón",
+      "Gran Formato",
+      "Techado"
+    ],
+    "spaceType": "espacio",
+    "material": "",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "REGLAMENTO_GENERICO.html",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "imagen_2026_03_11_140604386_cgt82vrc4f.png"
+    ]
+  },
+  {
+    "id": "2b8d6e70-0232-452a-aff2-5b61b3ce2db6",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "Terraza del Mezquite",
+    "code": "04",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 36500.0,
+    "configB2b": {
+      "precio_hora_extra": 36500,
+      "horarios": [
+        {
+          "nombre": "prueba",
+          "start": "13:00",
+          "end": "17:00"
+        }
+      ]
+    },
+    "preciosPorDia": [
+      {
+        "min": 1,
+        "max": 150,
+        "precios": {
+          "lunes": 18000,
+          "martes": 18000,
+          "miercoles": 18000,
+          "jueves": 18000,
+          "viernes": 36500,
+          "sabado": 10,
+          "domingo": 11000
+        }
+      }
+    ],
+    "diasBloqueados": [
+      "sabado"
+    ],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Al aire libre y enmarcada por hermosos arcos coloniales y fuentes minimalistas que ofrecen un ambiente de relajación y vistas elegantes y acogedoras. Con una capacidad para 200 personas, este lugar es el espacio ideal para eventos como despedidas de soltera, fiestas de cumpleaños, primeras comuniones, bautizos, fiestas infantiles y reuniones corporativas.\r\n\r\nUbicación: Por definir.\r\nMedidas: Por definir.",
+    "color": "#e68a0a",
+    "tags": [
+      "Terraza",
+      "Al aire libre",
+      "Social"
+    ],
+    "spaceType": "espacio",
+    "material": "",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "REGLAMENTO_GENERICO.html",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "imagen_2026_03_11_140641595_nnzb8of5ga.png"
+    ]
+  },
+  {
+    "id": "b3c70777-60b7-4777-a12a-31d7962477dc",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "Salón Pavoreales",
+    "code": "03",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 24000.0,
+    "configB2b": {
+      "precio_hora_extra": 24000,
+      "horarios": [
+        {
+          "nombre": "Prueba",
+          "start": "13:00",
+          "end": "17:00"
+        }
+      ]
+    },
+    "preciosPorDia": [
+      {
+        "min": 1,
+        "max": 90,
+        "precios": {
+          "lunes": 12000,
+          "martes": 12000,
+          "miercoles": 12000,
+          "jueves": 12000,
+          "viernes": 18000,
+          "sabado": 24000,
+          "domingo": 6000
+        }
+      }
+    ],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Un salón privado, que pareciera una hermosa réplica de nuestro salón principal, con ambientación delicada y elegante y la privacidad necesaria para reuniones sociales o empresariales. Cuenta con una capacidad para 70 personas en un evento empresarial, y con un montaje estilo auditorio, la capacidad incrementa para 100 personas.",
+    "color": "#0ced27",
+    "tags": [
+      "Salón",
+      "Privado",
+      "Empresarial"
+    ],
+    "spaceType": "espacio",
+    "material": "",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "REGLAMENTO_GENERICO.html",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "imagen_2026_03_11_140700048_ncxngsbwg7.png",
+      "imagen_2026_03_23_162252716_5eukm4lthg.png"
+    ]
+  },
+  {
+    "id": "8189b481-c3f7-44f6-9143-20e4c14e02b0",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "Jardín Principal",
+    "code": "01",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 145000.0,
+    "configB2b": {
+      "precio_hora_extra": 145000,
+      "horarios": [
+        {
+          "nombre": "Prueb",
+          "start": "13:00",
+          "end": "17:00"
+        }
+      ]
+    },
+    "preciosPorDia": [
+      {
+        "min": 1,
+        "max": 300,
+        "precios": {
+          "lunes": 36000,
+          "martes": 36000,
+          "miercoles": 36000,
+          "jueves": 36000,
+          "viernes": 50000,
+          "sabado": 75000,
+          "domingo": 22000
+        }
+      },
+      {
+        "min": 301,
+        "max": 900,
+        "precios": {
+          "lunes": 58000,
+          "martes": 58000,
+          "miercoles": 58000,
+          "jueves": 58000,
+          "viernes": 81500,
+          "sabado": 110000,
+          "domingo": 36500
+        }
+      },
+      {
+        "min": 901,
+        "max": 1500,
+        "precios": {
+          "lunes": 77000,
+          "martes": 77000,
+          "miercoles": 77000,
+          "jueves": 77000,
+          "viernes": 110500,
+          "sabado": 145000,
+          "domingo": 47500
+        }
+      }
+    ],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Un espacio abierto, rodeado de la icónica arquitectura de la Ex-Hacienda aunado de una increíble vegetación. Cuenta con capacidad máxima para 1500 personas, es el único recinto en la ciudad de León que permite albergar a este gran número de comensales. El jardín de Casa de Piedra es el escenario perfecto para realizar eventos al aire libre en donde la naturaleza interviene como uno de los principales elementos para brindarte un ambiente encantador.\r\n\r\nUbicación: Por definir.\r\nMedidas: Por definir.",
+    "color": "#0d5fe3",
+    "tags": [
+      "Jardín",
+      "Al aire libre",
+      "Gran Formato"
+    ],
+    "spaceType": "espacio",
+    "material": "",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "REGLAMENTO_GENERICO.html",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "imagen_2026_03_11_140623712_sjry0ylx0g.png",
+      "imagen_2026_03_23_145311659_j1x1e8zn2f.png",
+      "imagen_2026_03_23_162324931_8d48pi7jic.png"
+    ]
+  },
+  {
+    "id": "23af5be9-2544-4543-8619-9b90b92167b8",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Puerta de elevador",
+    "code": "Z5-11",
+    "capacity": 1,
+    "areaSqm": 1.8900000000000001,
+    "basePricePerHour": 20000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Pasillo a Palacio de Hierro, frente a Birkenstock.",
+    "color": "#c1621e",
+    "tags": [
+      "Elevador",
+      "Puertas",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 0.9,
+    "height": 2.1,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "puertas_elevadores_varias_zonas_6e15db190a.webp"
+    ]
+  },
+  {
+    "id": "6db73f9b-e4c6-4876-a69a-a2668adc7858",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Cubo escaleras eléctricas hacia Fast Food",
+    "code": "Z4-11",
+    "capacity": 1,
+    "areaSqm": 7.03,
+    "basePricePerHour": 0.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "1 vinil normal mate impreso en alta resolución con tintas con protección\r\nUV, en medida 190 cm x 370 cm.\r\n1 vinil normal mate impreso en alta resolución con tintas con protección\r\nUV, en medida 280 cm x 370 cm.\r\nIncluye instalación a piso con una altura de hasta 4 m.\r\nIncluye desinstalación",
+    "color": "#1f3db2",
+    "tags": [
+      "Escaleras",
+      "Fast Food",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 1.9,
+    "height": 3.7,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cubo_escaleras_electricas_hacia_fast_food_6a901539aa.webp"
+    ]
+  },
+  {
+    "id": "7eba33e9-dbe2-48fa-9345-83f5b0a496a8",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Cristal elevador frente a Fast Food",
+    "code": "Z4-04",
+    "capacity": 1,
+    "areaSqm": 23.03,
+    "basePricePerHour": 0.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Ubicación: Elevador frente a Fast Food.\r\nMaterial: Vinil microperforado con protección UV\r\nMedidas: 2.35 m x 9.80 m.",
+    "color": "#02d911",
+    "tags": [
+      "Elevador",
+      "Fast Food",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 2.35,
+    "height": 9.8,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "cristal_elevador_frente_a_fast_food_e60d8dd575.webp"
+    ]
+  },
+  {
+    "id": "d14c76ec-c8c3-4024-89ff-26d266367f99",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Mesas Food court",
+    "code": "Z4-12",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 30000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Paquete de 30 mesas en Food Court.",
+    "color": "",
+    "tags": [
+      "mesas",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "CM",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "imagen_2026_03_30_172439230_ln0zhnmw2h.png"
+    ]
+  },
+  {
+    "id": "e84daa20-d892-4a9a-aeab-e105c6dfcb23",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Antepecho Puente conector entre H&M y Mix Up",
+    "code": "Z4-13",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 40000.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "Vinil con vista desde H&amp;M y Mix Up",
+    "color": "",
+    "tags": [
+      "Puente",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil sobre bastidor",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": false,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "antepecho_puente_conector_entre_hm_y_mix_up_31c6bf4a9d.webp"
+    ]
+  },
+  {
+    "id": "498154cf-8115-4a30-bfde-9ae9ca455872",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Puente de zona moda de Under Armor y American Eagle",
+    "code": "Z7-02",
+    "capacity": 1,
+    "areaSqm": 24.0,
+    "basePricePerHour": 0.0,
+    "configB2b": null,
+    "preciosPorDia": null,
+    "diasBloqueados": null,
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "2 Vinil normal mate impreso en alta resolución con tintas con protección\r\nUV, en medida 24 m x 1 m.\r\nIncluye Instalación en altura de 5 a 6 m.",
+    "color": "",
+    "tags": [
+      "puente",
+      "zona moda",
+      "Vinil"
+    ],
+    "spaceType": "publicidad",
+    "material": "Vinil",
+    "width": 24.0,
+    "height": 1.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "imagen_2026_04_03_151801723_nw2t14n11e.png"
+    ]
+  },
+  {
+    "id": "5342e732-5b72-42eb-acff-3b7dc2ddabc5",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Espectacular Blvd Casa de Piedra Y C. Bosques Eusinos",
+    "code": "ESP BCP-01",
+    "capacity": 1,
+    "areaSqm": 96.0,
+    "basePricePerHour": 0.0,
+    "configB2b": {
+      "digital_media": {
+        "enabled": false,
+        "media_type": "video",
+        "duration_value": 10,
+        "duration_unit": "segundos",
+        "pixel_width": 300,
+        "pixel_height": 600
+      }
+    },
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "",
+    "color": "",
+    "tags": [
+      "Espectacular",
+      "Multiusos",
+      "Lona"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona",
+    "width": 12.0,
+    "height": 8.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": []
+  },
+  {
+    "id": "012542b3-6da6-45e8-b09c-461f256cb133",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "Espectacular Blvd. Eugenio Garza Sada",
+    "code": "ESP CG-01",
+    "capacity": 1,
+    "areaSqm": 96.0,
+    "basePricePerHour": 0.0,
+    "configB2b": [],
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "",
+    "color": "",
+    "tags": [
+      "Espectacular",
+      "Lona"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona",
+    "width": 12.0,
+    "height": 8.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": []
+  },
+  {
+    "id": "c440dd1b-1c41-4148-bd13-d26e530487cd",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "2 Pantallas en casa de piedra",
+    "code": "CP-05",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 22000.0,
+    "configB2b": {
+      "precio_hora_extra": 0,
+      "horarios": [],
+      "digital_media": {
+        "enabled": true,
+        "media_type": "video",
+        "duration_value": 15,
+        "duration_unit": "segundos",
+        "pixel_width": 300,
+        "pixel_height": 600
+      }
+    },
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Imagenes/videos rotartivos en pantallas casa de piedra.",
+    "color": "",
+    "tags": [
+      "Antepecho",
+      "Pasillo"
+    ],
+    "spaceType": "publicidad",
+    "material": "Digital",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "REGLAMENTO_GENERICO.html",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "banner_2560x1440_plaza_wmd98gy1kv.jpg.jpeg"
+    ]
+  },
+  {
+    "id": "33ef2b98-0ed5-49da-a914-6b5597c43e1c",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "Banqueta afuera de sato",
+    "code": "CP-03",
+    "capacity": 1,
+    "areaSqm": 20.0,
+    "basePricePerHour": 10.0,
+    "configB2b": {
+      "precio_hora_extra": 0,
+      "horarios": []
+    },
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Espacio publicitario en estacionamiento zona de restaurantes",
+    "color": "",
+    "tags": [
+      "Casa de piedra",
+      "prueba",
+      "lona"
+    ],
+    "spaceType": "publicidad",
+    "material": "Lona",
+    "width": 10.0,
+    "height": 2.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": false,
+    "images": [
+      "dise_o_sin_t_tulo_dq411453jt.png"
+    ]
+  },
+  {
+    "id": "169126be-e9cf-4903-9a06-c5f3f8a80d52",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "Pantalla SATO",
+    "code": "CP-01",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 12000.0,
+    "configB2b": {
+      "precio_hora_extra": 0,
+      "horarios": [],
+      "digital_media": {
+        "enabled": true,
+        "media_type": "video",
+        "duration_value": 10,
+        "duration_unit": "segundos",
+        "pixel_width": 300,
+        "pixel_height": 600
+      }
+    },
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Pantalla digital por pasillo de SATO 300px x 600px.",
+    "color": "",
+    "tags": [
+      "pantalla",
+      "imagen",
+      "digital",
+      "video",
+      "sato"
+    ],
+    "spaceType": "publicidad",
+    "material": "Digital",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "ine_yy5bffin95.pdf",
+    "isDigital": true,
+    "images": [
+      "imagen_2026_04_20_124936329_6wio6vy8pp.png",
+      "img_2499_modzab8evw.JPG.jpeg",
+      "img_2503_gh79znlc73.JPG.jpeg",
+      "img_2498_n64f41opby.JPG.jpeg"
+    ]
+  },
+  {
+    "id": "20bfac33-cf7b-4a1d-aefe-f7f5bec90b6f",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "Pantalla ARGENTILIA",
+    "code": "CP-02",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 12000.0,
+    "configB2b": {
+      "precio_hora_extra": 0,
+      "horarios": [],
+      "digital_media": {
+        "enabled": true,
+        "media_type": "video",
+        "duration_value": 10,
+        "duration_unit": "segundos",
+        "pixel_width": 300,
+        "pixel_height": 600
+      }
+    },
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Pantalla en el pasillo de ARGENTILIA 300px x 600px",
+    "color": "",
+    "tags": [
+      "pantalla",
+      "imagen",
+      "digital",
+      "video",
+      "argentilia"
+    ],
+    "spaceType": "publicidad",
+    "material": "Digital",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "613525095_1280050267492925_3802905010041011932_n_o36p844dcl.jpg",
+    "isDigital": true,
+    "images": [
+      "img_2505_aav5dhpsj2.JPG.jpeg",
+      "img_2504_blvr1hjoem.JPG.jpeg",
+      "img_2506_0n7o22ke2d.JPG.jpeg",
+      "img_2501_l95fcis5z9.JPG.jpeg"
+    ]
+  },
+  {
+    "id": "1defd5e6-c0f8-4266-b885-8f574cd86a78",
+    "tenantId": "77518b3e-1300-5b80-9113-09537682adf4",
+    "name": "Glorieta estacionamiento frente a SATO",
+    "code": "CP-04",
+    "capacity": 1,
+    "areaSqm": 10000.0,
+    "basePricePerHour": 10.0,
+    "configB2b": {
+      "precio_hora_extra": 0,
+      "horarios": [],
+      "digital_media": {
+        "enabled": false,
+        "media_type": "imagen",
+        "duration_value": null,
+        "duration_unit": "segundos",
+        "pixel_width": null,
+        "pixel_height": null
+      }
+    },
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "vel4iu0mvm9akv8"
+    ],
+    "status": "AVAILABLE",
+    "description": "Rotonda del estacionamiento de casa de piedra.",
+    "color": "",
+    "tags": [
+      "estacionaniento",
+      "glorieta",
+      "sato",
+      "multiusos"
+    ],
+    "spaceType": "publicidad",
+    "material": "MultiUsos",
+    "width": 100.0,
+    "height": 100.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "df26104_dictamen_juridico_pm_2026_16478_3nvmcnfadx.pdf",
+    "isDigital": false,
+    "images": [
+      "imagen_2026_04_20_124014044_vqg27zs5n5.png"
+    ]
+  },
+  {
+    "id": "f306dabd-1776-4cb2-95f7-0437df7016d0",
+    "tenantId": "129b8184-1178-52cd-8744-480db510b589",
+    "name": "PANTALLAS FASTFOOD",
+    "code": "000",
+    "capacity": 1,
+    "areaSqm": 0.0,
+    "basePricePerHour": 100.0,
+    "configB2b": {
+      "digital_media": {
+        "enabled": true,
+        "media_type": "imagen_video",
+        "duration_value": 10,
+        "duration_unit": "segundos",
+        "pixel_width": 1920,
+        "pixel_height": 1080
+      }
+    },
+    "preciosPorDia": [],
+    "diasBloqueados": [],
+    "impuestosIds": [
+      "0cv6s2pdu6veudn"
+    ],
+    "status": "AVAILABLE",
+    "description": "TODAS LAS PANTALLAS DISPONIBLES EN FASTFOOD",
+    "color": "",
+    "tags": [
+      "Pantalla",
+      "imagen",
+      "video",
+      "fastfood",
+      "foodcourt",
+      "food",
+      "court",
+      "digital",
+      "Digital"
+    ],
+    "spaceType": "publicidad",
+    "material": "Digital",
+    "width": 0.0,
+    "height": 0.0,
+    "measureUnit": "M",
+    "location": "",
+    "allowsAgreement": true,
+    "regulationTemplate": "",
+    "geographicMap": "",
+    "isDigital": true,
+    "images": []
+  }
+]

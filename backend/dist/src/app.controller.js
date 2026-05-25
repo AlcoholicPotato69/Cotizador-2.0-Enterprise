@@ -12,6 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppController = void 0;
 const common_1 = require("@nestjs/common");
 const app_service_1 = require("./app.service");
+const jwt_auth_guard_1 = require("./auth/guards/jwt-auth.guard");
+const permissions_guard_1 = require("./auth/guards/permissions.guard");
+const tenant_isolation_guard_1 = require("./auth/guards/tenant-isolation.guard");
+const permissions_decorator_1 = require("./auth/decorators/permissions.decorator");
+const swagger_1 = require("@nestjs/swagger");
 let AppController = class AppController {
     appService;
     constructor(appService) {
@@ -24,12 +29,21 @@ let AppController = class AppController {
 exports.AppController = AppController;
 __decorate([
     (0, common_1.Get)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Execute Get operation' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Successful operation' }),
+    (0, swagger_1.ApiResponse)({ status: 400, description: 'Bad Request' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Not Found' }),
+    (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
+    (0, permissions_decorator_1.Permissions)('common:read'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", String)
 ], AppController.prototype, "getHello", null);
 exports.AppController = AppController = __decorate([
+    (0, swagger_1.ApiTags)('App'),
     (0, common_1.Controller)(),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard, permissions_guard_1.PermissionsGuard, tenant_isolation_guard_1.TenantIsolationGuard),
     __metadata("design:paramtypes", [app_service_1.AppService])
 ], AppController);
 //# sourceMappingURL=app.controller.js.map

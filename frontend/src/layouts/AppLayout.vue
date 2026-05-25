@@ -1,90 +1,52 @@
 <template>
-  <div class="min-h-screen bg-surface-50 dark:bg-surface-950 text-surface-900 dark:text-surface-50 flex flex-col md:flex-row transition-colors duration-200">
-    
-    <!-- Sidebar -->
-    <aside class="w-full md:w-64 border-r border-surface-200 dark:border-surface-800 bg-surface-0 dark:bg-surface-900 flex-shrink-0 hidden md:block">
-      <div class="h-16 flex items-center px-6 border-b border-surface-200 dark:border-surface-800 font-bold tracking-tight text-lg">
+  <div class="min-h-screen bg-surface text-white flex flex-col md:flex-row transition-colors duration-200">
+    <aside class="w-full md:w-64 border-r border-white/10 bg-surface/50 backdrop-blur-md flex-shrink-0 hidden md:block">
+      <div class="h-16 flex items-center px-6 border-b border-white/10 font-display font-bold tracking-tight text-xl text-primary-500">
         Cotizador 2.0
       </div>
-      
       <div class="p-4">
-        <!-- Tenant Badge -->
-        <div class="mb-6 px-2 py-3 rounded-md bg-primary-50 dark:bg-primary-950/30 border border-primary-100 dark:border-primary-900/50 flex items-center justify-between">
+        <div class="mb-6 px-3 py-3 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between" style="box-shadow: var(--shadow-ambient)">
           <div>
-            <div class="text-xs text-primary-600 dark:text-primary-400 font-medium">Tenant Activo</div>
-            <div class="text-sm font-bold text-primary-900 dark:text-primary-100">
-              {{ tenantStore.activeTenant === 'pm' ? 'Plaza Mayor' : 'Casa de Piedra' }}
+            <div class="text-[10px] tracking-widest text-white/50 uppercase font-medium mb-1">Portal Activo</div>
+            <div class="text-sm font-bold text-white font-display">
+              {{ tenantStore.activeTenantSlug === 'plaza-mayor' ? 'Plaza Mayor' : 'Casa de Piedra' }}
             </div>
           </div>
         </div>
-
-        <!-- Navigation Registry -->
-        <nav class="space-y-1">
-          <router-link 
-            v-for="item in navItems" 
-            :key="item.route" 
-            :to="item.route"
-            class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-600 dark:text-surface-400 hover:text-surface-900 dark:hover:text-surface-50"
-            active-class="bg-surface-100 dark:bg-surface-800 text-primary-600 dark:text-primary-400"
-          >
-            <!-- Here we would put Lucide icons -->
-            <span class="ml-2">{{ item.label }}</span>
+        <nav class="space-y-2">
+          <router-link v-for="item in navItems" :key="item.route" :to="item.route"
+            class="flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-all hover:bg-white/5 text-white/70 hover:text-white"
+            active-class="bg-primary-500/20 text-primary-400 border border-primary-500/30">
+            <span class="ml-2 font-body">{{ item.label }}</span>
           </router-link>
         </nav>
       </div>
     </aside>
-
-    <!-- Main Content -->
     <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- Topbar -->
-      <header class="h-16 flex items-center justify-between px-6 border-b border-surface-200 dark:border-surface-800 bg-surface-0 dark:bg-surface-900">
+      <header class="h-16 flex items-center justify-between px-6 border-b border-white/10 bg-surface/50 backdrop-blur-md z-10">
         <div class="flex items-center">
-          <!-- Mobile Menu Button -->
-          <button class="md:hidden mr-4 text-surface-500">☰</button>
-          <div class="text-sm font-medium text-surface-500">Breadcrumbs > Current Page</div>
+          <button class="md:hidden mr-4 text-white/70">☰</button>
+          <div class="text-sm font-medium text-white/50 font-body">Dashboard</div>
         </div>
-        
         <div class="flex items-center space-x-4">
-          <!-- Theme Switcher -->
-          <button @click="themeStore.toggleMode()" class="p-2 text-surface-500 hover:text-surface-900 dark:hover:text-surface-50">
-            {{ themeStore.mode === 'light' ? '🌙' : '☀️' }}
-          </button>
-          
-          <!-- Notification Bell -->
-          <button class="p-2 text-surface-500 hover:text-surface-900 dark:hover:text-surface-50 relative">
-            🔔
-            <span v-if="notificationStore.notifications.length" class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
-          </button>
-          
-          <!-- User Menu -->
-          <div class="h-8 w-8 rounded-full bg-primary-600 text-white flex items-center justify-center font-bold text-xs cursor-pointer" @click="authStore.logout()">
-            U
-          </div>
+          <button @click="authStore.logout()" class="text-xs px-4 py-2 rounded-full border border-white/10 hover:bg-white/5 transition-colors text-white/70">Cerrar Sesión</button>
+          <div class="h-9 w-9 rounded-full bg-primary-500 text-white flex items-center justify-center font-bold text-sm" style="box-shadow: var(--shadow-ambient)">U</div>
         </div>
       </header>
-
-      <!-- Page Content -->
-      <main class="flex-1 overflow-y-auto p-6">
+      <main class="flex-1 overflow-y-auto p-6 bg-surface">
         <router-view></router-view>
       </main>
     </div>
-
-    <!-- DEV TOOLBAR INJECTION PURGED -->
   </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useTenantStore } from '../stores/tenantStore';
-import { useThemeStore } from '../stores/themeStore';
 import { useAuthStore } from '../stores/authStore';
-import { useNotificationStore } from '../stores/notificationStore';
 import { getAuthorizedNavigation } from '../router/navigation';
 
 const tenantStore = useTenantStore();
-const themeStore = useThemeStore();
 const authStore = useAuthStore();
-const notificationStore = useNotificationStore();
-
 const navItems = computed(() => getAuthorizedNavigation());
 </script>

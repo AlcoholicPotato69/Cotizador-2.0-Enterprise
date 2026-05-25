@@ -1,6 +1,10 @@
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { PermissionsGuard } from '../auth/guards/permissions.guard';
+import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TenantsController } from './tenants.controller';
 import { TenantsService } from './tenants.service';
+import { JwtService } from '@nestjs/jwt';
 
 describe('TenantsController', () => {
   let controller: TenantsController;
@@ -9,10 +13,17 @@ describe('TenantsController', () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [TenantsController],
       providers: [
-        TenantsService,
-        { provide: 'JwtService', useValue: {} }
+        { provide: TenantsService, useValue: {} },
+        { provide: JwtService, useValue: {} },
       ],
-    }).compile();
+    })
+      .overrideGuard(JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(PermissionsGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(TenantIsolationGuard)
+      .useValue({ canActivate: () => true })
+      .compile();
 
     controller = module.get<TenantsController>(TenantsController);
   });

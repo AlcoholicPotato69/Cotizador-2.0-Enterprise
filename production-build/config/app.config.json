@@ -1,0 +1,7 @@
+{
+  "serverIp": "",
+  "backendPort": 3000,
+  "frontendPort": 80,
+  "databaseHost": "127.0.0.1",
+  "databasePort": 5432
+}

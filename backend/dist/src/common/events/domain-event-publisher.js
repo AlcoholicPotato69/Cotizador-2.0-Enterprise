@@ -24,7 +24,7 @@ let DomainEventPublisher = class DomainEventPublisher {
         await this.auditService.logEvent({
             tenantId: event.tenantId,
             action: event.eventName,
-            payload: event.payload
+            payload: event.payload,
         });
         this.eventEmitter.emit(event.eventName, event);
     }

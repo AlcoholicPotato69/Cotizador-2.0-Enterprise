@@ -53,10 +53,16 @@ let AuditService = class AuditService {
     }
     async logEvent(dto) {
         const payloadString = JSON.stringify(dto.payload);
-        const currentHash = crypto.createHash('sha256').update(`${dto.action}|${payloadString}`).digest('hex');
+        const currentHash = crypto
+            .createHash('sha256')
+            .update(`${dto.action}|${payloadString}`)
+            .digest('hex');
         const lastLog = await this.repo.findLatest(dto.tenantId);
         const previousHash = lastLog ? lastLog.chainHash : 'GENESIS';
-        const chainHash = crypto.createHash('sha256').update(previousHash + currentHash).digest('hex');
+        const chainHash = crypto
+            .createHash('sha256')
+            .update(previousHash + currentHash)
+            .digest('hex');
         try {
             await this.repo.create({
                 tenantId: dto.tenantId,

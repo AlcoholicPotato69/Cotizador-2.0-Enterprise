@@ -4,4 +4,5 @@ export interface User {
   email: string;
   role: string;
   tenant_id: string;
+  effective_permissions?: string[];
 }

@@ -1,9 +1,15 @@
-export default [
+import type { RouteRecordRaw, RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
+
+const devtoolsRoutes: RouteRecordRaw[] = [
   {
     path: '/devtools',
     name: 'DevtoolsCenter',
     component: () => import('../../views/devtools/DevtoolsIndex.vue'),
-    beforeEnter: (_to: any, _from: any, next: any) => {
+    meta: {
+      requiresAuth: true,
+      permission: 'devtools.access'
+    },
+    beforeEnter: (_to: RouteLocationNormalized, _from: RouteLocationNormalized, next: NavigationGuardNext) => {
       if (import.meta.env.VITE_APP_ENV !== 'development') {
         next('/');
       } else {
@@ -12,3 +18,5 @@ export default [
     }
   }
 ];
+
+export default devtoolsRoutes;

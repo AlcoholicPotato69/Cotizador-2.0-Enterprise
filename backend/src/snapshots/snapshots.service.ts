@@ -13,24 +13,35 @@ export interface CreateSnapshotDto {
 export class SnapshotsService {
   constructor(
     private readonly repo: SnapshotsRepository,
-    private readonly eventPublisher: DomainEventPublisher
+    private readonly eventPublisher: DomainEventPublisher,
   ) {}
 
   async createSnapshot(dto: CreateSnapshotDto) {
     const ctx = tenantContext.getStore();
     if (!ctx || !ctx.tenantId) {
-      throw new BadRequestException('Tenant context is missing for Snapshot Creation');
+      throw new BadRequestException(
+        'Tenant context is missing for Snapshot Creation',
+      );
     }
 
     // Hash the payload for immutability check
     const payloadString = JSON.stringify(dto.payload);
-    const payloadHash = crypto.createHash('sha256').update(payloadString).digest('hex');
+    const payloadHash = crypto
+      .createHash('sha256')
+      .update(payloadString)
+      .digest('hex');
 
     // Get last version to increment
-    const lastSnapshot = await this.repo.findLatestByType(dto.entityType, ctx.tenantId);
+    const lastSnapshot = await this.repo.findLatestByType(
+      dto.entityType,
+      ctx.tenantId,
+    );
     const newVersion = lastSnapshot ? lastSnapshot.version + 1 : 1;
     const previousHash = lastSnapshot ? lastSnapshot.chainHash : 'GENESIS';
-    const chainHash = crypto.createHash('sha256').update(previousHash + payloadHash).digest('hex');
+    const chainHash = crypto
+      .createHash('sha256')
+      .update(previousHash + payloadHash)
+      .digest('hex');
 
     let snapshot;
     try {
@@ -45,7 +56,9 @@ export class SnapshotsService {
       });
     } catch (error: any) {
       if (error.code === 'P2002') {
-        throw new BadRequestException('Snapshot Hash Chain Collision detected. Please retry.');
+        throw new BadRequestException(
+          'Snapshot Hash Chain Collision detected. Please retry.',
+        );
       }
       throw error;
     }
@@ -53,8 +66,12 @@ export class SnapshotsService {
     await this.eventPublisher.publish({
       eventName: 'snapshot.created',
       tenantId: ctx.tenantId,
-      payload: { snapshotId: snapshot.id, entityType: snapshot.entityType, version: snapshot.version },
-      timestamp: new Date()
+      payload: {
+        snapshotId: snapshot.id,
+        entityType: snapshot.entityType,
+        version: snapshot.version,
+      },
+      timestamp: new Date(),
     });
 
     return snapshot;

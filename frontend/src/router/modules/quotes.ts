@@ -4,7 +4,7 @@ const quotesRoutes: RouteRecordRaw[] = [
   {
     path: 'quotes',
     name: 'quotes',
-    component: () => import('../../views/quotes/QuoteListView.vue'),
+    component: () => import('../../views/QuotesView.vue'),
     meta: { requiresAuth: true, permission: 'quotes.read' }
   },
   {
@@ -24,6 +24,12 @@ const quotesRoutes: RouteRecordRaw[] = [
     name: 'quote-edit',
     component: () => import('../../views/quotes/QuoteDetailView.vue'), // Handled by same view or separate in future
     meta: { requiresAuth: true, permission: 'quotes.write' }
+  },
+  {
+    path: 'quotes/:id/dossier',
+    name: 'quote-dossier',
+    component: () => import('../../views/QuoteDossier.vue'),
+    meta: { requiresAuth: true, permission: 'quotes.read' }
   },
   {
     path: 'quotes/:id/versions',

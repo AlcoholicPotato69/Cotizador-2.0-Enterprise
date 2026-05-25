@@ -18,6 +18,15 @@ const financeRoutes: RouteRecordRaw[] = [
       requiresAuth: true,
       permission: 'finance.view'
     }
+  },
+  {
+    path: '/finance-dossier/:id?',
+    name: 'finance-dossier',
+    component: () => import('../../views/FinancialDossier.vue'),
+    meta: {
+      requiresAuth: true,
+      permission: 'finance.view'
+    }
   }
 ];
 

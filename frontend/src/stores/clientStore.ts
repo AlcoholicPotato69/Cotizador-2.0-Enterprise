@@ -1,17 +1,34 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { clientService } from '../services/clientService';
+import { clientService, type Client, type ClientPayload } from '../services/clientService';
+
+export interface ClientModel {
+    id: string;
+    type: string;
+    rfc: string;
+    name: string;
+    status: string;
+    createdAt?: string;
+    email?: string;
+    phone?: string;
+}
+
+export interface ClientFormData {
+    name: string;
+    rfc: string;
+    email?: string;
+}
 
 export const useClientStore = defineStore('client', () => {
-    const clients = ref<any[]>([]);
-    const currentClient = ref<any>(null);
+    const clients = ref<ClientModel[]>([]);
+    const currentClient = ref<ClientModel | null>(null);
     const loading = ref(false);
 
     async function fetchClients() {
         loading.value = true;
         try {
             const records = await clientService.getClients();
-            clients.value = records.map(r => ({
+            clients.value = records.data.map((r: Client) => ({
                 id: r.id,
                 type: 'moral', 
                 rfc: r.rfc,
@@ -48,10 +65,10 @@ export const useClientStore = defineStore('client', () => {
         }
     }
 
-    async function saveClient(clientData: any) {
+    async function saveClient(clientData: ClientFormData) {
         loading.value = true;
         try {
-            const payload = {
+            const payload: ClientPayload = {
                 razon_social: clientData.name,
                 rfc: clientData.rfc,
                 contacto: clientData.email || '',

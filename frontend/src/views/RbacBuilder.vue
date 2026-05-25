@@ -106,7 +106,7 @@ const selectRole = async (role: any) => {
     filter: `role = "${role.id}"`
   });
   
-  selectedPermissionIds.value = rolePerms.map(rp => rp.permission);
+  selectedPermissionIds.value = rolePerms.map((rp: any) => rp.permission);
 };
 
 const groupedPermissions = computed(() => {
@@ -137,7 +137,7 @@ const savePermissions = async () => {
     // Auditoría
     await pb.collection('admin_audit_log').create({
        tenant: tenantStore.activeTenantId,
-       user: pb.authStore.model?.id,
+       user: (pb as any).authStore?.model?.id || 'system',
        action: 'ROLE_PERMISSIONS_UPDATE',
        entity_type: 'rbac_roles',
        entity_id: selectedRole.value.id,

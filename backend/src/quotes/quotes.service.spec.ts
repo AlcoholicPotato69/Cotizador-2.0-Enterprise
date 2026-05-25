@@ -22,7 +22,14 @@ describe('QuotesService', () => {
           useValue: {
             create: jest.fn(),
             findById: jest.fn(),
+            findByIdForUpdate: jest.fn(),
             update: jest.fn(),
+            prisma: {
+              $transaction: jest.fn().mockImplementation(async (cb) => {
+                const tx = { $executeRaw: jest.fn() };
+                return await cb(tx);
+              }),
+            },
           },
         },
         {
@@ -41,9 +48,9 @@ describe('QuotesService', () => {
     }).compile();
 
     service = module.get<QuotesService>(QuotesService);
-    repo = module.get(QuotesRepository) as any;
-    fsmValidator = module.get(FsmValidator) as any;
-    eventPublisher = module.get(DomainEventPublisher) as any;
+    repo = module.get(QuotesRepository);
+    fsmValidator = module.get(FsmValidator);
+    eventPublisher = module.get(DomainEventPublisher);
   });
 
   afterEach(() => {
@@ -56,79 +63,130 @@ describe('QuotesService', () => {
 
   describe('create', () => {
     it('should throw NotFoundException if tenant context is missing', async () => {
-      await expect(service.create({ importeTotal: 100 } as any)).rejects.toThrow(NotFoundException);
+      await expect(
+        service.create({ importeTotal: 100 } as any),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it('should create a quote and publish quote.created event', async () => {
       const createData = { importeTotal: 100, desglosePrecios: {} } as any;
-      const createdQuote = { id: 'quote-1', tenantId: 'tenant-1', status: QuoteStatus.DRAFT, ...createData };
-      repo.create.mockResolvedValue(createdQuote as any);
+      const createdQuote = {
+        id: 'quote-1',
+        tenantId: 'tenant-1',
+        status: QuoteStatus.DRAFT,
+        ...createData,
+      };
+      repo.create.mockResolvedValue(createdQuote);
 
       await tenantContext.run({ tenantId: 'tenant-1' }, async () => {
         const result = await service.create(createData);
 
         expect(result).toEqual(createdQuote);
-        expect(repo.create).toHaveBeenCalledWith({
-          ...createData,
-          tenantId: 'tenant-1',
-          status: QuoteStatus.DRAFT,
-          desglosePrecios: {},
-        });
+        expect(repo.create).toHaveBeenCalledWith(
+          {
+            ...createData,
+            tenantId: 'tenant-1',
+            status: QuoteStatus.DRAFT,
+            desglosePrecios: expect.any(Object),
+          },
+          expect.any(Object),
+        );
 
-        expect(eventPublisher.publish).toHaveBeenCalledWith(expect.objectContaining({
-          eventName: 'quote.created',
-          tenantId: 'tenant-1',
-          payload: { quoteId: 'quote-1' },
-        }));
+        expect(eventPublisher.publish).toHaveBeenCalledWith(
+          expect.objectContaining({
+            eventName: 'quote.created',
+            tenantId: 'tenant-1',
+            payload: { quoteId: 'quote-1' },
+          }),
+        );
       });
     });
   });
 
   describe('updateStatus', () => {
     it('should throw NotFoundException if tenant context is missing', async () => {
-      await expect(service.updateStatus('quote-1', QuoteStatus.SENT)).rejects.toThrow(NotFoundException);
+      await expect(
+        service.updateStatus('quote-1', QuoteStatus.SENT),
+      ).rejects.toThrow(NotFoundException);
     });
 
     it('should throw NotFoundException if quote not found', async () => {
-      repo.findById.mockResolvedValue(null);
+      repo.findByIdForUpdate.mockResolvedValue(null);
       await tenantContext.run({ tenantId: 'tenant-1' }, async () => {
-        await expect(service.updateStatus('quote-1', QuoteStatus.SENT)).rejects.toThrow(NotFoundException);
+        await expect(
+          service.updateStatus('quote-1', QuoteStatus.SENT),
+        ).rejects.toThrow(NotFoundException);
       });
     });
 
     it('should successfully update status, validate transition, and publish event', async () => {
-      const quote = { id: 'quote-1', tenantId: 'tenant-1', status: QuoteStatus.DRAFT };
-      const targetStatus = QuoteStatus.SENT;
-      const updatedQuote = { ...quote, status: targetStatus };
+      await tenantContext.run(
+        { tenantId: 'tenant-1', userId: 'user-1', role: 'admin' },
+        async () => {
+          const id = 'quote-1';
+          const targetStatus = QuoteStatus.SENT;
+          const existingQuote = {
+            id,
+            status: QuoteStatus.DRAFT,
+            tenantId: 'tenant-1',
+          } as any;
+          const updatedQuote = { ...existingQuote, status: targetStatus };
 
-      repo.findById.mockResolvedValue(quote as any);
-      repo.update.mockResolvedValue(updatedQuote as any);
+          (repo.findByIdForUpdate as jest.Mock).mockResolvedValue(
+            existingQuote,
+          );
+          (repo.update as jest.Mock).mockResolvedValue(updatedQuote);
 
-      await tenantContext.run({ tenantId: 'tenant-1' }, async () => {
-        const result = await service.updateStatus('quote-1', targetStatus);
+          const result = await service.updateStatus(id, targetStatus);
 
-        expect(result).toEqual(updatedQuote);
-        expect(repo.findById).toHaveBeenCalledWith('tenant-1', 'quote-1');
-        expect(fsmValidator.validateTransition).toHaveBeenCalledWith('Quote', QuoteStatus.DRAFT, targetStatus);
-        expect(repo.update).toHaveBeenCalledWith('tenant-1', 'quote-1', { status: targetStatus });
+          expect(result).toEqual(updatedQuote);
+          expect(repo.findByIdForUpdate).toHaveBeenCalledWith(
+            expect.any(Object),
+            'tenant-1',
+            'quote-1',
+          );
+          expect(fsmValidator.validateTransition).toHaveBeenCalledWith(
+            'Quote',
+            QuoteStatus.DRAFT,
+            targetStatus,
+          );
+          expect(repo.update).toHaveBeenCalledWith(
+            'tenant-1',
+            'quote-1',
+            { status: targetStatus },
+            expect.any(Object),
+          );
 
-        expect(eventPublisher.publish).toHaveBeenCalledWith(expect.objectContaining({
-          eventName: 'quote.status_updated',
-          tenantId: 'tenant-1',
-          payload: { quoteId: 'quote-1', oldStatus: QuoteStatus.DRAFT, newStatus: targetStatus },
-        }));
-      });
+          expect(eventPublisher.publish).toHaveBeenCalledWith(
+            expect.objectContaining({
+              eventName: 'quote.status_updated',
+              tenantId: 'tenant-1',
+              payload: {
+                quoteId: 'quote-1',
+                oldStatus: QuoteStatus.DRAFT,
+                newStatus: targetStatus,
+              },
+            }),
+          );
+        },
+      );
     });
 
     it('should fail if FSM validation fails', async () => {
-      const quote = { id: 'quote-1', tenantId: 'tenant-1', status: QuoteStatus.DRAFT };
-      repo.findById.mockResolvedValue(quote as any);
+      const quote = {
+        id: 'quote-1',
+        tenantId: 'tenant-1',
+        status: QuoteStatus.DRAFT,
+      };
+      repo.findByIdForUpdate.mockResolvedValue(quote as any);
       fsmValidator.validateTransition.mockImplementation(() => {
         throw new BadRequestException('Invalid transition');
       });
 
       await tenantContext.run({ tenantId: 'tenant-1' }, async () => {
-        await expect(service.updateStatus('quote-1', QuoteStatus.APPROVED)).rejects.toThrow(BadRequestException);
+        await expect(
+          service.updateStatus('quote-1', QuoteStatus.APPROVED),
+        ).rejects.toThrow(BadRequestException);
       });
 
       expect(repo.update).not.toHaveBeenCalled();

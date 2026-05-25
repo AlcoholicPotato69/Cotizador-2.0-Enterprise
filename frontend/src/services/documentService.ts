@@ -1,8 +1,9 @@
 import { http } from '../api/http';
+import type { QueryParams, PaginatedResponse } from './types';
 
 export const documentService = {
-    async getDocumentsByClient(clientId: string) {
-        const res = await http.get(`/clients/${clientId}/documents`);
+    async getDocumentsByClient(clientId: string, params?: QueryParams): Promise<PaginatedResponse<any>> {
+        const res = await http.get(`/clients/${clientId}/documents`, { params });
         return res.data;
     },
 
@@ -30,7 +31,7 @@ export const documentService = {
         return res.data;
     },
 
-    async downloadDocument(recordId: string, filename: string) {
+    async downloadDocument(recordId: string, _filename: string) {
         // Assume backend has an endpoint for download
         const url = `/api/v1/documents/${recordId}/download`; 
         window.open(url, '_blank');

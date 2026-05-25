@@ -1,135 +1,102 @@
 <template>
-  <div class="clients-view">
-    <div class="view-header">
+  <div class="p-6 max-w-7xl mx-auto flex flex-col gap-6 w-full">
+    <div class="flex justify-between items-center">
       <div>
-        <h1 class="title">Directorio de Clientes</h1>
-        <p class="subtitle">Gestión de prospectos y cumplimiento jurídico (KYC)</p>
+        <h1 class="text-3xl font-bold text-slate-900 m-0">Directorio de Clientes</h1>
+        <p class="text-slate-600 m-0 mt-1 text-sm">Gestión de prospectos y clientes de la organización</p>
       </div>
       <Button label="Nuevo Cliente" icon="pi pi-plus" @click="showNewClientDialog = true" class="p-button-primary" />
     </div>
 
-    <!-- Data Table -->
-    <div class="card">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
       <DataTable 
-        :value="clients" 
-        :paginator="true" 
-        :rows="10" 
+        :value="clientStore.clients" 
+        scrollable
+        scrollHeight="600px"
+        :virtualScrollerOptions="{ itemSize: 46 }"
         dataKey="id" 
-        :loading="loading"
+        :loading="clientStore.loading"
         v-model:filters="filters"
         filterDisplay="menu"
-        :globalFilterFields="['nombre_completo', 'rfc', 'tenant_name']"
-        responsiveLayout="scroll"
+        :globalFilterFields="['name', 'rfc']"
         emptyMessage="No se encontraron clientes."
+        class="p-datatable-sm"
       >
         <template #header>
-          <div class="flex justify-content-between">
-            <span class="p-input-icon-left">
-              <i class="pi pi-search" />
-              <InputText v-model="filters['global'].value" placeholder="Buscar por nombre o RFC..." />
+          <div class="flex justify-end mb-3">
+            <span class="p-input-icon-left w-full sm:w-auto">
+              <i class="pi pi-search" aria-hidden="true" />
+              <InputText v-model="filters['global'].value" placeholder="Buscar por nombre o RFC..." aria-label="Buscar por nombre o RFC" class="w-full sm:w-80" />
             </span>
           </div>
         </template>
         
-        <Column field="nombre_completo" header="Razón Social" sortable>
-          <template #body="slotProps">
-            <span class="font-bold">{{ slotProps.data.nombre_completo }}</span>
+        <Column field="name" header="Razón Social / Nombre" sortable>
+          <template #body="{ data }">
+            <span class="font-semibold text-slate-900">{{ data.name }}</span>
           </template>
         </Column>
         
         <Column field="rfc" header="RFC" sortable></Column>
+
+        <Column field="createdAt" header="Fecha de Alta" sortable>
+          <template #body="{ data }">
+            <span class="text-slate-600">{{ formatDate(data.createdAt) }}</span>
+          </template>
+        </Column>
         
-        <Column field="perfil_validado" header="Estado de Dictamen" sortable>
-          <template #body="slotProps">
+        <Column field="status" header="Estado" sortable>
+          <template #body="{ data }">
             <Tag 
-              :severity="slotProps.data.perfil_validado ? 'success' : 'warning'" 
-              :value="slotProps.data.perfil_validado ? 'Validado' : 'Pendiente'" 
+              :severity="getStatusSeverity(data.status)" 
+              :value="(data.status || 'pendiente').toUpperCase()" 
             />
           </template>
         </Column>
 
         <Column header="Acciones" :exportable="false" style="min-width:8rem">
-          <template #body="slotProps">
+          <template #body="{ data }">
             <Button 
-              icon="pi pi-file-check" 
-              class="p-button-rounded p-button-text p-button-info" 
-              title="Workflow de Dictamen"
-              @click="openDictamenWorkflow(slotProps.data)" 
+              icon="pi pi-folder-open" 
+              class="p-button-rounded p-button-text p-button-secondary" 
+              title="Ver Expediente"
+              aria-label="Ver Expediente"
+              @click="goToDossier(data.id)" 
             />
           </template>
         </Column>
       </DataTable>
     </div>
 
-    <!-- New Client Dialog -->
-    <Dialog v-model:visible="showNewClientDialog" header="Registrar Nuevo Cliente" :modal="true" class="p-fluid" :style="{width: '450px'}">
-      <div class="field">
-        <label for="nombre">Razón Social</label>
-        <InputText id="nombre" v-model.trim="newClient.nombre_completo" required="true" autofocus />
-        <small class="p-error" v-if="submitted && !newClient.nombre_completo">La razón social es requerida.</small>
-      </div>
-      <div class="field mt-3">
-        <label for="rfc">RFC</label>
-        <InputText id="rfc" v-model.trim="newClient.rfc" required="true" />
-        <small class="p-error" v-if="submitted && !newClient.rfc">El RFC es requerido.</small>
+    <Dialog v-model:visible="showNewClientDialog" header="Registrar Cliente" :modal="true" class="p-fluid" style="width: 450px">
+      <div class="flex flex-col gap-4 mt-4">
+        <div class="field">
+          <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nombre o Razón Social</label>
+          <InputText id="name" v-model.trim="newClient.name" required autofocus />
+        </div>
+        <div class="field">
+          <label for="rfc" class="block text-sm font-medium text-slate-700 mb-1">RFC</label>
+          <InputText id="rfc" v-model.trim="newClient.rfc" required />
+        </div>
+        <div class="field">
+          <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Correo (Opcional)</label>
+          <InputText id="email" v-model.trim="newClient.email" />
+        </div>
       </div>
       <template #footer>
-        <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="hideDialog" />
-        <Button label="Guardar" icon="pi pi-check" class="p-button-primary" @click="saveClient" :loading="saving" />
+        <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="showNewClientDialog = false" />
+        <Button label="Guardar" icon="pi pi-check" @click="saveClient" :loading="saving" />
       </template>
-    </Dialog>
-
-    <!-- Dictamen Workflow Dialog -->
-    <Dialog v-model:visible="showDictamenDialog" :header="'Dictamen Jurídico: ' + selectedClient?.nombre_completo" :modal="true" class="p-fluid" :style="{width: '600px'}">
-      <div class="dictamen-workflow" v-if="selectedClient">
-        <p class="text-sm text-slate-500 mb-4">
-          Adjunte los documentos requeridos. Una vez cargados, el perfil podrá ser validado por el departamento legal.
-        </p>
-        
-        <div class="doc-list">
-          <div class="doc-item" v-for="docType in requiredDocs" :key="docType.id">
-            <div class="doc-info">
-              <i class="pi pi-file-pdf text-red-500 text-xl"></i>
-              <div>
-                <span class="font-bold block">{{ docType.label }}</span>
-                <span class="text-xs text-slate-400">
-                  {{ hasDocument(docType.id) ? 'Subido' : 'Pendiente' }}
-                </span>
-              </div>
-            </div>
-            <Button 
-              :icon="hasDocument(docType.id) ? 'pi pi-check' : 'pi pi-upload'" 
-              :class="hasDocument(docType.id) ? 'p-button-success p-button-outlined' : 'p-button-secondary p-button-text'" 
-            />
-          </div>
-        </div>
-
-        <div class="mt-4 border-t pt-4" v-if="isVerificador">
-          <div class="flex align-items-center justify-content-between bg-slate-50 p-3 border-round">
-            <div>
-              <span class="font-bold block">Validación Final</span>
-              <span class="text-xs text-slate-500">¿Aprueba este expediente para operaciones?</span>
-            </div>
-            <Button 
-              :label="selectedClient.perfil_validado ? 'Revocar' : 'Aprobar'" 
-              :class="selectedClient.perfil_validado ? 'p-button-danger p-button-outlined' : 'p-button-success'"
-              icon="pi pi-shield" 
-              @click="toggleValidation"
-            />
-          </div>
-        </div>
-      </div>
     </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { FilterMatchMode } from '@primevue/core/api';
-import { pb, getActiveUser } from '../services/pb';
-import { useTenantStore } from '../stores/tenant';
+import { useClientStore, type ClientFormData } from '../stores/clientStore';
 
-// PrimeVue components
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
@@ -137,218 +104,53 @@ import Button from 'primevue/button';
 import Tag from 'primevue/tag';
 import Dialog from 'primevue/dialog';
 
-const tenantStore = useTenantStore();
-const activeUser = getActiveUser();
+const router = useRouter();
+const clientStore = useClientStore();
 
-// State
-const clients = ref<any[]>([]);
-const loading = ref(true);
 const filters = ref({
   global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-// Dialogs
 const showNewClientDialog = ref(false);
-const showDictamenDialog = ref(false);
-const submitted = ref(false);
 const saving = ref(false);
-const newClient = ref({ nombre_completo: '', rfc: '' });
-const selectedClient = ref<any>(null);
-
-// Constants
-const requiredDocs = [
-  { id: 'doc_acta_constitutiva', label: 'Acta Constitutiva' },
-  { id: 'doc_ine', label: 'Identificación Oficial (INE)' },
-  { id: 'doc_constancia_fiscal', label: 'Constancia de Situación Fiscal' },
-  { id: 'doc_comprobante_domicilio', label: 'Comprobante de Domicilio' }
-];
-
-const isVerificador = computed(() => activeUser?.role === 'verificador' || activeUser?.role === 'admin');
-
-// Fetching
-const fetchClients = async () => {
-  if (!tenantStore.activeTenantId) return;
-  loading.value = true;
-  try {
-    const records = await pb.collection('clientes').getFullList({
-      filter: `tenant = "${tenantStore.activeTenantId}"`,
-      sort: '-created'
-    });
-    clients.value = records;
-  } catch (err) {
-    console.error(err);
-  } finally {
-    loading.value = false;
-  }
-};
-
-watch(() => tenantStore.activeTenantId, () => {
-  fetchClients();
-});
+const newClient = ref<ClientFormData>({ name: '', rfc: '', email: '' });
 
 onMounted(() => {
-  fetchClients();
+  clientStore.fetchClients();
 });
 
-// Actions
-const hideDialog = () => {
-  showNewClientDialog.value = false;
-  submitted.value = false;
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return 'N/A';
+  return new Date(dateString).toLocaleDateString('es-MX', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+};
+
+const getStatusSeverity = (status: string) => {
+  const s = status?.toLowerCase() || '';
+  if (s === 'aprobado' || s === 'validado') return 'success';
+  if (s === 'pendiente') return 'warning';
+  if (s === 'rechazado') return 'danger';
+  return 'info';
+};
+
+const goToDossier = (id: string) => {
+  router.push(`/clients/${id}/dossier`);
 };
 
 const saveClient = async () => {
-  submitted.value = true;
-  if (!newClient.value.nombre_completo || !newClient.value.rfc || !tenantStore.activeTenantId) return;
-
+  if (!newClient.value.name || !newClient.value.rfc) return;
   saving.value = true;
   try {
-    await pb.collection('clientes').create({
-      tenant: tenantStore.activeTenantId,
-      nombre_completo: newClient.value.nombre_completo,
-      rfc: newClient.value.rfc,
-      perfil_validado: false,
-      documentos_estado: {}
-    });
-    hideDialog();
-    fetchClients();
-    newClient.value = { nombre_completo: '', rfc: '' };
+    await clientStore.saveClient(newClient.value);
+    showNewClientDialog.value = false;
+    newClient.value = { name: '', rfc: '', email: '' };
   } catch (err) {
     console.error(err);
   } finally {
     saving.value = false;
   }
 };
-
-// Dictamen Workflow
-const openDictamenWorkflow = (client: any) => {
-  selectedClient.value = { ...client };
-  showDictamenDialog.value = true;
-};
-
-const hasDocument = (docId: string) => {
-  return selectedClient.value?.documentos_estado?.[docId]?.status === 'aprobado';
-};
-
-const toggleValidation = async () => {
-  if (!selectedClient.value || !isVerificador.value) return;
-  const newValue = !selectedClient.value.perfil_validado;
-  
-  try {
-    await pb.collection('clientes').update(selectedClient.value.id, {
-      perfil_validado: newValue
-    });
-    selectedClient.value.perfil_validado = newValue;
-    // Update local list
-    const idx = clients.value.findIndex(c => c.id === selectedClient.value.id);
-    if (idx !== -1) clients.value[idx].perfil_validado = newValue;
-  } catch (err) {
-    console.error(err);
-  }
-};
 </script>
-
-<style scoped>
-.clients-view {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
-.view-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.subtitle {
-  margin: 0.25rem 0 0 0;
-  font-size: 0.875rem;
-  color: #64748b;
-}
-
-.card {
-  background: white;
-  border-radius: 1rem;
-  padding: 1.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
-  border: 1px solid #e2e8f0;
-}
-
-/* Dictamen Workflow Styles */
-.doc-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.doc-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 1rem;
-  background-color: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
-}
-
-.doc-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.font-bold {
-  font-weight: 700;
-}
-
-.text-xs {
-  font-size: 0.75rem;
-}
-
-.block {
-  display: block;
-}
-
-.border-t {
-  border-top: 1px solid #e2e8f0;
-}
-
-.pt-4 {
-  padding-top: 1rem;
-}
-
-.mt-4 {
-  margin-top: 1rem;
-}
-
-.bg-slate-50 {
-  background-color: #f8fafc;
-}
-
-.p-3 {
-  padding: 0.75rem;
-}
-
-.border-round {
-  border-radius: 0.5rem;
-}
-
-.flex {
-  display: flex;
-}
-
-.justify-content-between {
-  justify-content: space-between;
-}
-
-.align-items-center {
-  align-items: center;
-}
-</style>

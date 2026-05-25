@@ -3,8 +3,8 @@
     <!-- TOOLBAR (Document Actions) -->
     <DsDocumentToolbar 
       class="absolute top-0 left-0 right-0 h-14 z-10"
-      @action="(type) => console.log('Action:', type)"
-      @view="(viewType) => console.log('View:', viewType)"
+      @action="() => {}"
+      @view="() => {}"
     />
 
     <!-- CANVAS RENDERING ZONE (70%) -->

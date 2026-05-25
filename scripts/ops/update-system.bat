@@ -1,0 +1,13 @@
+@echo off
+TITLE ERP Cotizador Enterprise - Actualizador
+echo Descargando ultimos cambios del repositorio (git pull)...
+git pull origin main
+echo Instalando dependencias de Backend...
+cd backend && npm install
+echo Instalando dependencias de Frontend...
+cd ../frontend && npm install
+echo Ejecutando migraciones de Base de Datos...
+cd ../backend && npx prisma migrate deploy
+echo.
+echo Actualizacion completada. Ejecuta start-prod.bat para reanudar el servicio.
+pause

@@ -5,5 +5,10 @@ import { PrismaService } from '../prisma/prisma.service';
 export class ContractsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // TODO: Add domain logic
+  async getContract(id: string) {
+    const contract = await this.prisma.contract.findUnique({
+      where: { id },
+    });
+    return contract;
+  }
 }

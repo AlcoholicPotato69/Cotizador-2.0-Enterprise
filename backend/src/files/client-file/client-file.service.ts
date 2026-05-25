@@ -1,8 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
 import { ClientFileRepository } from './client-file.repository';
-import { CreateClientFileDto, AddClientFileDocumentDto } from './client-file.dto';
-import { ClientFileCreatedEvent, ClientFileDocumentAddedEvent } from '../events/file.events';
+import {
+  CreateClientFileDto,
+  AddClientFileDocumentDto,
+} from './client-file.dto';
+import {
+  ClientFileCreatedEvent,
+  ClientFileDocumentAddedEvent,
+} from '../events/file.events';
 
 @Injectable()
 export class ClientFileService {
@@ -30,10 +36,19 @@ export class ClientFileService {
     return this.repository.findClientFiles(tenantId, clientId);
   }
 
-  async addDocument(tenantId: string, clientFileId: string, dto: AddClientFileDocumentDto) {
-    const file = await this.repository.findClientFileById(tenantId, clientFileId);
+  async addDocument(
+    tenantId: string,
+    clientFileId: string,
+    dto: AddClientFileDocumentDto,
+  ) {
+    const file = await this.repository.findClientFileById(
+      tenantId,
+      clientFileId,
+    );
     if (!file) {
-      throw new NotFoundException(`ClientFile with ID ${clientFileId} not found`);
+      throw new NotFoundException(
+        `ClientFile with ID ${clientFileId} not found`,
+      );
     }
 
     const document = await this.repository.addDocument({
@@ -45,7 +60,12 @@ export class ClientFileService {
 
     this.eventEmitter.emit(
       'clientFile.documentAdded',
-      new ClientFileDocumentAddedEvent(tenantId, clientFileId, document.id, document.documentType),
+      new ClientFileDocumentAddedEvent(
+        tenantId,
+        clientFileId,
+        document.id,
+        document.documentType,
+      ),
     );
 
     return document;

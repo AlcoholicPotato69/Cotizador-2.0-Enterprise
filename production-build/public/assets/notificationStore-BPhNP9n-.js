@@ -1,0 +1,1 @@
+import{Et as e,sn as t}from"./index-Cc2HlpY5.js";var n=e(`notification`,()=>{let e=t([]);function n(t){e.value.unshift({...t,id:crypto.randomUUID(),timestamp:Date.now()})}function r(t){e.value=e.value.filter(e=>e.id!==t)}return{notifications:e,addNotification:n,markAsRead:r}});export{n as t};

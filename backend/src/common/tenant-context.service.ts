@@ -11,7 +11,9 @@ export class TenantContextService {
 
   getTenantId(): string {
     if (!this.tenantId) {
-      throw new Error('TenantContext: tenant_id no ha sido establecido en la petición actual.');
+      throw new Error(
+        'TenantContext: tenant_id no ha sido establecido en la petición actual.',
+      );
     }
     return this.tenantId;
   }
@@ -22,7 +24,9 @@ export class TenantContextService {
 
   getUserId(): string {
     if (!this.userId) {
-      throw new Error('TenantContext: user_id no ha sido establecido en la petición actual.');
+      throw new Error(
+        'TenantContext: user_id no ha sido establecido en la petición actual.',
+      );
     }
     return this.userId;
   }

@@ -7,28 +7,32 @@ export class FeatureFlagsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: Prisma.FeatureFlagCreateInput): Promise<FeatureFlag> {
-    return this.prisma.featureFlag.create({ data }) as any;
+    return this.prisma.featureFlag.create({ data });
   }
 
   async findById(id: string): Promise<FeatureFlag | null> {
     return this.prisma.featureFlag.findUnique({
-      where: { id } as any,
-    }) as any;
+      where: { id },
+    });
   }
 
-  async findFirst(where: Prisma.FeatureFlagWhereInput): Promise<FeatureFlag | null> {
-    return this.prisma.featureFlag.findFirst({ where }) as any;
+  async findFirst(
+    where: Prisma.FeatureFlagWhereInput,
+  ): Promise<FeatureFlag | null> {
+    return this.prisma.featureFlag.findFirst({ where });
   }
 
   async findMany(where: Prisma.FeatureFlagWhereInput): Promise<FeatureFlag[]> {
-    return this.prisma.featureFlag.findMany({ where }) as any;
+    return this.prisma.featureFlag.findMany({ where });
   }
 
-  async update(id: string, data: Prisma.FeatureFlagUpdateInput): Promise<FeatureFlag> {
+  async update(
+    id: string,
+    data: Prisma.FeatureFlagUpdateInput,
+  ): Promise<FeatureFlag> {
     return this.prisma.featureFlag.update({
-      where: { id } as any,
+      where: { id },
       data,
-    }) as any;
+    });
   }
 }
-

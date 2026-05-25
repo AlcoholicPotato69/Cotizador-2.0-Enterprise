@@ -6,14 +6,20 @@ import { Prisma, Document } from '@prisma/client';
 export class DocumentsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(tx: Prisma.TransactionClient, data: Prisma.DocumentUncheckedCreateInput): Promise<Document> {
-    return tx.document.create({ data }) as any;
+  async create(
+    tx: Prisma.TransactionClient,
+    data: Prisma.DocumentUncheckedCreateInput,
+  ): Promise<Document> {
+    return tx.document.create({ data });
   }
 
-  async findLatest(tx: Prisma.TransactionClient, tenantId: string): Promise<Document | null> {
+  async findLatest(
+    tx: Prisma.TransactionClient,
+    tenantId: string,
+  ): Promise<Document | null> {
     return tx.document.findFirst({
-      where: { tenantId } as any,
-      orderBy: { createdAt: 'desc' } as any,
-    }) as any;
+      where: { tenantId },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 }

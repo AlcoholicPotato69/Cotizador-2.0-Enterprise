@@ -23,8 +23,14 @@ export const navigationRegistry: NavItem[] = [
     {
         label: 'Contratos',
         icon: 'Briefcase',
-        route: '/contracts',
-        permission: 'contract.view'
+        route: '/legal/contracts',
+        permission: 'contracts.read'
+    },
+    {
+        label: 'Acuerdos',
+        icon: 'FileSignature',
+        route: '/legal/agreements',
+        permission: 'agreements.read'
     },
     {
         label: 'Finanzas',

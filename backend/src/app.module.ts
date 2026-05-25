@@ -29,23 +29,57 @@ import { SchedulerWorkerModule } from './common/scheduler/scheduler.module';
 import { FilesModule } from './files/files.module';
 
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { AgreementsModule } from './agreements/agreements.module';
+import { CustomerCreditsModule } from './customer-credits/customer-credits.module';
+import { ReceiptsModule } from './receipts/receipts.module';
+import { ReviewsModule } from './reviews/reviews.module';
+
+import { CatalogModule } from './catalog/catalog.module';
+import { TemplatesModule } from './templates/templates.module';
+import { RegulationsModule } from './regulations/regulations.module';
+import { WorkflowsModule } from './workflows/workflow.module';
+import { SearchModule } from './search/search.module';
+import { ArchiveModule } from './archive/archive.module';
+import { NumberingModule } from './numbering/numbering.module';
+import { ConfigModule } from '@nestjs/config';
+import { validate } from './config/env.validation';
+import { PdfModule } from './pdf/pdf.module';
+import { ReportsModule } from './reports/reports.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { AgendaModule } from './agenda/agenda.module';
+
+import { TenantContextInterceptor } from './common/interceptors/tenant-context.interceptor';
+import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { PermissionsGuard } from './auth/guards/permissions.guard';
+import { TenantIsolationGuard } from './auth/guards/tenant-isolation.guard';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', '..', 'public'),
+      exclude: ['/api/{*splat}'],
+    }),
+    ConfigModule.forRoot({
+      validate,
+      isGlobal: true,
+    }),
     EventEmitterModule.forRoot({
       wildcard: true,
       delimiter: '.',
     }),
     CommonModule,
-    AuthModule, 
-    TenantsModule, 
-    RbacModule, 
-    SettingsModule, 
-    AuditModule, 
-    SnapshotsModule, 
-    ApprovalsModule, 
-    ClientsModule, 
-    DocumentsModule, 
+    AuthModule,
+    TenantsModule,
+    RbacModule,
+    SettingsModule,
+    AuditModule,
+    SnapshotsModule,
+    ApprovalsModule,
+    ClientsModule,
+    DocumentsModule,
     PrismaModule,
     QuotesModule,
     ContractsModule,
@@ -60,9 +94,42 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     ComplianceModule,
     FilesModule,
     ScheduleModule.forRoot(),
-    SchedulerWorkerModule
+    SchedulerWorkerModule,
+    AgreementsModule,
+    CustomerCreditsModule,
+    ReceiptsModule,
+    ReviewsModule,
+    CatalogModule,
+    TemplatesModule,
+    RegulationsModule,
+    WorkflowsModule,
+    SearchModule,
+    ArchiveModule,
+    NumberingModule,
+    PdfModule,
+    ReportsModule,
+    NotificationsModule,
+    AgendaModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: TenantIsolationGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TenantContextInterceptor,
+    },
+  ],
 })
 export class AppModule {}

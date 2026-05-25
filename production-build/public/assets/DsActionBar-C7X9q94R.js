@@ -1,0 +1,1 @@
+import{Bt as e,Gt as t,Yt as n,Zt as r}from"./index-Cc2HlpY5.js";var i={class:`flex items-center gap-2 bg-surface-50 dark:bg-surface-900/50 p-2 rounded-lg border border-surface-200 dark:border-surface-800`},a=t({__name:`DsActionBar`,setup(t){return(t,a)=>(n(),e(`div`,i,[r(t.$slots,`default`)]))}});export{a as t};

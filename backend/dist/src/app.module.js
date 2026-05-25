@@ -36,12 +36,38 @@ const compliance_module_1 = require("./compliance/compliance.module");
 const scheduler_module_1 = require("./common/scheduler/scheduler.module");
 const files_module_1 = require("./files/files.module");
 const event_emitter_1 = require("@nestjs/event-emitter");
+const agreements_module_1 = require("./agreements/agreements.module");
+const customer_credits_module_1 = require("./customer-credits/customer-credits.module");
+const receipts_module_1 = require("./receipts/receipts.module");
+const reviews_module_1 = require("./reviews/reviews.module");
+const catalog_module_1 = require("./catalog/catalog.module");
+const templates_module_1 = require("./templates/templates.module");
+const regulations_module_1 = require("./regulations/regulations.module");
+const workflow_module_1 = require("./workflows/workflow.module");
+const search_module_1 = require("./search/search.module");
+const archive_module_1 = require("./archive/archive.module");
+const numbering_module_1 = require("./numbering/numbering.module");
+const config_1 = require("@nestjs/config");
+const env_validation_1 = require("./config/env.validation");
+const pdf_module_1 = require("./pdf/pdf.module");
+const reports_module_1 = require("./reports/reports.module");
+const notifications_module_1 = require("./notifications/notifications.module");
+const agenda_module_1 = require("./agenda/agenda.module");
+const tenant_context_interceptor_1 = require("./common/interceptors/tenant-context.interceptor");
+const core_1 = require("@nestjs/core");
+const jwt_auth_guard_1 = require("./auth/guards/jwt-auth.guard");
+const permissions_guard_1 = require("./auth/guards/permissions.guard");
+const tenant_isolation_guard_1 = require("./auth/guards/tenant-isolation.guard");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            config_1.ConfigModule.forRoot({
+                validate: env_validation_1.validate,
+                isGlobal: true,
+            }),
             event_emitter_1.EventEmitterModule.forRoot({
                 wildcard: true,
                 delimiter: '.',
@@ -70,10 +96,43 @@ exports.AppModule = AppModule = __decorate([
             compliance_module_1.ComplianceModule,
             files_module_1.FilesModule,
             schedule_1.ScheduleModule.forRoot(),
-            scheduler_module_1.SchedulerWorkerModule
+            scheduler_module_1.SchedulerWorkerModule,
+            agreements_module_1.AgreementsModule,
+            customer_credits_module_1.CustomerCreditsModule,
+            receipts_module_1.ReceiptsModule,
+            reviews_module_1.ReviewsModule,
+            catalog_module_1.CatalogModule,
+            templates_module_1.TemplatesModule,
+            regulations_module_1.RegulationsModule,
+            workflow_module_1.WorkflowsModule,
+            search_module_1.SearchModule,
+            archive_module_1.ArchiveModule,
+            numbering_module_1.NumberingModule,
+            pdf_module_1.PdfModule,
+            reports_module_1.ReportsModule,
+            notifications_module_1.NotificationsModule,
+            agenda_module_1.AgendaModule,
         ],
         controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        providers: [
+            app_service_1.AppService,
+            {
+                provide: core_1.APP_GUARD,
+                useClass: jwt_auth_guard_1.JwtAuthGuard,
+            },
+            {
+                provide: core_1.APP_GUARD,
+                useClass: tenant_isolation_guard_1.TenantIsolationGuard,
+            },
+            {
+                provide: core_1.APP_GUARD,
+                useClass: permissions_guard_1.PermissionsGuard,
+            },
+            {
+                provide: core_1.APP_INTERCEPTOR,
+                useClass: tenant_context_interceptor_1.TenantContextInterceptor,
+            },
+        ],
     })
 ], AppModule);
 //# sourceMappingURL=app.module.js.map

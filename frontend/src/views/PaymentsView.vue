@@ -3,100 +3,165 @@
     <div class="flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-surface-200 dark:border-surface-800 gap-4">
       <div>
         <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-50 tracking-tight">Pagos (Payments)</h1>
-        <p class="text-sm text-surface-500">Registro de cobros y conciliación</p>
+        <p class="text-sm text-surface-500">Registro de cobros y conciliaciÃ³n</p>
       </div>
-      <button v-if="permissionsStore.can('payments.create')" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 dark:bg-primary-500 dark:hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
-        <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-        Registrar Pago
-      </button>
+      <Button v-if="permissionsStore.can('payments.create')" label="Registrar Pago" icon="pi pi-money-bill" class="p-button-primary" @click="openNew" />
     </div>
 
     <!-- Overview Cards -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm">
-        <h3 class="text-sm font-medium text-surface-500 uppercase">Total Recaudado (Mes)</h3>
-        <div class="mt-2 text-3xl font-bold text-surface-900 dark:text-surface-50">{{ data?.monthlyCollected || '$0.00' }}</div>
+      <div class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm flex flex-col justify-between">
+        <h3 class="text-sm font-medium text-surface-500 uppercase tracking-wide">Total Recaudado (Mes)</h3>
+        <div class="mt-2 text-3xl font-bold text-surface-900 dark:text-surface-50">{{ formatCurrency(summary.monthlyCollected) }}</div>
       </div>
-      <div class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm">
-        <h3 class="text-sm font-medium text-surface-500 uppercase">Pagos en Conciliación</h3>
-        <div class="mt-2 text-3xl font-bold text-surface-900 dark:text-surface-50">{{ data?.pendingReconciliation || '0' }}</div>
+      <div class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm flex flex-col justify-between">
+        <h3 class="text-sm font-medium text-surface-500 uppercase tracking-wide">Pagos en ConciliaciÃ³n</h3>
+        <div class="mt-2 text-3xl font-bold text-surface-900 dark:text-surface-50">{{ summary.pendingReconciliation }}</div>
       </div>
-      <div class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm">
-        <h3 class="text-sm font-medium text-surface-500 uppercase">Cartera Vencida</h3>
-        <div class="mt-2 text-3xl font-bold text-red-600 dark:text-red-400">{{ data?.overdueAmount || '$0.00' }}</div>
+      <div class="bg-surface-0 dark:bg-surface-900 p-6 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm flex flex-col justify-between">
+        <h3 class="text-sm font-medium text-surface-500 uppercase tracking-wide">Cartera Vencida</h3>
+        <div class="mt-2 text-3xl font-bold text-red-600 dark:text-red-400">{{ formatCurrency(summary.overdueAmount) }}</div>
       </div>
     </div>
 
     <!-- Data Table Container -->
     <div class="bg-surface-0 dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm overflow-hidden">
-      <!-- Search / Filter -->
-      <div class="p-4 border-b border-surface-200 dark:border-surface-800 bg-surface-50 dark:bg-surface-900/50 flex justify-between items-center">
-        <div class="relative rounded-md shadow-sm max-w-sm w-full">
-          <label for="search-payments" class="sr-only">Buscar pago</label>
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+      <DataTable 
+        :value="payments" 
+        :loading="loading" 
+        :paginator="true" 
+        :rows="10" 
+        dataKey="id" 
+        v-model:filters="filters" 
+        filterDisplay="menu"
+        responsiveLayout="scroll"
+        emptyMessage="No hay pagos registrados."
+        class="p-datatable-sm"
+      >
+        <template #header>
+          <div class="flex justify-between items-center bg-surface-50 dark:bg-surface-900/50 p-2">
+            <span class="p-input-icon-left w-full max-w-sm">
+              <i class="pi pi-search" />
+              <InputText v-model="filters['global'].value" placeholder="Buscar pago..." class="w-full" />
+            </span>
           </div>
-          <input type="text" id="search-payments" aria-label="Buscar pago" class="focus:ring-2 focus:ring-primary-500 focus:outline-none block w-full pl-10 sm:text-sm border-surface-300 dark:border-surface-700 dark:bg-surface-800 dark:text-surface-50 rounded-md" placeholder="Buscar pago...">
-        </div>
-      </div>
+        </template>
 
-      <!-- Table -->
-      <div class="overflow-x-auto">
-        <table class="min-w-full divide-y divide-surface-200 dark:divide-surface-800" role="grid">
-          <thead class="bg-surface-50 dark:bg-surface-900/50">
-            <tr role="row">
-              <th scope="col" role="columnheader" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">ID Pago</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Factura Asociada</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Fecha</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Método</th>
-              <th scope="col" role="columnheader" class="px-6 py-3 text-left text-xs font-medium text-surface-500 uppercase tracking-wider">Monto</th>
-              <th scope="col" role="columnheader" class="relative px-6 py-3"><span class="sr-only">Acciones</span></th>
-            </tr>
-          </thead>
-          <tbody class="bg-surface-0 dark:bg-surface-900 divide-y divide-surface-200 dark:divide-surface-800">
-            <tr v-for="payment in payments" :key="payment.id" role="row" class="hover:bg-surface-50 dark:hover:bg-surface-800/50 transition-colors">
-              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-sm font-mono text-surface-500">
-                <button class="text-primary-600 hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-1">#{{ payment.id }}</button>
-              </td>
-              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-sm font-mono text-primary-600">
-                <button class="hover:underline focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-1">#{{ payment.invoiceId }}</button>
-              </td>
-              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-sm text-surface-900 dark:text-surface-50">{{ payment.date }}</td>
-              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-sm text-surface-900 dark:text-surface-50">{{ payment.method }}</td>
-              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-sm font-bold text-success-600 dark:text-success-400">{{ payment.amount }}</td>
-              <td role="gridcell" class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                <button aria-label="Ver detalles del pago" class="text-primary-600 dark:text-primary-400 hover:text-primary-900 dark:hover:text-primary-300 focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-2 py-1">Detalles</button>
-              </td>
-            </tr>
-            <tr v-if="!payments.length" role="row">
-              <td role="gridcell" colspan="6" class="px-6 py-8 text-center text-surface-500 text-sm">No hay pagos registrados.</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+        <Column field="folio" header="ID Pago" sortable>
+          <template #body="slotProps">
+            <span class="font-mono text-surface-500 font-medium">#{{ slotProps.data.folio || slotProps.data.id }}</span>
+          </template>
+        </Column>
+
+        <Column field="factura_id" header="Factura Asociada" sortable>
+          <template #body="slotProps">
+            <span class="font-mono text-primary-600 font-medium cursor-pointer hover:underline" @click="viewDossier(slotProps.data)">
+              #{{ slotProps.data.factura_id }}
+            </span>
+          </template>
+        </Column>
+
+        <Column field="fecha" header="Fecha" sortable>
+          <template #body="slotProps">
+            <span class="text-surface-900 dark:text-surface-50">{{ formatDate(slotProps.data.fecha || slotProps.data.created) }}</span>
+          </template>
+        </Column>
+
+        <Column field="metodo" header="MÃ©todo" sortable>
+          <template #body="slotProps">
+            <span class="text-surface-900 dark:text-surface-50">{{ slotProps.data.metodo || 'No definido' }}</span>
+          </template>
+        </Column>
+
+        <Column field="monto" header="Monto" sortable>
+          <template #body="slotProps">
+            <span class="font-bold text-success-600 dark:text-success-400">{{ formatCurrency(slotProps.data.monto) }}</span>
+          </template>
+        </Column>
+
+        <Column header="" :exportable="false" style="min-width:8rem">
+          <template #body>
+            <Button icon="pi pi-list" class="p-button-rounded p-button-text p-button-secondary" aria-label="Detalles" @click="viewDetails()" />
+          </template>
+        </Column>
+      </DataTable>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 import { usePermissionsStore } from '../stores/permissionsStore';
+import { pb } from '../services/pb';
+import { FilterMatchMode } from '@primevue/core/api';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
+import { useTenantStore } from '../stores/tenant';
 
 const permissionsStore = usePermissionsStore();
+const tenantStore = useTenantStore();
+const router = useRouter();
 
-// Dumb UI:
-const data = ref({
-  monthlyCollected: '$350,000.00',
-  pendingReconciliation: 3,
-  overdueAmount: '$12,500.00'
+const payments = ref<any[]>([]);
+const loading = ref(true);
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
 });
 
-const payments = ref([
-  { id: 'PAY-001', invoiceId: 'INV-001', date: '2026-05-20', method: 'Transferencia (SPEI)', amount: '$150,000.00' },
-  { id: 'PAY-002', invoiceId: 'INV-002', date: '2026-05-22', method: 'Tarjeta de Crédito', amount: '$42,500.00' }
-]);
+const summary = ref({
+  monthlyCollected: 0,
+  pendingReconciliation: 0,
+  overdueAmount: 0
+});
+
+const formatCurrency = (value: number) => {
+  if (!value) return '$0.00';
+  return value.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+};
+
+const formatDate = (dateString: string) => {
+  if (!dateString) return '';
+  return new Date(dateString).toLocaleDateString('es-MX');
+};
+
+const fetchPayments = async () => {
+  loading.value = true;
+  try {
+    const records = await pb.collection('pagos').getFullList({
+      sort: '-created',
+      filter: tenantStore.activeTenant?.id ? `tenant = "${tenantStore.activeTenant.id}"` : ''
+    });
+    payments.value = records;
+
+    // Optional: Recalculate summary here based on records
+    summary.value.monthlyCollected = records.reduce((acc, p) => acc + (p.monto || 0), 0);
+  } catch (err) {
+    console.warn('Error fetching payments, possibly collection does not exist yet', err);
+    payments.value = [];
+  } finally {
+    loading.value = false;
+  }
+};
+
+const openNew = () => {
+  // Logic to register a payment
+};
+
+const viewDetails = () => {
+  // Can open a dialog or a new route
+};
+
+const viewDossier = (payment: any) => {
+  if (payment.factura_id) {
+    router.push({ name: 'finance-dossier', params: { id: payment.factura_id } });
+  }
+};
 
 onMounted(() => {
-  // Fetch from API
+  fetchPayments();
 });
 </script>
+

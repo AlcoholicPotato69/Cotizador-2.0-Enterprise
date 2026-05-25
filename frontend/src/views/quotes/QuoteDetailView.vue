@@ -222,7 +222,7 @@ const loadVersionsAndHistory = async () => {
 
 const getClientName = (id: string) => {
   const c = clientStore.clients.find((x: any) => x.id === id);
-  return c ? c.razon_social : 'Desconocido';
+  return c ? c.name : 'Desconocido';
 };
 
 const getStatusClass = (status: string) => {

@@ -121,7 +121,7 @@ onMounted(async () => {
   try {
     // We fetch the version specific snapshot
     // First, find the version matching the quoteId and version_number
-    const records = await pb.collection('quote_versions').getList(1, 1, {
+    const records = await (pb.collection('quote_versions') as any).getList(1, 1, {
       filter: `quote_id = "${quoteId}" && version_number = ${versionId}`
     });
     

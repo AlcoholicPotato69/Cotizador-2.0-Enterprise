@@ -64,5 +64,5 @@ onMounted(() => {
     clientStore.fetchClients();
 });
 
-function onSearch(q: string) { console.log('Searching for:', q); }
+function onSearch() { /* Searching for q */ }
 </script>

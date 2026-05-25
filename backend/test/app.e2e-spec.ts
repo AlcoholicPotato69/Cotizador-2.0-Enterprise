@@ -8,9 +8,22 @@ describe('AppController (e2e)', () => {
   let app: INestApplication<App>;
 
   beforeEach(async () => {
+    process.env.DOCUMENT_SIGNING_SECRET = 'test-secret';
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+    })
+      .overrideGuard(require('../src/auth/guards/jwt-auth.guard').JwtAuthGuard)
+      .useValue({ canActivate: () => true })
+      .overrideGuard(
+        require('../src/auth/guards/permissions.guard').PermissionsGuard,
+      )
+      .useValue({ canActivate: () => true })
+      .overrideGuard(
+        require('../src/auth/guards/tenant-isolation.guard')
+          .TenantIsolationGuard,
+      )
+      .useValue({ canActivate: () => true })
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();

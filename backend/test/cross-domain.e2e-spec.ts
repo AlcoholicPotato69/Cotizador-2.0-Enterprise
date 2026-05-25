@@ -7,7 +7,12 @@ import { InvoicesService } from '../src/invoices/invoices.service';
 import { PaymentsService } from '../src/payments/payments.service';
 import { DomainEventPublisher } from '../src/common/events/domain-event-publisher';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { QuoteStatus, ContractStatus, InvoiceStatus, PaymentStatus } from '@prisma/client';
+import {
+  QuoteStatus,
+  ContractStatus,
+  InvoiceStatus,
+  PaymentStatus,
+} from '@prisma/client';
 import { tenantContext } from '../src/prisma/tenant-context';
 import { AuditService } from '../src/audit/audit.service';
 import { QuotesRepository } from '../src/quotes/quotes.repository';
@@ -23,13 +28,14 @@ describe('Cross Domain Integration (e2e)', () => {
   let auditService: AuditService;
 
   beforeAll(async () => {
+    process.env.DOCUMENT_SIGNING_SECRET = 'test-secret';
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
-    
+
     quotesService = app.get(QuotesService);
     contractService = app.get(ContractEngineService);
     invoicesService = app.get(InvoicesService);
@@ -45,21 +51,35 @@ describe('Cross Domain Integration (e2e)', () => {
   it('debe orquestar el flujo de Quote -> Contract -> Invoice -> Payment y auditar transiciones', async () => {
     await tenantContext.run({ tenantId: 'tenant-1' }, async () => {
       // 1. Cotización (Quote) aprobada -> Contrato generado.
-      const quote = await quotesService.create({ importeTotal: 1000 } as any);
+      const quote = await quotesService.create({
+        totalAmount: 1000,
+        currencyCode: 'USD',
+        clientId: 'client-1',
+        clientSnapshotId: 'snap-c1',
+        occupancySnapshotId: 'snap-o1',
+      } as any);
       expect(quote.status).toBe(QuoteStatus.DRAFT);
-      
+
       await quotesService.updateStatus(quote.id, QuoteStatus.SENT);
       await quotesService.updateStatus(quote.id, QuoteStatus.APPROVED);
 
-      const contractId = await contractService.generateContractFromQuote(quote.id);
+      const contractId = await contractService.generateContractFromQuote(
+        quote.id,
+      );
       expect(contractId).toBeDefined();
 
       const contractRepo = app.get(ContractsRepository);
-      const contract = await contractRepo.findByIdForUpdate(null as any, 'tenant-1', contractId);
+      const contract = await contractRepo.findByIdForUpdate(
+        null as any,
+        'tenant-1',
+        contractId,
+      );
       expect(contract.status).toBe(ContractStatus.DRAFT);
 
       // We manually transition the contract to ACTIVE using the repo for the sake of the sequence since we don't have full signatures setup here
-      await contractRepo.update('tenant-1', contractId, { status: ContractStatus.ACTIVE });
+      await contractRepo.update('tenant-1', contractId, {
+        status: ContractStatus.ACTIVE,
+      });
 
       // 2. Contrato activado (ACTIVE) -> Factura (Invoice) generada
       const invoice = await invoicesService.create({

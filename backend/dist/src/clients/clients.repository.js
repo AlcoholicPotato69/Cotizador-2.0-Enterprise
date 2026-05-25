@@ -20,21 +20,34 @@ let ClientsRepository = class ClientsRepository {
     async create(data) {
         return this.prisma.client.create({ data });
     }
-    async findById(id) {
-        return this.prisma.client.findUnique({
-            where: { id },
+    async findById(id, tenantId) {
+        const whereClause = { id };
+        if (tenantId) {
+            whereClause.tenantId = tenantId;
+        }
+        return this.prisma.client.findFirst({
+            where: whereClause,
         });
     }
     async findFirst(where) {
         return this.prisma.client.findFirst({ where });
     }
-    async update(id, data) {
+    async update(id, tenantId, data) {
+        const client = await this.prisma.client.findFirst({
+            where: { id, tenantId },
+        });
+        if (!client) {
+            throw new common_1.NotFoundException('Client not found or access denied');
+        }
         return this.prisma.client.update({
             where: { id },
             data,
         });
     }
-    async softDelete(id, deletedBy) {
+    async softDelete(tenantId, id, deletedBy) {
+        const exists = await this.findFirst({ id, tenantId });
+        if (!exists)
+            throw new Error('Client not found or access denied');
         return this.prisma.client.update({
             where: { id },
             data: {
