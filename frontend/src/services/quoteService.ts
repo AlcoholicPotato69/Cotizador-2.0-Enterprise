@@ -7,7 +7,7 @@ export interface Quote {
     client_id: string;
     created_by?: string;
     folio?: string;
-    status: 'draft' | 'pending_approval' | 'approved' | 'rejected' | 'expired' | 'converted';
+    status: 'DRAFT' | 'SENT' | 'APPROVED' | 'REJECTED' | 'EXPIRED' | 'CONTRACT_GENERATED';
     subtotal?: number;
     tax_amount?: number;
     total_amount?: number;
@@ -86,8 +86,8 @@ export const quoteService = {
         return res.data;
     },
 
-    async transitionStatus(quoteId: string, newStatus: string, reason: string = ""): Promise<Quote> {
-        const res = await http.post(`/quotes/${quoteId}/transition`, { newStatus, reason });
+    async transitionStatus(quoteId: string, newStatus: string): Promise<Quote> {
+        const res = await http.put(`/quotes/${quoteId}/status`, { status: newStatus.toUpperCase() });
         return res.data;
     }
 };

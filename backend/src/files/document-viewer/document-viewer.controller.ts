@@ -5,17 +5,31 @@ import { PermissionsGuard } from '../../auth/guards/permissions.guard';
 import { Permissions } from '../../auth/decorators/permissions.decorator';
 import type { Request } from 'express';
 import { TenantIsolationGuard } from '../../auth/guards/tenant-isolation.guard';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 interface AuthenticatedRequest extends Request {
   user: {
     id: string;
     tenantId: string;
-    role: string;
     email: string;
-    permissions: string[];
+    permissions?: string[];
   };
 }
+
+const hasPermission = (
+  permissions: string[] | undefined,
+  permission: string,
+): boolean => {
+  if (!permissions?.length) {
+    return false;
+  }
+
+  const dotNotation = permission.replace(/:/g, '.');
+  const colonNotation = permission.replace(/\./g, ':');
+  return permissions.includes(permission)
+    || permissions.includes(dotNotation)
+    || permissions.includes(colonNotation);
+};
 
 @ApiTags('Document Viewer')
 @Controller('document-viewer')
@@ -63,13 +77,14 @@ export class DocumentViewerController {
     @Query('fileId') fileId: string,
     @Query('expiresAt') expiresAt: string,
     @Query('signature') signature: string,
-    @Res() res: any,
+    @Res() res: { status: (code: number) => { send: (message: string) => void }; setHeader: (name: string, value: string) => void; redirect: (url: string) => void },
   ) {
-    if (
-      req.user.role !== 'SUPER_ADMIN' &&
-      req.user.role !== 'SYSTEM' &&
-      req.user.tenantId !== tenantId
-    ) {
+    const canCrossTenantRead = hasPermission(
+      req.user.permissions,
+      'files.read.any_tenant',
+    );
+
+    if (!canCrossTenantRead && req.user.tenantId !== tenantId) {
       return res
         .status(403)
         .send('Forbidden: Cannot access documents from another tenant');

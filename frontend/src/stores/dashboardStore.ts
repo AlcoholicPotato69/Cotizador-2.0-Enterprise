@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
+import { http } from '../api/http';
 
 export interface DashboardMetrics {
   totalRevenue: number;
@@ -9,6 +10,12 @@ export interface DashboardMetrics {
   activeQuotes: number;
   quotesGrowth: number;
   pendingSignatures: number;
+  pipeline: {
+    leads: number;
+    quotes: number;
+    contracts: number;
+    conversionRate: number;
+  };
   recentActivity: Array<{
     id: string;
     type: 'QUOTE' | 'CONTRACT' | 'PAYMENT';
@@ -28,37 +35,40 @@ export const useDashboardStore = defineStore('dashboard', () => {
     activeQuotes: 0,
     quotesGrowth: 0,
     pendingSignatures: 0,
-    recentActivity: []
+    pipeline: {
+      leads: 0,
+      quotes: 0,
+      contracts: 0,
+      conversionRate: 0,
+    },
+    recentActivity: [],
   });
+
   const isLoading = ref(false);
   const error = ref<string | null>(null);
 
   async function fetchDashboardMetrics() {
     isLoading.value = true;
     error.value = null;
+
     try {
-      // Simulate API call for now. In a real app, this would be an Axios call.
-      // await axios.get('/api/dashboard/metrics');
-      await new Promise(resolve => setTimeout(resolve, 800));
-      
-      metrics.value = {
-        totalRevenue: 1245000,
-        revenueGrowth: 14.5,
-        occupancyRate: 78,
-        occupancyGrowth: 5.2,
-        activeQuotes: 45,
-        quotesGrowth: -2.1,
-        pendingSignatures: 12,
-        recentActivity: [
-          { id: '1', type: 'CONTRACT', title: 'Boda M&M - Salón Diamante', date: '2026-05-24', amount: 150000, status: 'SIGNED' },
-          { id: '2', type: 'QUOTE', title: 'Convención TechCorp', date: '2026-05-23', amount: 450000, status: 'PENDING' },
-          { id: '3', type: 'PAYMENT', title: 'Anticipo XV Años', date: '2026-05-22', amount: 50000, status: 'PAID' },
-          { id: '4', type: 'QUOTE', title: 'Graduación UVM', date: '2026-05-21', amount: 280000, status: 'APPROVED' },
-        ]
-      };
+      const res = await http.get('/dashboard/metrics');
+      if (!res.data) {
+        return;
+      }
+
+      const payload = res.data.data ? res.data.data : res.data;
+      metrics.value = { ...metrics.value, ...payload };
+
+      if (payload.pipeline) {
+        metrics.value.pipeline = {
+          ...metrics.value.pipeline,
+          ...payload.pipeline,
+        };
+      }
     } catch (err: any) {
-      error.value = err.message || 'Error fetching dashboard metrics';
-      console.error(err);
+      console.warn('Dashboard metrics endpoint failed.', err);
+      error.value = err?.message || 'No se pudieron cargar metricas del dashboard';
     } finally {
       isLoading.value = false;
     }

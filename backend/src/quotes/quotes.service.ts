@@ -106,4 +106,39 @@ export class QuotesService {
       return updated;
     });
   }
+
+  /**
+   * Retrieves all quotes for the current tenant.
+   */
+  async findAll() {
+    const ctx = tenantContext.getStore();
+    if (!ctx || !ctx.tenantId)
+      throw new NotFoundException('Tenant context missing');
+    return await this.repo.findMany({ tenantId: ctx.tenantId });
+  }
+
+  /**
+   * Retrieves a specific quote by ID for the current tenant.
+   */
+  async findById(id: string) {
+    const ctx = tenantContext.getStore();
+    if (!ctx || !ctx.tenantId)
+      throw new NotFoundException('Tenant context missing');
+    const quote = await this.repo.findById(ctx.tenantId, id);
+    if (!quote) throw new NotFoundException('Quote not found');
+    return quote;
+  }
+
+  /**
+   * Retrieves quote items.
+   * The current frozen schema does not include a QuoteItem model, so an empty
+   * collection is returned until that model exists in the contract.
+   */
+  async getQuoteItems(quoteId: string) {
+    const ctx = tenantContext.getStore();
+    if (!ctx || !ctx.tenantId)
+      throw new NotFoundException('Tenant context missing');
+    // Si QuoteItem no existe aún en Prisma o en el repo, devolvemos un array vacío seguro
+    return [];
+  }
 }

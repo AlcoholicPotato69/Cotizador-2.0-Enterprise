@@ -5,6 +5,7 @@ import { tenantContext } from '../prisma/tenant-context';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
+import { EligibilityEngineService } from './eligibility.service';
 
 describe('ClientsController', () => {
   let controller: ClientsController;
@@ -20,6 +21,12 @@ describe('ClientsController', () => {
             create: jest.fn().mockResolvedValue({ id: 'client-1' }),
             findById: jest.fn().mockResolvedValue({ id: 'client-1' }),
             update: jest.fn().mockResolvedValue({ id: 'client-1' }),
+          },
+        },
+        {
+          provide: EligibilityEngineService,
+          useValue: {
+            evaluateEligibility: jest.fn().mockResolvedValue(true),
           },
         },
       ],

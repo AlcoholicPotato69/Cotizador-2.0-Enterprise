@@ -11,23 +11,23 @@
         <div class="card h-full">
            <div class="flex justify-content-between align-items-center mb-3">
              <h3 class="m-0">Reglas Activas</h3>
-             <Button icon="pi pi-plus" size="small" outlined aria-label="Nueva Regla" @click="createNewRule" v-permission="'config.manage'" />
+             <DsButton icon="pi pi-plus" size="small" outlined aria-label="Nueva Regla" @click="createNewRule" v-permission="'config.manage'" />
            </div>
 
            <div class="mb-3">
-             <input type="text" placeholder="Buscar regla..." class="w-full p-2 border-round border-1 border-slate-300" v-model="searchQuery" />
+             <input type="text" placeholder="Buscar regla..." class="w-full p-2 border-round border-1 border-surface-300 dark:border-surface-600" v-model="searchQuery" />
            </div>
 
            <ul class="list-none p-0 m-0">
-             <li v-for="rule in filteredRules" :key="rule.id" class="p-3 border-bottom flex justify-content-between align-items-center hover-bg cursor-pointer" :class="{'bg-blue-50 border-blue-200': activeRule?.id === rule.id}" @click="selectRule(rule)">
+             <li v-for="rule in filteredRules" :key="rule.id" class="p-3 border-bottom flex justify-content-between align-items-center hover-bg cursor-pointer" :class="{'bg-primary-50 dark:bg-primary-900 border-blue-200': activeRule?.id === rule.id}" @click="selectRule(rule)">
                 <div>
-                   <span class="font-bold block text-slate-800">{{ rule.name }}</span>
-                   <span class="text-xs text-slate-500 block">Tipo: {{ rule.rule_type }} | v{{ rule.version || 1 }}</span>
+                   <span class="font-bold block text-surface-800 dark:text-surface-100">{{ rule.name }}</span>
+                   <span class="text-xs text-surface-500 dark:text-surface-400 block">Tipo: {{ rule.rule_type }} | v{{ rule.version || 1 }}</span>
                    <span v-if="rule.is_exclusive" class="text-xs text-red-500 font-bold"><i class="pi pi-bolt"></i> Excluyente</span>
                 </div>
-                <i class="pi pi-chevron-right text-slate-400"></i>
+                <i class="pi pi-chevron-right text-surface-400 dark:text-surface-500"></i>
              </li>
-             <li v-if="filteredRules.length === 0" class="p-3 text-center text-slate-400 text-sm">
+             <li v-if="filteredRules.length === 0" class="p-3 text-center text-surface-400 dark:text-surface-500 text-sm">
                No se encontraron reglas.
              </li>
            </ul>
@@ -37,7 +37,7 @@
       <!-- Right Panel: Editor -->
       <div class="col-12 lg:col-8">
         <div class="card h-full flex flex-column">
-           <div v-if="!activeRule" class="flex align-items-center justify-content-center h-full text-slate-400">
+           <div v-if="!activeRule" class="flex align-items-center justify-content-center h-full text-surface-400 dark:text-surface-500">
              Seleccione o cree una regla para comenzar a editar.
            </div>
            
@@ -46,14 +46,14 @@
              <div class="flex justify-content-between align-items-start mb-4 border-bottom pb-3">
                <div class="flex-1 pr-3">
                  <input type="text" v-model="activeRule.name" class="title-input w-full font-bold text-xl mb-2" placeholder="Nombre de la regla" :disabled="!canEdit" />
-                 <textarea v-model="activeRule.description" class="w-full p-2 border-round border-1 border-slate-300 text-sm" rows="2" placeholder="Descripción obligatoria..." :disabled="!canEdit"></textarea>
+                 <textarea v-model="activeRule.description" class="w-full p-2 border-round border-1 border-surface-300 dark:border-surface-600 text-sm" rows="2" placeholder="Descripción obligatoria..." :disabled="!canEdit"></textarea>
                </div>
                <div class="flex flex-column gap-2 text-right">
-                 <Tag :severity="activeRule.status === 'active' ? 'success' : 'warning'" :value="activeRule.status.toUpperCase()" />
-                 <span class="text-xs text-slate-500 font-mono">Versión actual: {{ activeRule.version || 1 }}</span>
+                 <DsTag :severity="activeRule.status === 'active' ? 'success' : 'warning'" :value="activeRule.status.toUpperCase()" />
+                 <span class="text-xs text-surface-500 dark:text-surface-400 font-mono">Versión actual: {{ activeRule.version || 1 }}</span>
                  <div class="flex gap-2 justify-content-end mt-2" v-if="canEdit">
-                   <Button label="Simular" icon="pi pi-play" class="p-button-outlined" size="small" />
-                   <Button label="Guardar & Versionar" icon="pi pi-save" size="small" severity="success" @click="saveRule" :loading="saving" />
+                   <DsButton label="Simular" icon="pi pi-play" class="p-button-outlined" size="small" />
+                   <DsButton label="Guardar & Versionar" icon="pi pi-save" size="small" severity="success" @click="saveRule" :loading="saving" />
                  </div>
                </div>
              </div>
@@ -61,8 +61,8 @@
              <!-- Rule Configuration Form -->
              <div class="grid mb-4">
                 <div class="col-12 lg:col-6">
-                  <label class="block text-sm font-bold text-slate-700 mb-1">Tipo de Regla</label>
-                  <select v-model="activeRule.rule_type" class="w-full p-2 border-round border-1 border-slate-300" :disabled="!canEdit">
+                  <label class="block text-sm font-bold text-surface-700 dark:text-surface-200 mb-1">Tipo de Regla</label>
+                  <select v-model="activeRule.rule_type" class="w-full p-2 border-round border-1 border-surface-300 dark:border-surface-600" :disabled="!canEdit">
                     <option value="pricing">Pricing (Recargos/Descuentos)</option>
                     <option value="eligibility">Elegibilidad (Bloqueos)</option>
                     <option value="promotion">Promoción</option>
@@ -83,56 +83,36 @@
                 </div>
              </div>
 
-             <!-- LÓGICA VISUAL BUILDER (Mock UI representation of AST) -->
-             <div class="logic-builder bg-slate-50 border-1 border-slate-200 border-round p-3 flex-1 overflow-auto">
-                <h4 class="m-0 mb-3 text-slate-600"><i class="pi pi-sitemap mr-2"></i>Árbol de Condiciones</h4>
+             <!-- LÓGICA VISUAL BUILDER (AST) -->
+             <div class="logic-builder bg-surface-50 dark:bg-surface-950 border-1 border-surface-200 dark:border-surface-700 border-round p-3 flex-1 overflow-auto">
+                <h4 class="m-0 mb-3 text-surface-600 dark:text-surface-300"><i class="pi pi-sitemap mr-2"></i>Árbol de Condiciones</h4>
                 
-                <div class="condition-group p-3 border-1 border-blue-200 bg-white border-round relative mb-3">
-                   <div class="absolute bg-blue-100 text-blue-800 font-bold px-2 py-1 text-xs border-round" style="top: -10px; left: 10px;">AND (Todas deben cumplirse)</div>
-                   
-                   <div class="condition-row flex gap-2 align-items-center mt-3 mb-2">
-                     <select class="p-2 border-round border-1 border-slate-300 flex-1 text-sm" :disabled="!canEdit">
-                       <option>context.cliente.tipo_persona</option>
-                       <option>context.espacio.categoria</option>
-                       <option>context.fechas.dia_semana</option>
-                     </select>
-                     <select class="p-2 border-round border-1 border-slate-300 text-sm" :disabled="!canEdit">
-                       <option>EQUALS</option>
-                       <option>CONTAINS</option>
-                       <option>GREATER_THAN</option>
-                     </select>
-                     <input type="text" class="p-2 border-round border-1 border-slate-300 flex-1 text-sm" value="Moral" :disabled="!canEdit" />
-                     <Button icon="pi pi-trash" class="p-button-danger p-button-text" size="small" v-if="canEdit" />
-                   </div>
-
-                   <div class="condition-row flex gap-2 align-items-center mb-2">
-                     <select class="p-2 border-round border-1 border-slate-300 flex-1 text-sm" :disabled="!canEdit">
-                       <option>context.espacio.categoria</option>
-                     </select>
-                     <select class="p-2 border-round border-1 border-slate-300 text-sm" :disabled="!canEdit">
-                       <option>EQUALS</option>
-                     </select>
-                     <input type="text" class="p-2 border-round border-1 border-slate-300 flex-1 text-sm" value="Salón" :disabled="!canEdit" />
-                     <Button icon="pi pi-trash" class="p-button-danger p-button-text" size="small" v-if="canEdit" />
-                   </div>
-
-                   <Button label="Agregar Condición" icon="pi pi-plus" class="p-button-text p-button-sm mt-2" v-if="canEdit" />
-                   <Button label="Agregar Sub-Grupo (OR)" icon="pi pi-sitemap" class="p-button-text p-button-sm p-button-secondary mt-2" v-if="canEdit" />
-                </div>
+                <RuleConditionGroup 
+                  v-if="activeRule.conditions_ast" 
+                  v-model="activeRule.conditions_ast" 
+                  :canEdit="canEdit" 
+                  :isRoot="true" 
+                />
                 
-                <h4 class="m-0 mb-3 mt-4 text-slate-600"><i class="pi pi-bolt mr-2"></i>Acción Resultante</h4>
+                <h4 class="m-0 mb-3 mt-4 text-surface-600 dark:text-surface-300"><i class="pi pi-bolt mr-2"></i>Acción Resultante</h4>
                 <div class="flex gap-3">
                   <div class="flex-1">
-                    <label class="block text-xs font-bold text-slate-500 mb-1">Tipo de Acción</label>
-                    <select class="w-full p-2 border-round border-1 border-slate-300" :disabled="!canEdit">
-                      <option>block (Rechazar)</option>
-                      <option>surcharge_percentage (Recargo %)</option>
-                      <option>discount_fixed (Descuento Fijo)</option>
+                    <label class="block text-xs font-bold text-surface-500 dark:text-surface-400 mb-1">Tipo de Acción</label>
+                    <select v-model="activeRule.action.type" class="w-full p-2 border-round border-1 border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0" :disabled="!canEdit">
+                      <option value="block">block (Rechazar / Bloquear)</option>
+                      <option value="surcharge_percentage">surcharge_percentage (Recargo %)</option>
+                      <option value="discount_fixed">discount_fixed (Descuento Fijo)</option>
+                      <option value="set_price">set_price (Fijar Precio Unitario)</option>
+                      <option value="require_approval">require_approval (Forzar Aprobación Manual)</option>
                     </select>
                   </div>
                   <div class="flex-1">
-                    <label class="block text-xs font-bold text-slate-500 mb-1">Valor / Mensaje</label>
-                    <input type="text" class="w-full p-2 border-round border-1 border-slate-300" value="Cliente bloqueado por ser Persona Moral en Salón" :disabled="!canEdit" />
+                    <label class="block text-xs font-bold text-surface-500 dark:text-surface-400 mb-1">Valor</label>
+                    <input type="text" v-model="activeRule.action.value" class="w-full p-2 border-round border-1 border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0" placeholder="Ej. 15, 'true', o importe" :disabled="!canEdit" />
+                  </div>
+                  <div class="flex-1">
+                    <label class="block text-xs font-bold text-surface-500 dark:text-surface-400 mb-1">Mensaje / Razón</label>
+                    <input type="text" v-model="activeRule.action.message" class="w-full p-2 border-round border-1 border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0" placeholder="Razón a mostrar al usuario..." :disabled="!canEdit" />
                   </div>
                 </div>
 
@@ -146,18 +126,20 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { pb } from '../services/pb';
-import { useTenantStore } from '../stores/tenant';
+import { http } from '../api/http';
+import { ruleService, type Rule } from '../services/ruleService';
+import { useTenantStore } from '../stores/tenantStore';
 import { usePermissionsStore } from '../stores/permissions';
 import { useNotificationStore } from '../stores/notificationStore';
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
+import { useAuthStore } from '../stores/authStore';
+import RuleConditionGroup from '../components/RuleConditionGroup.vue';
 
 const tenantStore = useTenantStore();
 const permissionsStore = usePermissionsStore();
 const notificationStore = useNotificationStore();
-const rules = ref<any[]>([]);
-const activeRule = ref<any>(null);
+const authStore = useAuthStore();
+const rules = ref<Rule[]>([]);
+const activeRule = ref<Rule | null>(null);
 const searchQuery = ref('');
 const saving = ref(false);
 
@@ -169,21 +151,30 @@ const filteredRules = computed(() => {
 });
 
 onMounted(async () => {
-  if(tenantStore.activeTenantId) {
-    rules.value = await pb.collection('rule_registry').getFullList({
-      filter: `tenant = "${tenantStore.activeTenantId}"`,
+  if(tenantStore.activeTenant?.id) {
+    rules.value = await ruleService.getFullList({
+      filter: `tenant = "${tenantStore.activeTenant.id}"`,
       sort: '-created'
     });
   }
 });
 
-const selectRule = (rule: any) => {
-  activeRule.value = JSON.parse(JSON.stringify(rule)); // Clone to avoid mutating list directly
+const selectRule = (rule: Rule) => {
+  const cloned = JSON.parse(JSON.stringify(rule));
+  // Ensure we have a valid AST structure
+  if (!cloned.conditions_ast || Object.keys(cloned.conditions_ast).length === 0) {
+    cloned.conditions_ast = { type: 'AND', rules: [] };
+  }
+  if (!cloned.action) {
+    cloned.action = { type: 'block', value: '', message: '' };
+  }
+  activeRule.value = cloned;
 };
 
 const createNewRule = () => {
   activeRule.value = {
-    tenant: tenantStore.activeTenantId,
+    id: '',
+    tenant: tenantStore.activeTenant?.id || '',
     name: 'Nueva Regla',
     description: '',
     rule_type: 'eligibility',
@@ -192,50 +183,51 @@ const createNewRule = () => {
     priority: 100,
     is_exclusive: false,
     stop_processing: false,
-    conditions_ast: {},
-    action: {}
-  };
+    conditions_ast: { type: 'AND', rules: [] },
+    action: { type: 'block', value: '', message: '' }
+  } as unknown as Rule;
 };
 
 const saveRule = async () => {
+  if (!activeRule.value) return;
   saving.value = true;
   try {
     if(activeRule.value.id) {
       // ESTRATEGIA DE VERSIONADO EXIGIDA
       // 1. Archivar la actual
-      await pb.collection('rule_registry').update(activeRule.value.id, { status: 'archived' });
+      await ruleService.update(activeRule.value.id, { status: 'archived' });
       
       // 2. Crear nueva versión clonada
       const newVersion = { ...activeRule.value };
-      delete newVersion.id;
-      delete newVersion.created;
-      delete newVersion.updated;
-      newVersion.version = (newVersion.version || 1) + 1;
+      delete (newVersion as any).id;
+      delete (newVersion as any).created;
+      delete (newVersion as any).updated;
+      (newVersion as any).version = ((newVersion as any).version || 1) + 1;
       newVersion.status = 'active';
 
-      const saved = await pb.collection('rule_registry').create(newVersion);
+      const saved = await ruleService.create(newVersion);
       
       // 3. Auditoría obligatoria
-      await pb.collection('admin_audit_log').create({
-         tenant: tenantStore.activeTenantId,
-         user: (pb as any).authStore?.model?.id || 'system',
+      await http.post('/admin_audit_log', {
+         tenant: tenantStore.activeTenant?.id,
+         user: authStore.user?.id || 'system',
          action: 'RULE_VERSION_UPDATE',
          entity_type: 'rule_registry',
          entity_id: saved.id,
-         description: `Regla actualizada de v${activeRule.value.version} a v${newVersion.version}`
+         description: `Regla actualizada de v${(activeRule.value as any).version} a v${(newVersion as any).version}`
       });
 
       // Recargar
       activeRule.value = saved;
-      rules.value = await pb.collection('rule_registry').getFullList({ filter: `tenant = "${tenantStore.activeTenantId}"`, sort: '-created' });
+      rules.value = await ruleService.getFullList({ filter: `tenant = "${tenantStore.activeTenant?.id}"`, sort: '-created' });
 
     } else {
       activeRule.value.status = 'active';
-      const saved = await pb.collection('rule_registry').create(activeRule.value);
+      const saved = await ruleService.create(activeRule.value);
       
-      await pb.collection('admin_audit_log').create({
-         tenant: tenantStore.activeTenantId,
-         user: (pb as any).authStore?.model?.id || 'system',
+      await http.post('/admin_audit_log', {
+         tenant: tenantStore.activeTenant?.id,
+         user: authStore.user?.id || 'system',
          action: 'RULE_CREATE',
          entity_type: 'rule_registry',
          entity_id: saved.id,
@@ -250,7 +242,7 @@ const saveRule = async () => {
       message: 'Regla guardada y versionada correctamente.',
       domainEvent: 'RULE_SAVED'
     });
-  } catch(e) {
+  } catch(e: unknown) {
     console.error(e);
     notificationStore.addNotification({
       type: 'error',
@@ -265,7 +257,8 @@ const saveRule = async () => {
 
 <style scoped>
 .rule-builder { display: flex; flex-direction: column; gap: 1rem; }
-.card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+.card { background: var(--tenant-surface-0); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid var(--tenant-surface-200); }
+.dark .card { background: var(--tenant-surface-900); border-color: var(--tenant-surface-700); }
 .title { margin: 0; font-size: 1.5rem; font-weight: 800; color: #0f172a; }
 .subtitle { margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b; }
 .border-bottom { border-bottom: 1px solid #e2e8f0; }
@@ -330,20 +323,24 @@ const saveRule = async () => {
 .relative { position: relative; }
 
 /* Colors */
-.text-slate-800 { color: #1e293b; }
-.text-slate-700 { color: #334155; }
-.text-slate-600 { color: #475569; }
-.text-slate-500 { color: #64748b; }
-.text-slate-400 { color: #94a3b8; }
+.text-surface-800 { color: #1e293b; }
+.text-surface-700 { color: #334155; }
+.text-surface-600 { color: #475569; }
+.text-surface-500 { color: #64748b; }
+.text-surface-400 { color: #94a3b8; }
 .text-red-500 { color: #ef4444; }
 .text-red-600 { color: #dc2626; }
 .text-orange-600 { color: #ea580c; }
-.text-blue-800 { color: #1e40af; }
-.bg-blue-50 { background-color: #eff6ff; }
+.text-primary-800 { color: #1e40af; }
+.bg-primary-50 { background-color: #eff6ff; }
 .bg-blue-100 { background-color: #dbeafe; }
-.bg-slate-50 { background-color: #f8fafc; }
-.bg-white { background-color: #ffffff; }
+.bg-surface-50 { background-color: #f8fafc; }
+.bg-surface-0 { background-color: var(--tenant-surface-0); }
 .border-blue-200 { border-color: #bfdbfe; }
-.border-slate-200 { border-color: #e2e8f0; }
-.border-slate-300 { border-color: #cbd5e1; }
+.border-surface-200 { border-color: #e2e8f0; }
+.border-surface-300 { border-color: #cbd5e1; }
 </style>
+
+
+
+

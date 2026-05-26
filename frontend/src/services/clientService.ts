@@ -1,39 +1,62 @@
 import { http } from '../api/http';
-import type { QueryParams, PaginatedResponse } from './types';
 
 export interface Client {
     id: string;
-    razon_social: string;
-    rfc: string;
-    contacto: string;
-    status_validacion: string;
-    created?: string;
+    tenantId: string;
+    name: string;
+    email?: string;
+    phone?: string;
+    rfc?: string;
+    status: string;
+    bankReference?: string;
+    isTaxValidated: boolean;
+    isContractBlocked: boolean;
+    isInvoiceBlocked: boolean;
+    isPaymentBlocked: boolean;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
-export interface ClientPayload {
-    razon_social?: string;
-    rfc?: string;
-    contacto?: string;
-    status_validacion?: string;
-    [key: string]: any;
+export type ClientEligibilityTransactionType =
+  | 'QUOTE_CREATION'
+  | 'CONTRACT_GENERATION'
+  | 'INVOICE_GENERATION'
+  | 'PAYMENT_PROCESSING';
+
+export interface ClientEligibilityResult {
+    clientId: string;
+    transactionType: ClientEligibilityTransactionType;
+    eligible: boolean;
+    reasons: string[];
 }
 
 export const clientService = {
-    async getClients(params?: QueryParams): Promise<PaginatedResponse<Client>> {
-        const res = await http.get('/clients', { params });
-        return res.data;
+    async getAll(): Promise<Client[]> {
+        const res = await http.get('/clients');
+        return res.data.data || res.data;
     },
-    async getClientById(id: string): Promise<Client> {
+    async getById(id: string): Promise<Client> {
         const res = await http.get(`/clients/${id}`);
-        return res.data;
+        return res.data.data || res.data;
     },
-    async createClient(data: ClientPayload): Promise<Client> {
-        // Tenant is automatically handled by the HTTP interceptor
+    async create(data: Partial<Client>): Promise<Client> {
         const res = await http.post('/clients', data);
-        return res.data;
+        return res.data.data || res.data;
     },
-    async updateClient(id: string, data: ClientPayload): Promise<Client> {
-        const res = await http.patch(`/clients/${id}`, data);
-        return res.data;
+    async update(id: string, data: Partial<Client>): Promise<Client> {
+        const res = await http.put(`/clients/${id}`, data);
+        return res.data.data || res.data;
+    },
+    async remove(id: string): Promise<void> {
+        await http.delete(`/clients/${id}`);
+    },
+    async evaluateEligibility(
+        clientId: string,
+        transactionType: ClientEligibilityTransactionType,
+    ): Promise<ClientEligibilityResult> {
+        const res = await http.get(
+            `/clients/${clientId}/eligibility/${transactionType}`,
+        );
+        return res.data.data || res.data;
     }
 };

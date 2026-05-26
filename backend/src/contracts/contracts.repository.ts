@@ -19,6 +19,13 @@ export class ContractsRepository {
     });
   }
 
+  async findMany(tenantId: string): Promise<Contract[]> {
+    return this.prisma.contract.findMany({
+      where: { tenantId },
+      orderBy: { createdAt: 'desc' },
+    });
+  }
+
   async findByIdForUpdate(
     tx: Prisma.TransactionClient,
     tenantId: string,

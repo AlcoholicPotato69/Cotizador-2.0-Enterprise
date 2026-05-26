@@ -70,7 +70,7 @@ export class ContractEngineService {
   async updateContractStatus(
     contractId: string,
     newStatus: ContractStatus,
-  ): Promise<void> {
+  ): Promise<any> {
     const ctx = tenantContext.getStore();
     if (!ctx || !ctx.tenantId)
       throw new ConflictException('Tenant context required');
@@ -92,7 +92,11 @@ export class ContractEngineService {
         newStatus,
       );
 
-      await this.contractsRepo.update(tx, ctx.tenantId, contract.id, {
+      const updated = await this.contractsRepo.update(
+        tx,
+        ctx.tenantId,
+        contract.id,
+        {
         status: newStatus,
       });
 
@@ -106,6 +110,8 @@ export class ContractEngineService {
         },
         timestamp: new Date(),
       });
+
+      return updated;
     });
   }
 
@@ -118,5 +124,12 @@ export class ContractEngineService {
       ctx.tenantId,
       contractId,
     );
+  }
+
+  async findAll(): Promise<any[]> {
+    const ctx = tenantContext.getStore();
+    if (!ctx || !ctx.tenantId)
+      throw new ConflictException('Tenant context required');
+    return await this.contractsRepo.findMany(ctx.tenantId);
   }
 }

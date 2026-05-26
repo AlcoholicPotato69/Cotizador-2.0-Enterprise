@@ -7,6 +7,21 @@ import {
 import { Observable } from 'rxjs';
 import { tenantContext } from '../../prisma/tenant-context';
 
+const hasPermission = (
+  permissions: string[] | undefined,
+  permission: string,
+): boolean => {
+  if (!permissions?.length) {
+    return false;
+  }
+
+  const dotNotation = permission.replace(/:/g, '.');
+  const colonNotation = permission.replace(/\./g, ':');
+  return permissions.includes(permission)
+    || permissions.includes(dotNotation)
+    || permissions.includes(colonNotation);
+};
+
 @Injectable()
 export class TenantContextInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
@@ -14,18 +29,19 @@ export class TenantContextInterceptor implements NestInterceptor {
 
     // El usuario se asume que ha sido insertado en el request por el JwtAuthGuard
     const user = request.user || {};
-    const role = user.role || '';
+    const userPermissions = Array.isArray(user.permissions)
+      ? user.permissions
+      : [];
 
-    // Obtenemos el tenantId ya sea de los headers (solo para SUPER_ADMIN o SYSTEM) o del JWT directamente
+    // Obtenemos tenantId desde header solo para usuarios con permiso explícito.
     let tenantId = user.tenantId || '';
-    if (
-      (role === 'SUPER_ADMIN' || role === 'SYSTEM') &&
-      request.headers['x-tenant-id']
-    ) {
+    if (hasPermission(userPermissions, 'tenants.override_context')
+      && request.headers['x-tenant-id']) {
       tenantId = request.headers['x-tenant-id'];
     }
 
     const userId = user.id || '';
+    const role = user.role || '';
 
     // Ejecutamos la solicitud dentro del contexto del AsyncLocalStorage
     return tenantContext.run({ tenantId, userId, role }, () => {

@@ -79,8 +79,7 @@ export const useQuoteStore = defineStore('quote', () => {
      */
     const refreshSealedPayload = async () => {
         if (!currentQuote.value) return;
-        // The UI should NOT calculate anything. We request the sealed payload from the Backend.
-        // For now, we simulate fetching the updated quote from the backend.
+        // The UI should NOT calculate anything. We request the sealed payload from the backend.
         currentQuote.value = await quoteService.getQuoteById(currentQuote.value.id!);
     };
 
@@ -126,7 +125,7 @@ export const useQuoteStore = defineStore('quote', () => {
      */
     const changeQuoteStatus = async (id: string, _oldStatus: string, newStatus: string, _userId: string) => {
         // Enviar la intención de transición al backend (Dumb Frontend)
-        const updatedQuote = await quoteService.transitionStatus(id, newStatus, "Manual UI Change");
+        const updatedQuote = await quoteService.transitionStatus(id, newStatus);
         
         if (currentQuote.value && currentQuote.value.id === id) {
             currentQuote.value = updatedQuote;

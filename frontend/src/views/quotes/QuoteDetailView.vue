@@ -1,14 +1,14 @@
 <template>
   <div v-if="quoteStore.loading && !quote" class="flex justify-center p-12">
-    <ProgressSpinner />
+    <DsProgressSpinner />
   </div>
   <div v-else-if="quote" class="p-8 pb-32 max-w-6xl mx-auto">
     <!-- Header -->
     <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
       <div>
         <div class="flex items-center gap-3 mb-2">
-          <Button icon="pi pi-arrow-left" text rounded @click="router.push('/quotes')" class="text-surface-400 p-0 w-8 h-8" />
-          <h1 class="text-4xl font-bold font-mono tracking-tight text-white">{{ quote.folio }}</h1>
+          <DsButton icon="pi pi-arrow-left" text rounded @click="router.push('/quotes')" class="text-surface-400 p-0 w-8 h-8" />
+          <h1 class="text-4xl font-bold font-mono tracking-tight text-surface-0 dark:text-surface-900">{{ quote.folio }}</h1>
           <span :class="getStatusClass(quote.status)" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider ml-2">
             {{ quote.status }}
           </span>
@@ -17,12 +17,12 @@
           </span>
         </div>
         <p class="text-surface-400 pl-11">
-          Cliente: <span class="text-white font-medium">{{ getClientName(quote.client_id) }}</span>
+          Cliente: <span class="text-surface-0 dark:text-surface-900 font-medium">{{ getClientName(quote.client_id) }}</span>
         </p>
       </div>
       <div class="flex gap-2">
-        <Button v-if="canUpdate" label="Guardar Snapshot" icon="pi pi-camera" outlined severity="info" @click="showSnapshot = true" />
-        <Button v-if="canUpdate && quote.status !== 'approved'" label="Aprobar" icon="pi pi-check" severity="success" @click="changeStatus('approved')" />
+        <DsButton v-if="canUpdate" label="Guardar Snapshot" icon="pi pi-camera" outlined severity="info" @click="showSnapshot = true" />
+        <DsButton v-if="canUpdate && quote.status !== 'APPROVED'" label="Aprobar" icon="pi pi-check" severity="success" @click="changeStatus('APPROVED')" />
       </div>
     </div>
 
@@ -30,88 +30,88 @@
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
       <div class="glass-panel p-6 rounded-2xl border border-surface-700/50 flex flex-col gap-1">
         <span class="text-surface-400 text-sm font-medium uppercase tracking-wider">Subtotal</span>
-        <span class="text-2xl text-white">${{ quote.subtotal?.toLocaleString('es-MX', { minimumFractionDigits: 2 }) || '0.00' }}</span>
+        <span class="text-2xl text-surface-0 dark:text-surface-900">${{ quote.subtotal?.toLocaleString('es-MX', { minimumFractionDigits: 2 }) || '0.00' }}</span>
       </div>
       <div class="glass-panel p-6 rounded-2xl border border-surface-700/50 flex flex-col gap-1">
         <span class="text-surface-400 text-sm font-medium uppercase tracking-wider">IVA (16%)</span>
-        <span class="text-2xl text-white">${{ quote.tax_amount?.toLocaleString('es-MX', { minimumFractionDigits: 2 }) || '0.00' }}</span>
+        <span class="text-2xl text-surface-0 dark:text-surface-900">${{ quote.tax_amount?.toLocaleString('es-MX', { minimumFractionDigits: 2 }) || '0.00' }}</span>
       </div>
       <div class="glass-panel p-6 rounded-2xl border border-emerald-500/30 bg-emerald-900/10 flex flex-col gap-1">
         <span class="text-emerald-400 text-sm font-bold uppercase tracking-wider">Total</span>
-        <span class="text-3xl font-bold text-white">${{ quote.total_amount?.toLocaleString('es-MX', { minimumFractionDigits: 2 }) || '0.00' }}</span>
+        <span class="text-3xl font-bold text-surface-0 dark:text-surface-900">${{ quote.total_amount?.toLocaleString('es-MX', { minimumFractionDigits: 2 }) || '0.00' }}</span>
       </div>
     </div>
 
     <!-- Items -->
     <div class="glass-panel rounded-2xl border border-surface-700/50 overflow-hidden mb-8">
       <div class="p-4 border-b border-surface-700/50 flex justify-between items-center bg-surface-800/30">
-        <h2 class="text-xl font-bold text-white">Partidas</h2>
-        <Button v-if="canUpdate" label="Agregar" icon="pi pi-plus" size="small" @click="openItemModal()" class="bg-surface-700 hover:bg-surface-600 border-none" />
+        <h2 class="text-xl font-bold text-surface-0 dark:text-surface-900">Partidas</h2>
+        <DsButton v-if="canUpdate" label="Agregar" icon="pi pi-plus" size="small" @click="openItemModal()" class="bg-surface-700 hover:bg-surface-600 border-none" />
       </div>
-      <DataTable :value="quoteStore.currentItems" class="p-datatable-sm">
+      <DsTable :value="quoteStore.currentItems" class="p-datatable-sm">
         <template #empty>
           <div class="p-4 text-center text-surface-400">No hay partidas agregadas.</div>
         </template>
-        <Column field="description" header="Descripción"></Column>
-        <Column field="type" header="Tipo">
+        <DsColumn field="description" header="Descripción"></DsColumn>
+        <DsColumn field="type" header="Tipo">
           <template #body="sp">
             <span class="text-xs uppercase px-2 py-1 bg-surface-800 rounded">{{ sp.data.type }}</span>
           </template>
-        </Column>
-        <Column field="quantity" header="Cant."></Column>
-        <Column field="unit_price" header="P.Unitario">
+        </DsColumn>
+        <DsColumn field="quantity" header="Cant."></DsColumn>
+        <DsColumn field="unit_price" header="P.Unitario">
           <template #body="sp">${{ sp.data.unit_price.toLocaleString('es-MX') }}</template>
-        </Column>
-        <Column field="total_price" header="Importe">
+        </DsColumn>
+        <DsColumn field="total_price" header="Importe">
           <template #body="sp">
             <span class="font-bold">${{ sp.data.total_price.toLocaleString('es-MX') }}</span>
           </template>
-        </Column>
-        <Column header="" alignFrozen="right">
+        </DsColumn>
+        <DsColumn header="" alignFrozen="right">
           <template #body="sp">
             <div v-if="canUpdate" class="flex gap-2 justify-end">
-              <Button icon="pi pi-pencil" text rounded size="small" @click="openItemModal(sp.data)" />
-              <Button icon="pi pi-trash" text rounded severity="danger" size="small" @click="removeItem(sp.data.id)" />
+              <DsButton icon="pi pi-pencil" text rounded size="small" @click="openItemModal(sp.data)" />
+              <DsButton icon="pi pi-trash" text rounded severity="danger" size="small" @click="removeItem(sp.data.id)" />
             </div>
           </template>
-        </Column>
-      </DataTable>
+        </DsColumn>
+      </DsTable>
     </div>
 
     <!-- History / Versions Tabs -->
     <TabView class="glass-panel rounded-2xl border border-surface-700/50 p-2">
       <TabPanel header="Versiones (Snapshots)" value="0">
-        <DataTable :value="versions" class="p-datatable-sm">
+        <DsTable :value="versions" class="p-datatable-sm">
           <template #empty>Sin versiones previas.</template>
-          <Column field="version_number" header="v.">
+          <DsColumn field="version_number" header="v.">
             <template #body="sp">v{{ sp.data.version_number }}</template>
-          </Column>
-          <Column field="change_notes" header="Notas"></Column>
-          <Column field="created" header="Fecha">
+          </DsColumn>
+          <DsColumn field="change_notes" header="Notas"></DsColumn>
+          <DsColumn field="created" header="Fecha">
             <template #body="sp">{{ new Date(sp.data.created).toLocaleString() }}</template>
-          </Column>
-          <Column header="Acciones">
+          </DsColumn>
+          <DsColumn header="Acciones">
             <template #body="sp">
-               <Button icon="pi pi-eye" text rounded @click="viewSnapshot(sp.data)" />
+               <DsButton icon="pi pi-eye" text rounded @click="viewSnapshot(sp.data)" />
             </template>
-          </Column>
-        </DataTable>
+          </DsColumn>
+        </DsTable>
       </TabPanel>
       <TabPanel header="Historial Estatus" value="1">
-        <DataTable :value="history" class="p-datatable-sm">
+        <DsTable :value="history" class="p-datatable-sm">
           <template #empty>Sin cambios de estatus.</template>
-          <Column field="old_status" header="De"></Column>
-          <Column field="new_status" header="A"></Column>
-          <Column field="reason" header="Razón"></Column>
-          <Column field="created" header="Fecha">
+          <DsColumn field="old_status" header="De"></DsColumn>
+          <DsColumn field="new_status" header="A"></DsColumn>
+          <DsColumn field="reason" header="Razón"></DsColumn>
+          <DsColumn field="created" header="Fecha">
             <template #body="sp">{{ new Date(sp.data.created).toLocaleString() }}</template>
-          </Column>
-        </DataTable>
+          </DsColumn>
+        </DsTable>
       </TabPanel>
     </TabView>
 
     <!-- Item Modal -->
-    <Dialog v-model:visible="showItemModal" :header="editingItem.id ? 'Editar Partida' : 'Nueva Partida'" :modal="true" class="w-full max-w-lg glass-panel">
+    <DsModal v-model:visible="showItemModal" :header="editingItem.id ? 'Editar Partida' : 'Nueva Partida'" :modal="true" class="w-full max-w-lg glass-panel">
       <div class="flex flex-col gap-4 mt-4">
         <div class="flex flex-col gap-2">
           <label class="text-surface-300 text-sm">Tipo</label>
@@ -119,43 +119,43 @@
         </div>
         <div class="flex flex-col gap-2">
           <label class="text-surface-300 text-sm">Descripción</label>
-          <InputText v-model="editingItem.description" class="w-full" />
+          <DsInput v-model="editingItem.description" class="w-full" />
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div class="flex flex-col gap-2">
             <label class="text-surface-300 text-sm">Cantidad</label>
-            <InputNumber v-model="editingItem.quantity" class="w-full" />
+            <DsInputNumber v-model="editingItem.quantity" class="w-full" />
           </div>
           <div class="flex flex-col gap-2">
             <label class="text-surface-300 text-sm">Precio Unitario</label>
-            <InputNumber v-model="editingItem.unit_price" mode="currency" currency="MXN" class="w-full" />
+            <DsInputNumber v-model="editingItem.unit_price" mode="currency" currency="MXN" class="w-full" />
           </div>
         </div>
         <div class="flex flex-col gap-2">
           <label class="text-surface-300 text-sm font-bold text-emerald-400">Total Importe</label>
-          <InputNumber v-model="editingItem.total_price" mode="currency" currency="MXN" class="w-full bg-surface-900" readonly placeholder="Calculado por backend" />
+          <DsInputNumber v-model="editingItem.total_price" mode="currency" currency="MXN" class="w-full bg-surface-900" readonly placeholder="Calculado por backend" />
         </div>
       </div>
       <template #footer>
-        <Button label="Cancelar" text @click="showItemModal = false" />
-        <Button label="Guardar" icon="pi pi-save" @click="saveItem" :loading="isSavingItem" class="bg-emerald-600 border-none" />
+        <DsButton label="Cancelar" text @click="showItemModal = false" />
+        <DsButton label="Guardar" icon="pi pi-save" @click="saveItem" :loading="isSavingItem" class="bg-emerald-600 border-none" />
       </template>
-    </Dialog>
+    </DsModal>
 
     <!-- Snapshot Modal -->
-    <Dialog v-model:visible="showSnapshot" header="Generar Snapshot (Nueva Versión)" :modal="true" class="w-full max-w-md glass-panel">
+    <DsModal v-model:visible="showSnapshot" header="Generar Snapshot (Nueva Versión)" :modal="true" class="w-full max-w-md glass-panel">
       <div class="flex flex-col gap-4 mt-4">
         <p class="text-sm text-surface-400">Esto creará una copia congelada inmutable de la cotización actual y aumentará la versión.</p>
         <div class="flex flex-col gap-2">
           <label class="text-surface-300 text-sm">Notas del cambio</label>
-          <Textarea v-model="snapshotNotes" rows="3" class="w-full" placeholder="Ej: Se ajustó descuento por solicitud del cliente" />
+          <DsTextarea v-model="snapshotNotes" rows="3" class="w-full" placeholder="Ej: Se ajustó descuento por solicitud del cliente" />
         </div>
       </div>
       <template #footer>
-        <Button label="Cancelar" text @click="showSnapshot = false" />
-        <Button label="Congelar Versión" icon="pi pi-camera" @click="createSnapshot" severity="info" />
+        <DsButton label="Cancelar" text @click="showSnapshot = false" />
+        <DsButton label="Congelar Versión" icon="pi pi-camera" @click="createSnapshot" severity="info" />
       </template>
-    </Dialog>
+    </DsModal>
 
     <!-- Delete Confirmation -->
     <DsConfirmDialog 
@@ -227,13 +227,14 @@ const getClientName = (id: string) => {
 
 const getStatusClass = (status: string) => {
   const map: Record<string, string> = {
-    draft: 'bg-surface-800 text-surface-300',
-    pending_approval: 'bg-amber-900/50 text-amber-400',
-    approved: 'bg-emerald-900/50 text-emerald-400',
-    rejected: 'bg-red-900/50 text-red-400',
-    converted: 'bg-indigo-900/50 text-indigo-400'
+    DRAFT: 'bg-surface-800 text-surface-300',
+    SENT: 'bg-amber-900/50 text-amber-400',
+    APPROVED: 'bg-emerald-900/50 text-emerald-400',
+    REJECTED: 'bg-red-900/50 text-red-400',
+    EXPIRED: 'bg-red-900/50 text-red-400',
+    CONTRACT_GENERATED: 'bg-indigo-900/50 text-indigo-400',
   };
-  return map[status] || map.draft;
+  return map[status] || map.DRAFT;
 };
 
 const changeStatus = async (newStatus: string) => {
@@ -305,3 +306,4 @@ const viewSnapshot = (snap: any) => {
   router.push(`/quotes/${quote.value!.id}/versions/${snap.version_number}`);
 };
 </script>
+
