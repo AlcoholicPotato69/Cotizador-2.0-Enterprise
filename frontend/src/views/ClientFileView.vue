@@ -119,14 +119,14 @@
               <TabPanel header="Contratos Legales" value="1">
                 <div class="p-4 text-center text-surface-500 dark:text-surface-400">
                   <i class="pi pi-file-pdf text-4xl mb-2 text-surface-300 dark:text-surface-600"></i>
-                  <p>Módulo de Contratos en desarrollo.</p>
+                  <p>Módulo de Contratos sin registros disponibles.</p>
                 </div>
               </TabPanel>
 
               <TabPanel header="Recibos y Facturas" value="2">
                 <div class="p-4 text-center text-surface-500 dark:text-surface-400">
                   <i class="pi pi-money-bill text-4xl mb-2 text-surface-300 dark:text-surface-600"></i>
-                  <p>Módulo Financiero en desarrollo.</p>
+                  <p>Módulo Financiero sin registros disponibles.</p>
                 </div>
               </TabPanel>
            </TabView>
@@ -197,7 +197,7 @@ onMounted(async () => {
       });
     });
 
-    // Fetch Eligibility from backend engine (sin mocks)
+    // Fetch eligibility from backend engine
     const [quoteEligibility, contractEligibility] = await Promise.all([
       clientService.evaluateEligibility(id, 'QUOTE_CREATION'),
       clientService.evaluateEligibility(id, 'CONTRACT_GENERATION'),
@@ -296,6 +296,7 @@ onMounted(async () => {
 .workflow-viz .line { flex-grow: 1; height: 2px; background: #334155; margin: 0 1rem; position: relative; top: -10px; }
 .workflow-viz .line.active { background: #4ade80; }
 </style>
+
 
 
 

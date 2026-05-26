@@ -1,85 +1,154 @@
 <template>
-  <div class="promotions-builder">
-    <div class="view-header mb-4">
-      <div class="flex justify-content-between align-items-center">
-        <div>
-          <h1 class="title">Promotions Builder</h1>
-          <p class="subtitle text-slate-500">Gestor de descuentos comerciales dinámicos con Rule Engine</p>
+  <div class="p-4 md:p-8 max-w-[1400px] mx-auto flex flex-col gap-8 w-full animate-fade-in">
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-surface-0/50 dark:bg-surface-900/50 backdrop-blur-xl p-6 rounded-2xl border border-surface-200/50 dark:border-surface-700/50 shadow-sm">
+      <div class="flex items-center gap-4">
+        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
+          <i class="pi pi-bolt text-white text-xl"></i>
         </div>
-        <Button label="Nueva Promoción" icon="pi pi-plus" v-permission="'promotions.manage'" />
+        <div>
+          <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-surface-900 dark:text-surface-0 m-0">Constructor de Reglas</h1>
+          <p class="text-surface-500 dark:text-surface-400 m-0 mt-1 text-sm">Gestor de descuentos dinámicos (Rule Engine)</p>
+        </div>
       </div>
+      <DsButton label="Nueva Regla" icon="pi pi-plus" class="p-button-primary p-button-rounded px-5 font-medium shadow-md transition-transform hover:scale-105" @click="createNewRule" />
     </div>
 
-    <div class="grid">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <!-- Listado de Promociones -->
-      <div class="col-12 lg:col-5">
-        <div class="card h-full">
-           <h3 class="m-0 mb-3 border-bottom pb-2">Promociones Activas</h3>
+      <div class="lg:col-span-5 flex flex-col gap-6">
+        <div class="bg-surface-0 dark:bg-surface-900 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-800 p-6 flex-1">
+           <h3 class="text-lg font-bold text-surface-900 dark:text-surface-0 mb-4 pb-4 border-b border-surface-100 dark:border-surface-800 flex items-center gap-2">
+             <i class="pi pi-list text-purple-500"></i> Promociones Activas
+           </h3>
            
-           <div class="p-3 bg-red-50 text-red-800 border-round mb-3 text-sm" v-if="!permissionsStore.can('promotions.read')">
-              <i class="pi pi-ban mr-2"></i> No tienes permisos (promotions.read).
+           <div class="p-4 bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400 rounded-xl mb-4 text-sm font-medium border border-red-200 dark:border-red-800/50" v-if="!hasPermission">
+              <i class="pi pi-ban mr-2"></i> No tienes permisos para gestionar reglas comerciales.
            </div>
 
-           <ul v-else class="list-none p-0 m-0">
-             <li class="p-3 border-bottom flex justify-content-between align-items-center hover-bg cursor-pointer bg-blue-50 border-blue-200">
-                <div>
-                   <span class="font-bold block text-slate-800">Descuento de Verano 2026</span>
-                   <span class="text-xs text-slate-500 block">Aplica si: client.type == 'Frecuente' AND event.season == 'low'</span>
-                   <span class="text-xs text-green-600 font-bold"><i class="pi pi-tag"></i> Descuento: -15%</span>
+           <div v-else class="flex flex-col gap-3">
+             <div 
+               v-for="(rule, idx) in activeRules" :key="idx"
+               class="group p-4 rounded-xl border border-surface-200 dark:border-surface-700 hover:border-purple-300 dark:hover:border-purple-700 bg-surface-50 dark:bg-surface-950/50 hover:bg-surface-0 dark:hover:bg-surface-900 transition-all duration-300 cursor-pointer shadow-sm hover:shadow-md flex justify-between items-center"
+               @click="selectRule(rule)"
+               :class="{'border-purple-500 dark:border-purple-500 ring-1 ring-purple-500 bg-purple-50/50 dark:bg-purple-900/10': selectedRule?.id === rule.id}"
+             >
+                <div class="flex-1">
+                   <span class="font-bold block text-surface-900 dark:text-surface-0 mb-1">{{ rule.name }}</span>
+                   <span class="text-xs text-surface-500 dark:text-surface-400 block font-mono bg-surface-200/50 dark:bg-surface-800/50 p-1 rounded inline-block mb-2">{{ formatCondition(rule.condition) }}</span>
+                   <span class="text-xs text-green-600 dark:text-green-400 font-bold flex items-center gap-1">
+                     <i class="pi pi-tag text-[10px]"></i> Descuento: -{{ rule.discount }}%
+                   </span>
                 </div>
-                <Tag severity="success" value="v3" title="Versión Inmutable para Snapshots" />
-             </li>
-             <li class="p-3 border-bottom flex justify-content-between align-items-center hover-bg cursor-pointer">
-                <div>
-                   <span class="font-bold block text-slate-800">Día de Montaje Gratis</span>
-                   <span class="text-xs text-slate-500 block">Aplica si: quote.duration_days > 3</span>
-                   <span class="text-xs text-green-600 font-bold"><i class="pi pi-clock"></i> Descuento: -24 horas extra</span>
-                </div>
-                <Tag severity="success" value="v1" />
-             </li>
-           </ul>
+                <DsTag severity="success" :value="'v' + rule.version" class="ml-3 font-mono text-[10px]" v-tooltip.top="'Versión Inmutable'" />
+             </div>
+           </div>
         </div>
       </div>
 
-      <!-- Simulator Panel -->
-      <div class="col-12 lg:col-7">
-         <div class="card bg-slate-50 border-1 border-slate-200 h-full flex flex-column">
-            <h3 class="m-0 mb-3 text-slate-700 border-bottom pb-2"><i class="pi pi-play-circle mr-2"></i> Promotion Simulator</h3>
-            <p class="text-sm text-slate-500 mb-4">Simula el Rule Engine inyectando un contexto de cotización ficticio para validar si la promoción aplica antes de publicarla.</p>
+      <!-- Builder / Simulator Panel -->
+      <div class="lg:col-span-7 flex flex-col gap-6">
+         <!-- Builder Form -->
+         <div class="bg-surface-0 dark:bg-surface-900 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-800 p-6">
+            <h3 class="text-lg font-bold text-surface-900 dark:text-surface-0 mb-4 pb-4 border-b border-surface-100 dark:border-surface-800 flex items-center gap-2">
+              <i class="pi pi-cog text-purple-500"></i> Editor Lógico
+            </h3>
             
-            <div class="grid mb-4" v-permission="'promotions.manage'">
-               <div class="col-12 lg:col-6">
-                 <label class="block text-xs font-bold text-slate-700 mb-1">Cliente (Mock)</label>
-                 <select class="w-full p-2 border-round border-1 border-slate-300">
-                    <option>Nuevo Cliente</option>
-                    <option selected>Cliente Frecuente</option>
-                 </select>
-               </div>
-               <div class="col-12 lg:col-6">
-                 <label class="block text-xs font-bold text-slate-700 mb-1">Temporada (Mock)</label>
-                 <select class="w-full p-2 border-round border-1 border-slate-300">
-                    <option>High Season</option>
-                    <option selected>Low Season</option>
-                 </select>
-               </div>
-               <div class="col-12 lg:col-6">
-                 <label class="block text-xs font-bold text-slate-700 mb-1">Precio Base Original</label>
-                 <input type="text" class="w-full p-2 border-round border-1 border-slate-300" value="$100,000.00" disabled />
-               </div>
-               <div class="col-12 mt-3 text-right">
-                  <Button label="Ejecutar Simulador (Rule Engine)" icon="pi pi-cog" />
-               </div>
+            <div v-if="selectedRule" class="flex flex-col gap-5">
+              <div class="field">
+                <label class="block text-sm font-bold text-surface-700 dark:text-surface-300 mb-2">Nombre de la Regla</label>
+                <DsInput v-model="selectedRule.name" class="w-full rounded-xl border-surface-300 dark:border-surface-600" />
+              </div>
+
+              <!-- Logic Builder -->
+              <div class="bg-surface-50 dark:bg-surface-950 p-4 rounded-xl border border-surface-200 dark:border-surface-800">
+                <label class="block text-sm font-bold text-surface-700 dark:text-surface-300 mb-3">Si (Condición)</label>
+                <div class="flex flex-col sm:flex-row gap-3">
+                  <select v-model="selectedRule.condition.field" class="flex-1 p-3 rounded-xl border border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0 outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="client.type">client.type</option>
+                    <option value="quote.duration_days">quote.duration_days</option>
+                    <option value="event.season">event.season</option>
+                  </select>
+                  <select v-model="selectedRule.condition.operator" class="w-24 p-3 rounded-xl border border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0 outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="==">==</option>
+                    <option value=">">></option>
+                    <option value="<"><</option>
+                    <option value="!=">!=</option>
+                  </select>
+                  <DsInput v-model="selectedRule.condition.value" class="flex-1 rounded-xl border-surface-300 dark:border-surface-600" placeholder="Valor..." />
+                </div>
+              </div>
+
+              <!-- Action Builder -->
+              <div class="bg-surface-50 dark:bg-surface-950 p-4 rounded-xl border border-surface-200 dark:border-surface-800">
+                <label class="block text-sm font-bold text-surface-700 dark:text-surface-300 mb-3">Entonces (Acción)</label>
+                <div class="flex items-center gap-3">
+                  <span class="text-sm font-medium text-surface-600 dark:text-surface-400">Aplicar Descuento del</span>
+                  <DsInputNumber v-model="selectedRule.discount" suffix="%" :min="0" :max="100" class="w-32" :pt="{ input: { class: 'rounded-xl border-surface-300 dark:border-surface-600 text-center font-bold text-purple-600' } }" />
+                </div>
+              </div>
+
+              <div class="flex justify-end gap-3 pt-4 border-t border-surface-100 dark:border-surface-800">
+                <DsButton label="Guardar Regla" icon="pi pi-save" class="p-button-primary p-button-rounded px-6 font-medium" @click="saveRule" />
+              </div>
             </div>
 
-            <div class="p-3 bg-green-50 border-1 border-green-200 border-round mt-auto">
-               <h4 class="m-0 mb-2 text-green-800">Resultado de la Simulación</h4>
-               <ul class="text-sm text-green-900 m-0 pl-3">
-                 <li>Condición <code>client.type == 'Frecuente'</code>: <strong>TRUE</strong></li>
-                 <li>Condición <code>event.season == 'low'</code>: <strong>TRUE</strong></li>
+            <div v-else class="py-12 flex flex-col items-center justify-center text-surface-400 dark:text-surface-500 text-center">
+              <i class="pi pi-sitemap text-4xl mb-3"></i>
+              <p>Selecciona o crea una regla para comenzar a editar.</p>
+            </div>
+         </div>
+
+         <!-- Simulator Panel -->
+         <div class="bg-surface-0 dark:bg-surface-900 rounded-2xl shadow-sm border border-surface-200 dark:border-surface-800 p-6">
+            <h3 class="text-lg font-bold text-surface-900 dark:text-surface-0 mb-4 pb-4 border-b border-surface-100 dark:border-surface-800 flex items-center gap-2">
+              <i class="pi pi-play-circle text-emerald-500"></i> Rule Simulator
+            </h3>
+            <p class="text-sm text-surface-500 dark:text-surface-400 mb-6">Inyecta un contexto ficticio para validar la evaluación de las reglas.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+               <div>
+                 <label class="block text-xs font-bold text-surface-700 dark:text-surface-300 mb-2 uppercase tracking-wider">client.type</label>
+                 <select v-model="simulationContext.clientType" class="w-full p-3 rounded-xl border border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0 outline-none focus:ring-2 focus:ring-emerald-500">
+                    <option value="Nuevo">Nuevo</option>
+                    <option value="Frecuente">Frecuente</option>
+                 </select>
+               </div>
+               <div>
+                 <label class="block text-xs font-bold text-surface-700 dark:text-surface-300 mb-2 uppercase tracking-wider">event.season</label>
+                 <select v-model="simulationContext.eventSeason" class="w-full p-3 rounded-xl border border-surface-300 dark:border-surface-600 bg-surface-0 dark:bg-surface-900 text-surface-900 dark:text-surface-0 outline-none focus:ring-2 focus:ring-emerald-500">
+                    <option value="high">High Season</option>
+                    <option value="low">Low Season</option>
+                 </select>
+               </div>
+               <div>
+                 <label class="block text-xs font-bold text-surface-700 dark:text-surface-300 mb-2 uppercase tracking-wider">Precio Original</label>
+                 <DsInputNumber v-model="simulationContext.basePrice" mode="currency" currency="MXN" locale="es-MX" class="w-full" :pt="{ input: { class: 'rounded-xl border-surface-300 dark:border-surface-600 bg-surface-50 dark:bg-surface-950 font-mono' } }" />
+               </div>
+            </div>
+            
+            <div class="flex justify-end mb-6">
+              <DsButton label="Ejecutar Simulación" icon="pi pi-bolt" class="p-button-success p-button-rounded px-6 font-medium shadow-md" @click="runSimulation" />
+            </div>
+
+            <div v-if="simulationResult" class="p-5 bg-gradient-to-br from-emerald-50 to-teal-50 dark:from-emerald-900/20 dark:to-teal-900/20 border border-emerald-200 dark:border-emerald-800 rounded-xl relative overflow-hidden">
+               <div class="absolute top-0 left-0 w-1 h-full bg-emerald-500"></div>
+               <h4 class="m-0 mb-3 text-emerald-800 dark:text-emerald-400 font-bold flex items-center gap-2">
+                 <i class="pi pi-check-circle"></i> Resultado del Rule Engine
+               </h4>
+               
+               <ul class="text-sm text-emerald-900 dark:text-emerald-300 m-0 pl-0 list-none space-y-2 mb-4 font-mono">
+                 <li v-for="(log, i) in simulationResult.logs" :key="i" class="flex items-center gap-2">
+                   <i class="pi pi-angle-right text-[10px]"></i> {{ log }}
+                 </li>
                </ul>
-               <div class="mt-3 pt-3 border-top border-green-300 flex justify-content-between align-items-center">
-                  <span class="font-bold text-green-800">Precio Final Calculado:</span>
-                  <span class="text-2xl font-bold text-green-700">$85,000.00 <span class="text-xs font-normal">(-15%)</span></span>
+               
+               <div class="pt-4 border-t border-emerald-200/50 dark:border-emerald-800/50 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+                  <span class="font-bold text-emerald-800 dark:text-emerald-400 text-sm uppercase tracking-wider">Precio Final Calculado:</span>
+                  <div class="flex items-baseline gap-2">
+                    <span class="text-2xl md:text-3xl font-bold text-emerald-700 dark:text-emerald-300">{{ formatCurrency(simulationResult.finalPrice) }}</span>
+                    <span v-if="simulationResult.totalDiscount > 0" class="text-sm font-bold text-white bg-emerald-500 px-2 py-0.5 rounded-full shadow-sm">-{{ simulationResult.totalDiscount }}%</span>
+                  </div>
                </div>
             </div>
          </div>
@@ -89,78 +158,145 @@
 </template>
 
 <script setup lang="ts">
-import { usePermissionsStore } from '../stores/permissions';
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
+import { ref, computed } from 'vue';
+import { usePermissionsStore } from '../stores/permissionsStore';
+import { useNotificationStore } from '../stores/notificationStore';
+
 
 const permissionsStore = usePermissionsStore();
+const notificationStore = useNotificationStore();
+
+const hasPermission = computed(() => {
+  return permissionsStore.hasPermission('promotions.manage');
+});
+
+interface RuleCondition {
+  field: string;
+  operator: string;
+  value: string;
+}
+
+interface Rule {
+  id: string;
+  name: string;
+  condition: RuleCondition;
+  discount: number;
+  version: number;
+}
+
+const activeRules = ref<Rule[]>([
+  {
+    id: 'r1',
+    name: 'Descuento de Temporada Baja',
+    condition: { field: 'event.season', operator: '==', value: 'low' },
+    discount: 15,
+    version: 3
+  },
+  {
+    id: 'r2',
+    name: 'Premio Cliente Frecuente',
+    condition: { field: 'client.type', operator: '==', value: 'Frecuente' },
+    discount: 10,
+    version: 1
+  }
+]);
+
+const selectedRule = ref<Rule | null>(null);
+
+const selectRule = (rule: Rule) => {
+  // Create a deep copy to edit without affecting the list directly until saved
+  selectedRule.value = JSON.parse(JSON.stringify(rule));
+};
+
+const createNewRule = () => {
+  selectedRule.value = {
+    id: 'new_' + Date.now(),
+    name: 'Nueva Regla',
+    condition: { field: 'client.type', operator: '==', value: '' },
+    discount: 0,
+    version: 1
+  };
+};
+
+const saveRule = () => {
+  if (!selectedRule.value) return;
+  
+  const existingIdx = activeRules.value.findIndex(r => r.id === selectedRule.value!.id);
+  if (existingIdx >= 0) {
+    selectedRule.value.version++;
+    activeRules.value[existingIdx] = { ...selectedRule.value };
+    notificationStore.addNotification({ type: 'success', message: 'Regla actualizada (v' + selectedRule.value.version + ')', domainEvent: 'RULE_UPDATED' });
+  } else {
+    activeRules.value.push({ ...selectedRule.value });
+    notificationStore.addNotification({ type: 'success', message: 'Nueva regla activada', domainEvent: 'RULE_CREATED' });
+  }
+};
+
+const formatCondition = (cond: RuleCondition) => {
+  return `${cond.field} ${cond.operator} '${cond.value}'`;
+};
+
+// Simulator Logic
+const simulationContext = ref({
+  clientType: 'Frecuente',
+  eventSeason: 'low',
+  basePrice: 100000
+});
+
+const simulationResult = ref<any>(null);
+
+const formatCurrency = (val: number) => {
+  return val.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+};
+
+const runSimulation = () => {
+  const logs: string[] = [];
+  let totalDiscount = 0;
+  
+  activeRules.value.forEach(rule => {
+    let contextValue = '';
+    if (rule.condition.field === 'client.type') contextValue = simulationContext.value.clientType;
+    if (rule.condition.field === 'event.season') contextValue = simulationContext.value.eventSeason;
+    
+    // Evaluate (basic rule evaluator)
+    let isMatch = false;
+    if (rule.condition.operator === '==') isMatch = (contextValue === rule.condition.value);
+    if (rule.condition.operator === '!=') isMatch = (contextValue !== rule.condition.value);
+    
+    if (isMatch) {
+      logs.push(`Regla '${rule.name}' aplicó: -${rule.discount}% (Condición: ${formatCondition(rule.condition)} es VERDADERA)`);
+      totalDiscount += rule.discount;
+    } else {
+      logs.push(`Regla '${rule.name}' ignorada. (Condición es FALSA)`);
+    }
+  });
+
+  // Cap max discount at 100% just in case
+  totalDiscount = Math.min(totalDiscount, 100);
+  
+  const discountAmount = simulationContext.value.basePrice * (totalDiscount / 100);
+  const finalPrice = simulationContext.value.basePrice - discountAmount;
+
+  if (totalDiscount === 0) {
+    logs.push("No se aplicó ninguna regla de descuento.");
+  }
+
+  simulationResult.value = {
+    logs,
+    totalDiscount,
+    finalPrice
+  };
+};
 </script>
 
 <style scoped>
-.promotions-builder { display: flex; flex-direction: column; gap: 1rem; height: 100%; }
-.card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
-.title { margin: 0; font-size: 1.5rem; font-weight: 800; color: #0f172a; }
-.subtitle { margin: 0.25rem 0 0 0; font-size: 0.875rem; }
-.border-bottom { border-bottom: 1px solid #e2e8f0; }
-.border-top { border-top: 1px solid; }
-.hover-bg:hover { background-color: #f8fafc; }
-.cursor-pointer { cursor: pointer; }
-
-/* Grid Utils */
-.grid { display: flex; flex-wrap: wrap; margin: -1rem; }
-.col-12 { padding: 1rem; width: 100%; }
-@media (min-width: 1024px) { 
-  .lg\:col-5 { width: 41.666667%; }
-  .lg\:col-6 { width: 50%; }
-  .lg\:col-7 { width: 58.333333%; }
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }
-.flex { display: flex; }
-.flex-column { flex-direction: column; }
-.align-items-center { align-items: center; }
-.justify-content-between { justify-content: space-between; }
-.m-0 { margin: 0; }
-.mt-3 { margin-top: 0.75rem; }
-.mt-auto { margin-top: auto; }
-.mb-1 { margin-bottom: 0.25rem; }
-.mb-2 { margin-bottom: 0.5rem; }
-.mb-3 { margin-bottom: 1rem; }
-.mb-4 { margin-bottom: 1.5rem; }
-.pb-2 { padding-bottom: 0.5rem; }
-.pt-3 { padding-top: 0.75rem; }
-.p-0 { padding: 0; }
-.p-2 { padding: 0.5rem; }
-.p-3 { padding: 0.75rem; }
-.pl-3 { padding-left: 0.75rem; }
-.mr-2 { margin-right: 0.5rem; }
-.block { display: block; }
-.text-sm { font-size: 0.875rem; }
-.text-xs { font-size: 0.75rem; }
-.text-2xl { font-size: 1.5rem; }
-.font-bold { font-weight: 700; }
-.font-normal { font-weight: 400; }
-.text-right { text-align: right; }
-.h-full { height: 100%; }
-.w-full { width: 100%; }
-.list-none { list-style: none; }
-.border-round { border-radius: 0.5rem; }
-.border-1 { border-width: 1px; border-style: solid; }
 
-/* Colors */
-.text-slate-800 { color: #1e293b; }
-.text-slate-700 { color: #334155; }
-.text-slate-500 { color: #64748b; }
-.text-green-900 { color: #14532d; }
-.text-green-800 { color: #166534; }
-.text-green-700 { color: #15803d; }
-.text-green-600 { color: #16a34a; }
-.text-red-800 { color: #991b1b; }
-.bg-blue-50 { background-color: #eff6ff; }
-.border-blue-200 { border-color: #bfdbfe; }
-.bg-slate-50 { background-color: #f8fafc; }
-.border-slate-200 { border-color: #e2e8f0; }
-.border-slate-300 { border-color: #cbd5e1; }
-.bg-red-50 { background-color: #fef2f2; }
-.bg-green-50 { background-color: #f0fdf4; }
-.border-green-200 { border-color: #bbf7d0; }
-.border-green-300 { border-color: #86efac; }
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
 </style>
+

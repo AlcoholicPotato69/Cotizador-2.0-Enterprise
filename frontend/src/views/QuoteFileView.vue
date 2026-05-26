@@ -267,7 +267,7 @@ onMounted(async () => {
        });
     }
 
-    // 4. Obtener Elegibilidad desde el Backend (sin mocks)
+    // 4. Obtener elegibilidad desde el backend
     const clientId = quote.value.clientId
       || quote.value.client_id
       || quote.value.client_snapshot?.id;

@@ -38,7 +38,7 @@ export class ManualProvider implements IInvoiceProvider {
   
   public async processInvoice(request: CFDIRequest, financialSnapshot: any): Promise<CFDIResponse> {
     
-    // Simulate XML parsing that would extract these from the file (UUID, RFC, Subtotal, etc.)
+    // Parse XML placeholder that would extract these from the file (UUID, RFC, Subtotal, etc.)
     // For this demonstration, we assume the `request` object contains the parsed XML data.
     
     const errors: string[] = [];

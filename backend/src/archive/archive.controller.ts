@@ -5,7 +5,7 @@ import { PermissionsGuard } from '../rbac/guards/permissions.guard';
 import { RequirePermissions } from '../rbac/decorators/permissions.decorator';
 import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
 import { Permissions } from '../auth/decorators/permissions.decorator';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Archive')
 @Controller('archive')
@@ -31,7 +31,7 @@ export class ArchiveController {
     return this.archiveService.archiveEntity(model, id, archivedBy);
   }
 
-  @Post('simulate-retention')
+  @Post('retention-check')
   @ApiOperation({ summary: 'Execute Post operation' })
   @ApiResponse({ status: 200, description: 'Successful operation' })
   @ApiResponse({ status: 400, description: 'Bad Request' })
@@ -40,7 +40,7 @@ export class ArchiveController {
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
   @RequirePermissions('write:archive')
   @Permissions('archive:read')
-  async simulateRetention() {
+  async runRetentionCheck() {
     await this.archiveService.applyRetentionPolicies();
     return { success: true };
   }
