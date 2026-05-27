@@ -1,0 +1,208 @@
+# DTO CATALOG
+
+## CreateReservationDto
+- **spaceId**: `string` (@IsString, @IsNotEmpty)
+- **startTime**: `string` (@IsDateString, @IsNotEmpty)
+- **endTime**: `string` (@IsDateString, @IsNotEmpty)
+- **occupancySourceType**: `string` (@IsString, @IsOptional)
+- **occupancySourceId**: `string` (@IsString, @IsOptional)
+- **correlationId**: `string` (@IsString, @IsOptional)
+
+## RescheduleReservationDto
+- **startTime**: `string` (@IsDateString, @IsNotEmpty, @IsNotEmpty, @IsString)
+- **endTime**: `string` (@IsDateString, @IsNotEmpty, @IsNotEmpty, @IsString)
+
+## CreateAgreementDto
+- **clientId**: `string` (@IsUUID, @IsNotEmpty)
+- **type**: `AgreementType` (@IsEnum, @IsNotEmpty)
+- **title**: `string` (@IsString, @IsNotEmpty)
+- **description**: `string` (@IsString, @IsOptional)
+- **validFrom**: `Date` (@IsDate, @Type)
+- **validUntil**: `Date` (@IsDate, @Type)
+- **value**: `number` (@IsNumber, @IsOptional)
+
+## UpdateAgreementDto
+- **title**: `string` (@IsString, @IsOptional)
+- **description**: `string` (@IsString, @IsOptional)
+- **validFrom**: `Date` (@IsDate, @Type, @IsOptional)
+- **validUntil**: `Date` (@IsDate, @Type, @IsOptional)
+- **value**: `number` (@IsNumber, @IsOptional)
+
+## AgreementItemDto
+- **description**: `string` (@IsString, @IsNotEmpty)
+
+## AddAgreementItemsDto
+- **items**: `AgreementItemDto[]` (@IsArray, @ValidateNested, @Type)
+
+## RejectAgreementDto
+- **reason**: `string` (@IsString, @IsNotEmpty)
+
+## CancelAgreementDto
+- **reason**: `string` (@IsString, @IsNotEmpty)
+
+## SignAgreementDto
+- **signerId**: `string` (@IsString, @IsNotEmpty)
+- **signatureData**: `string` (@IsString, @IsNotEmpty)
+
+## CreateApprovalDto
+
+## UpdateApprovalDto
+
+## CreateAuditDto
+
+## UpdateAuditDto
+
+## CreateAuthDto
+
+## LoginDto
+- **email**: `string` (@ApiProperty, @IsEmail, @IsNotEmpty)
+- **password**: `string` (@ApiProperty, @IsString, @IsNotEmpty, @MinLength)
+
+## UpdateAuthDto
+
+## CreateCatalogItemDto
+- **name**: `string` (@IsString, @IsNotEmpty)
+- **sku**: `string` (@IsString, @IsNotEmpty)
+- **description**: `string` (@IsString, @IsOptional)
+- **basePrice**: `number` (@IsNumber, @IsNotEmpty)
+- **categoryId**: `string` (@IsUUID, @IsOptional)
+- **spaceCode**: `string` (@IsString, @IsOptional)
+
+## CreateClientDto
+
+## UpdateClientDto
+
+## AddTransactionDto
+- **clientId**: `string` (@IsUUID, @IsNotEmpty)
+- **amount**: `number` (@IsNumber, @IsNotEmpty)
+- **type**: `string` (@IsString, @IsNotEmpty)
+- **referenceId**: `string` (@IsUUID, @IsOptional)
+- **notes**: `string` (@IsString, @IsOptional)
+
+## CreateDocumentDto
+
+## UpdateDocumentDto
+
+## CreateAgreementFileDto
+- **agreementId**: `string` (@IsNotEmpty, @IsUUID)
+- **url**: `string` (@IsNotEmpty, @IsString)
+
+## CreateClientFileDto
+- **clientId**: `string` (@IsUUID, @IsNotEmpty)
+- **name**: `string` (@IsString, @IsNotEmpty)
+
+## AddClientFileDocumentDto
+- **url**: `string` (@IsString, @IsNotEmpty)
+- **documentType**: `string` (@IsString, @IsNotEmpty)
+
+## CreateContractFileDto
+- **contractId**: `string` (@IsUUID, @IsNotEmpty)
+- **url**: `string` (@IsString, @IsNotEmpty)
+
+## CreateFinancialFileDto
+- **invoiceId**: `string` (@IsUUID, @IsNotEmpty)
+- **url**: `string` (@IsString, @IsNotEmpty)
+
+## CreateQuoteFileDto
+- **quoteId**: `string` (@IsUUID, @IsNotEmpty)
+- **url**: `string` (@IsString, @IsNotEmpty)
+
+## GenerateFolioDto
+- **tenantId**: `string` (@IsString, @IsNotEmpty)
+- **entityType**: `string` (@IsString, @IsNotEmpty)
+- **prefix**: `string` (@IsString, @IsOptional)
+- **suffix**: `string` (@IsString, @IsOptional)
+- **step**: `number` (@IsNumber, @IsOptional)
+
+## CreateRbacDto
+
+## UpdateRbacDto
+
+## CreateRegulationDto
+- **title**: `string` (@IsString, @IsNotEmpty)
+- **content**: `string` (@IsString, @IsNotEmpty)
+- **version**: `string` (@IsString, @IsOptional)
+
+## AcceptRegulationDto
+- **regulationId**: `string` (@IsUUID, @IsNotEmpty)
+- **acceptedBy**: `string` (@IsUUID, @IsNotEmpty)
+- **ipAddress**: `string` (@IsString, @IsNotEmpty)
+- **userAgent**: `string` (@IsString, @IsOptional)
+- **version**: `string` (@IsString, @IsNotEmpty)
+
+## CreateReviewDto
+- **documentId**: `string` (@IsUUID, @IsNotEmpty)
+- **type**: `string` (@IsString, @IsNotEmpty)
+- **notes**: `string` (@IsString, @IsOptional)
+
+## AddDecisionDto
+- **decision**: `string` (@IsString, @IsNotEmpty)
+- **comments**: `string` (@IsString, @IsOptional)
+
+## CreateSettingDto
+
+## UpdateSettingDto
+
+## SignContractDto
+- **contractId**: `string` (@IsString, @IsNotEmpty)
+- **participantName**: `string` (@IsString, @IsNotEmpty)
+- **participantRole**: `string` (@IsString, @IsNotEmpty)
+- **signatureData**: `string` (@IsString, @IsNotEmpty)
+
+## CreateSnapshotDto
+
+## UpdateSnapshotDto
+
+## CreateSpaceDto
+- **name**: `string` (@IsString, @IsNotEmpty)
+- **code**: `string` (@IsString, @IsOptional)
+- **capacity**: `number` (@IsNumber, @IsNotEmpty)
+- **areaSqm**: `number` (@IsNumber, @IsNotEmpty)
+- **basePricePerHour**: `number` (@IsNumber, @IsNotEmpty)
+- **configB2b**: `any` (@IsObject, @IsNotEmpty)
+- **preciosPorDia**: `any` (@IsObject, @IsNotEmpty)
+- **diasBloqueados**: `any[]` (@IsArray, @IsNotEmpty)
+- **impuestosIds**: `string[]` (@IsArray, @IsString, @IsNotEmpty)
+- **status**: `SpaceStatus` (@IsEnum, @IsOptional)
+- **description**: `string` (@IsString, @IsNotEmpty)
+- **color**: `string` (@IsString, @IsOptional)
+- **tags**: `any` (@IsNotEmpty)
+- **spaceType**: `string` (@IsString, @IsNotEmpty)
+- **material**: `string` (@IsString, @IsOptional)
+- **width**: `number` (@IsNumber, @IsOptional)
+- **height**: `number` (@IsNumber, @IsOptional)
+- **measureUnit**: `string` (@IsString, @IsOptional)
+- **location**: `string` (@IsString, @IsOptional)
+- **allowsAgreement**: `boolean` (@IsBoolean, @IsOptional)
+- **regulationTemplate**: `string` (@IsString, @IsNotEmpty)
+- **planoPdf**: `string` (@IsString, @IsNotEmpty)
+- **geographicMap**: `string` (@IsString, @IsOptional)
+- **isDigital**: `boolean` (@IsBoolean, @IsOptional)
+- **images**: `any` (@IsNotEmpty)
+
+## UpdateSpaceDto
+
+## CreateTemplateDto
+- **name**: `string` (@IsString, @IsNotEmpty)
+- **content**: `string` (@IsString, @IsNotEmpty)
+- **version**: `string` (@IsString, @IsOptional)
+
+## CreateClauseDto
+- **title**: `string` (@IsString, @IsNotEmpty)
+- **content**: `string` (@IsString, @IsNotEmpty)
+- **templateId**: `string` (@IsUUID, @IsNotEmpty)
+
+## CreateTenantDto
+
+## UpdateTenantDto
+
+## CreateSpaceConfigurationDto
+- **spaceId**: `string` (@IsUUID, @IsNotEmpty)
+- **configKey**: `string` (@IsString, @IsNotEmpty)
+- **configValue**: `Record<string, any>` (@IsObject, @IsNotEmpty)
+
+## CreateSpaceRuleDto
+- **spaceId**: `string` (@IsUUID, @IsNotEmpty)
+- **ruleType**: `string` (@IsString, @IsNotEmpty)
+- **ruleDetails**: `Record<string, any>` (@IsObject, @IsNotEmpty)
+

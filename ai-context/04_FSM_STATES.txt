@@ -1,0 +1,148 @@
+# FSM STATES
+
+### AgreementStatusEnum
+```prisma
+DRAFT
+  UNDER_REVIEW
+  APPROVED
+  LETTER_GENERATED
+  PENDING_SIGNATURE
+  SIGNED
+  ACTIVE
+  COMPLETED
+  REJECTED
+  CANCELLED
+```
+
+### CreditApplicationStatus
+```prisma
+PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  CANCELLED
+```
+
+### DocumentReviewStatus
+```prisma
+PENDING
+  IN_PROGRESS
+  APPROVED
+  REJECTED
+  CANCELLED
+```
+
+### OutboxStatus
+```prisma
+PENDING
+  PROCESSING
+  PUBLISHED
+  FAILED
+```
+
+### InboxStatus
+```prisma
+PENDING
+  PROCESSING
+  PROCESSED
+  FAILED
+```
+
+### JobStatus
+```prisma
+QUEUED
+  RUNNING
+  COMPLETED
+  FAILED
+  RETRYING
+  CANCELLED
+```
+
+### ArchiveStatus
+```prisma
+PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+```
+
+### ClientStatus
+```prisma
+LEAD
+  PROSPECT
+  CLIENT
+  INACTIVE
+  ARCHIVED
+  BLACKLISTED
+```
+
+### SpaceStatus
+```prisma
+AVAILABLE
+  PRE_RESERVED
+  RESERVED
+  CONTRACTED
+  BLOCKED
+  MAINTENANCE
+  RELEASED
+  DECOMMISSIONED
+```
+
+### OccupancyStatus
+```prisma
+HOLD
+  RESERVED
+  CONTRACTED
+  COMPLETED
+  CANCELLED
+  EXPIRED
+  RELEASED
+```
+
+### QuoteStatus
+```prisma
+DRAFT
+  SENT
+  APPROVED
+  REJECTED
+  EXPIRED
+  CONTRACT_GENERATED
+```
+
+### ContractStatus
+```prisma
+DRAFT
+  PENDING_SIGNATURE
+  SIGNED
+  ACTIVE
+  EXPIRED
+  TERMINATED
+  REJECTED
+  CANCELLED
+```
+
+### InvoiceStatus
+```prisma
+DRAFT
+  GENERATING
+  STAMPING
+  STAMPED
+  SENT
+  PARTIALLY_PAID
+  PAID
+  OVERDUE
+  VOIDED
+  CANCELLED
+```
+
+### PaymentStatus
+```prisma
+DRAFT
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  CANCELLED
+  REFUNDED
+```
+

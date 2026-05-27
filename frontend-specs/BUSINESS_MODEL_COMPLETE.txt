@@ -1,0 +1,3 @@
+# BUSINESS MODEL
+
+See Domain Dictionary and FSM States for extracted business logic models.

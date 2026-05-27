@@ -1,0 +1,3 @@
+Project: Cotizador 2.0 Enterprise
+Source: Backend Analysis
+Extracted directly from backend reality.

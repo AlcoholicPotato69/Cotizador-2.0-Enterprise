@@ -81,11 +81,12 @@ let AuthService = class AuthService {
             if (!user) {
                 throw new common_1.UnauthorizedException('Invalid credentials');
             }
-            if (password && user.passwordHash) {
-                const isMatch = await bcrypt.compare(password, user.passwordHash);
-                if (!isMatch) {
-                    throw new common_1.UnauthorizedException('Invalid credentials');
-                }
+            if (!password || !user.passwordHash) {
+                throw new common_1.UnauthorizedException('Invalid credentials');
+            }
+            const isMatch = await bcrypt.compare(password, user.passwordHash);
+            if (!isMatch) {
+                throw new common_1.UnauthorizedException('Invalid credentials');
             }
             const permissions = new Set();
             let primaryRole = 'USER';

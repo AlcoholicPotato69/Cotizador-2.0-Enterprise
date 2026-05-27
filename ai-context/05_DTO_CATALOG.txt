@@ -1,0 +1,256 @@
+# DTO CATALOG
+
+### CreateReservationDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agenda/dto/create-reservation.dto.ts
+- spaceId: string [Decorators: IsString, IsNotEmpty]
+- startTime: string [Decorators: IsDateString, IsNotEmpty]
+- endTime: string [Decorators: IsDateString, IsNotEmpty]
+- occupancySourceType: string [Decorators: IsString, IsOptional]
+- occupancySourceId: string [Decorators: IsString, IsOptional]
+- correlationId: string [Decorators: IsString, IsOptional]
+
+### RescheduleReservationDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agenda/dto/reschedule-reservation.dto.ts
+- startTime: string [Decorators: IsDateString, IsNotEmpty, IsNotEmpty, IsString]
+- endTime: string [Decorators: IsDateString, IsNotEmpty, IsNotEmpty, IsString]
+
+### CreateAgreementDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agreements/dto/create-agreement.dto.ts
+- clientId: string [Decorators: IsUUID, IsNotEmpty]
+- type: AgreementType [Decorators: IsEnum, IsNotEmpty]
+- title: string [Decorators: IsString, IsNotEmpty]
+- description: string [Decorators: IsString, IsOptional]
+- validFrom: Date [Decorators: IsDate, Type]
+- validUntil: Date [Decorators: IsDate, Type]
+- value: number [Decorators: IsNumber, IsOptional]
+
+### UpdateAgreementDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agreements/dto/create-agreement.dto.ts
+- title: string [Decorators: IsString, IsOptional]
+- description: string [Decorators: IsString, IsOptional]
+- validFrom: Date [Decorators: IsDate, Type, IsOptional]
+- validUntil: Date [Decorators: IsDate, Type, IsOptional]
+- value: number [Decorators: IsNumber, IsOptional]
+
+### AgreementItemDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agreements/dto/create-agreement.dto.ts
+- description: string [Decorators: IsString, IsNotEmpty]
+
+### AddAgreementItemsDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agreements/dto/create-agreement.dto.ts
+- items: AgreementItemDto[] [Decorators: IsArray, ValidateNested, Type]
+
+### RejectAgreementDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agreements/dto/create-agreement.dto.ts
+- reason: string [Decorators: IsString, IsNotEmpty]
+
+### CancelAgreementDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agreements/dto/create-agreement.dto.ts
+- reason: string [Decorators: IsString, IsNotEmpty]
+
+### SignAgreementDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/agreements/dto/create-agreement.dto.ts
+- signerId: string [Decorators: IsString, IsNotEmpty]
+- signatureData: string [Decorators: IsString, IsNotEmpty]
+
+### CreateApprovalDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/approvals/dto/create-approval.dto.ts
+
+### UpdateApprovalDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/approvals/dto/update-approval.dto.ts
+
+### CreateAuditDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/audit/dto/create-audit.dto.ts
+
+### UpdateAuditDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/audit/dto/update-audit.dto.ts
+
+### CreateAuthDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/auth/dto/create-auth.dto.ts
+
+### LoginDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/auth/dto/login.dto.ts
+- email: string [Decorators: ApiProperty, IsEmail, IsNotEmpty]
+- password: string [Decorators: ApiProperty, IsString, IsNotEmpty, MinLength]
+
+### UpdateAuthDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/auth/dto/update-auth.dto.ts
+
+### CreateCatalogItemDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/catalog/dto/create-catalog-item.dto.ts
+- name: string [Decorators: IsString, IsNotEmpty]
+- sku: string [Decorators: IsString, IsNotEmpty]
+- description: string [Decorators: IsString, IsOptional]
+- basePrice: number [Decorators: IsNumber, IsNotEmpty]
+- categoryId: string [Decorators: IsUUID, IsOptional]
+- spaceCode: string [Decorators: IsString, IsOptional]
+
+### CreateClientDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/clients/dto/create-client.dto.ts
+
+### UpdateClientDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/clients/dto/update-client.dto.ts
+
+### AddTransactionDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/customer-credits/dto/add-transaction.dto.ts
+- clientId: string [Decorators: IsUUID, IsNotEmpty]
+- amount: number [Decorators: IsNumber, IsNotEmpty]
+- type: string [Decorators: IsString, IsNotEmpty]
+- referenceId: string [Decorators: IsUUID, IsOptional]
+- notes: string [Decorators: IsString, IsOptional]
+
+### CreateDocumentDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/documents/dto/create-document.dto.ts
+
+### UpdateDocumentDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/documents/dto/update-document.dto.ts
+
+### CreateAgreementFileDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/files/agreement-file/agreement-file.dto.ts
+- agreementId: string [Decorators: IsNotEmpty, IsUUID]
+- url: string [Decorators: IsNotEmpty, IsString]
+
+### CreateClientFileDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/files/client-file/client-file.dto.ts
+- clientId: string [Decorators: IsUUID, IsNotEmpty]
+- name: string [Decorators: IsString, IsNotEmpty]
+
+### AddClientFileDocumentDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/files/client-file/client-file.dto.ts
+- url: string [Decorators: IsString, IsNotEmpty]
+- documentType: string [Decorators: IsString, IsNotEmpty]
+
+### CreateContractFileDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/files/contract-file/contract-file.dto.ts
+- contractId: string [Decorators: IsUUID, IsNotEmpty]
+- url: string [Decorators: IsString, IsNotEmpty]
+
+### CreateFinancialFileDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/files/financial-file/financial-file.dto.ts
+- invoiceId: string [Decorators: IsUUID, IsNotEmpty]
+- url: string [Decorators: IsString, IsNotEmpty]
+
+### CreateQuoteFileDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/files/quote-file/quote-file.dto.ts
+- quoteId: string [Decorators: IsUUID, IsNotEmpty]
+- url: string [Decorators: IsString, IsNotEmpty]
+
+### GenerateFolioDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/numbering/dto/generate-folio.dto.ts
+- tenantId: string [Decorators: IsString, IsNotEmpty]
+- entityType: string [Decorators: IsString, IsNotEmpty]
+- prefix: string [Decorators: IsString, IsOptional]
+- suffix: string [Decorators: IsString, IsOptional]
+- step: number [Decorators: IsNumber, IsOptional]
+
+### CreateRbacDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/rbac/dto/create-rbac.dto.ts
+
+### UpdateRbacDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/rbac/dto/update-rbac.dto.ts
+
+### CreateRegulationDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/regulations/dto/create-regulation.dto.ts
+- title: string [Decorators: IsString, IsNotEmpty]
+- content: string [Decorators: IsString, IsNotEmpty]
+- version: string [Decorators: IsString, IsOptional]
+
+### AcceptRegulationDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/regulations/dto/create-regulation.dto.ts
+- regulationId: string [Decorators: IsUUID, IsNotEmpty]
+- acceptedBy: string [Decorators: IsUUID, IsNotEmpty]
+- ipAddress: string [Decorators: IsString, IsNotEmpty]
+- userAgent: string [Decorators: IsString, IsOptional]
+- version: string [Decorators: IsString, IsNotEmpty]
+
+### CreateReviewDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/reviews/dto/create-review.dto.ts
+- documentId: string [Decorators: IsUUID, IsNotEmpty]
+- type: string [Decorators: IsString, IsNotEmpty]
+- notes: string [Decorators: IsString, IsOptional]
+
+### AddDecisionDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/reviews/dto/create-review.dto.ts
+- decision: string [Decorators: IsString, IsNotEmpty]
+- comments: string [Decorators: IsString, IsOptional]
+
+### CreateSettingDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/settings/dto/create-setting.dto.ts
+
+### UpdateSettingDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/settings/dto/update-setting.dto.ts
+
+### SignContractDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/signatures/dto/sign-contract.dto.ts
+- contractId: string [Decorators: IsString, IsNotEmpty]
+- participantName: string [Decorators: IsString, IsNotEmpty]
+- participantRole: string [Decorators: IsString, IsNotEmpty]
+- signatureData: string [Decorators: IsString, IsNotEmpty]
+
+### CreateSnapshotDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/snapshots/dto/create-snapshot.dto.ts
+
+### UpdateSnapshotDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/snapshots/dto/update-snapshot.dto.ts
+
+### CreateSpaceDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/spaces/dto/create-space.dto.ts
+- name: string [Decorators: IsString, IsNotEmpty]
+- code: string [Decorators: IsString, IsOptional]
+- capacity: number [Decorators: IsNumber, IsNotEmpty]
+- areaSqm: number [Decorators: IsNumber, IsNotEmpty]
+- basePricePerHour: number [Decorators: IsNumber, IsNotEmpty]
+- configB2b: any [Decorators: IsObject, IsNotEmpty]
+- preciosPorDia: any [Decorators: IsObject, IsNotEmpty]
+- diasBloqueados: any[] [Decorators: IsArray, IsNotEmpty]
+- impuestosIds: string[] [Decorators: IsArray, IsString, IsNotEmpty]
+- status: SpaceStatus [Decorators: IsEnum, IsOptional]
+- description: string [Decorators: IsString, IsNotEmpty]
+- color: string [Decorators: IsString, IsOptional]
+- tags: any [Decorators: IsNotEmpty]
+- spaceType: string [Decorators: IsString, IsNotEmpty]
+- material: string [Decorators: IsString, IsOptional]
+- width: number [Decorators: IsNumber, IsOptional]
+- height: number [Decorators: IsNumber, IsOptional]
+- measureUnit: string [Decorators: IsString, IsOptional]
+- location: string [Decorators: IsString, IsOptional]
+- allowsAgreement: boolean [Decorators: IsBoolean, IsOptional]
+- regulationTemplate: string [Decorators: IsString, IsNotEmpty]
+- planoPdf: string [Decorators: IsString, IsNotEmpty]
+- geographicMap: string [Decorators: IsString, IsOptional]
+- isDigital: boolean [Decorators: IsBoolean, IsOptional]
+- images: any [Decorators: IsNotEmpty]
+
+### UpdateSpaceDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/spaces/dto/update-space.dto.ts
+
+### CreateTemplateDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/templates/dto/create-template.dto.ts
+- name: string [Decorators: IsString, IsNotEmpty]
+- content: string [Decorators: IsString, IsNotEmpty]
+- version: string [Decorators: IsString, IsOptional]
+
+### CreateClauseDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/templates/dto/create-template.dto.ts
+- title: string [Decorators: IsString, IsNotEmpty]
+- content: string [Decorators: IsString, IsNotEmpty]
+- templateId: string [Decorators: IsUUID, IsNotEmpty]
+
+### CreateTenantDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/tenants/dto/create-tenant.dto.ts
+
+### UpdateTenantDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/tenants/dto/update-tenant.dto.ts
+
+### CreateSpaceConfigurationDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/spaces/configuration/dto/create-configuration.dto.ts
+- spaceId: string [Decorators: IsUUID, IsNotEmpty]
+- configKey: string [Decorators: IsString, IsNotEmpty]
+- configValue: Record<string, any> [Decorators: IsObject, IsNotEmpty]
+
+### CreateSpaceRuleDto
+File: H:/Cotizador-2.0-Enterprise/backend/src/spaces/configuration/dto/create-configuration.dto.ts
+- spaceId: string [Decorators: IsUUID, IsNotEmpty]
+- ruleType: string [Decorators: IsString, IsNotEmpty]
+- ruleDetails: Record<string, any> [Decorators: IsObject, IsNotEmpty]
+

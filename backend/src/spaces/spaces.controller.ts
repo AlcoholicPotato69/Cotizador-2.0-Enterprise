@@ -37,7 +37,7 @@ export class SpacesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  @Permissions('space:write')
+  @Permissions('spaces.create')
   async create(@Req() req: AuthenticatedRequest, @Body() data: CreateSpaceDto) {
     return tenantContext.run(
       { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
@@ -52,7 +52,7 @@ export class SpacesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  @Permissions('space:read')
+  @Permissions('spaces.read')
   async findAll(@Req() req: AuthenticatedRequest) {
     return tenantContext.run(
       { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
@@ -67,7 +67,7 @@ export class SpacesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  @Permissions('space:read')
+  @Permissions('spaces.read')
   async findById(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
     return tenantContext.run(
       { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
@@ -82,7 +82,7 @@ export class SpacesController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  @Permissions('space:write')
+  @Permissions('spaces.update')
   async update(
     @Req() req: AuthenticatedRequest,
     @Param('id') id: string,

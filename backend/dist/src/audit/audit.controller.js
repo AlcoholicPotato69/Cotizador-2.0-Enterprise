@@ -18,7 +18,6 @@ const audit_service_1 = require("./audit.service");
 const audit_repository_1 = require("./audit.repository");
 const jwt_auth_guard_1 = require("../auth/guards/jwt-auth.guard");
 const permissions_guard_1 = require("../auth/guards/permissions.guard");
-const require_permissions_decorator_1 = require("../auth/decorators/require-permissions.decorator");
 const common_2 = require("@nestjs/common");
 const tenant_isolation_guard_1 = require("../auth/guards/tenant-isolation.guard");
 const permissions_decorator_1 = require("../auth/decorators/permissions.decorator");
@@ -48,8 +47,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Not Found' }),
     (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
-    (0, require_permissions_decorator_1.RequirePermissions)('audit.read'),
-    (0, permissions_decorator_1.Permissions)('audit:read'),
+    (0, permissions_decorator_1.Permissions)('audit.read'),
     __param(0, (0, common_2.Req)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
@@ -63,8 +61,7 @@ __decorate([
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
     (0, swagger_1.ApiResponse)({ status: 404, description: 'Not Found' }),
     (0, swagger_1.ApiResponse)({ status: 500, description: 'Internal Server Error' }),
-    (0, require_permissions_decorator_1.RequirePermissions)('audit.read'),
-    (0, permissions_decorator_1.Permissions)('audit:read'),
+    (0, permissions_decorator_1.Permissions)('audit.read'),
     __param(0, (0, common_2.Req)()),
     __param(1, (0, common_1.Param)('id')),
     __metadata("design:type", Function),

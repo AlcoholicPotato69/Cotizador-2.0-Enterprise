@@ -1,0 +1,22 @@
+# EVENT CATALOG
+
+- **Event**: `'agreement.created'` -> **Consumer**: `AgreementsListener.handleAgreementCreatedEvent`
+- **Event**: `'agreement.approved'` -> **Consumer**: `AgreementsListener.handleAgreementApprovedEvent`
+- **Event**: `'quote.status_updated'{ async: true }` -> **Consumer**: `ContractsListener.handleQuoteStatusUpdated`
+- **Event**: `'credit.transaction.created'` -> **Consumer**: `CustomerCreditsListener.handleTransactionCreated`
+- **Event**: `'credit.balance.updated'` -> **Consumer**: `CustomerCreditsListener.handleBalanceUpdated`
+- **Event**: `'invoice.overpaid'` -> **Consumer**: `CustomerCreditsListener.handleInvoiceOverpaid`
+- **Event**: `'payment.approved'` -> **Consumer**: `InvoicesListener.handlePaymentApproved`
+- **Event**: `'payment.refunded'` -> **Consumer**: `InvoicesListener.handlePaymentRefunded`
+- **Event**: `'notification.send'` -> **Consumer**: `NotificationsService.handleNotificationSendEvent`
+- **Event**: `'quote.approved'` -> **Consumer**: `NotificationsService.handleQuoteApproved`
+- **Event**: `'contract.generated'` -> **Consumer**: `NotificationsService.handleContractGenerated`
+- **Event**: `'invoice.payment_allocated'` -> **Consumer**: `PaymentAllocationListener.handlePaymentAllocated`
+- **Event**: `'contract.generated'{ async: true }` -> **Consumer**: `PdfListener.handleContractGenerated`
+- **Event**: `'agreement.approved'{ async: true }` -> **Consumer**: `PdfListener.handleAgreementApproved`
+- **Event**: `'contract.generated'{ async: true }` -> **Consumer**: `QuotesListener.handleContractGenerated`
+- **Event**: `'PAYMENT_APPROVED'` -> **Consumer**: `ReceiptsListener.handlePaymentApproved`
+- **Event**: `'agreement.submitted_for_review'` -> **Consumer**: `ReviewsListener.handleAgreementSubmitted`
+- **Event**: `'review.created'` -> **Consumer**: `ReviewsListener.handleReviewCreated`
+- **Event**: `'review.decision.made'` -> **Consumer**: `ReviewsListener.handleReviewDecisionMade`
+- **Event**: `'*.created'{ async: true }` -> **Consumer**: `SnapshotsListener.handleDomainEventsForSnapshots`

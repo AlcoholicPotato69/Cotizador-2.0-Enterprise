@@ -5,8 +5,12 @@ import { ValidationPipe } from '@nestjs/common';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
+import helmet from 'helmet';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.use(helmet());
 
   app.useGlobalPipes(
     new ValidationPipe({

@@ -11,7 +11,8 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
-import { Prisma } from '@prisma/client';
+import { CreateClientDto } from './dto/create-client.dto';
+import { UpdateClientDto } from './dto/update-client.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { Permissions } from '../auth/decorators/permissions.decorator';
@@ -49,7 +50,7 @@ export class ClientsController {
   @Permissions('clients:write')
   async create(
     @Req() req: AuthenticatedRequest,
-    @Body() data: Omit<Prisma.ClientUncheckedCreateInput, 'tenantId'>,
+    @Body() data: CreateClientDto,
   ) {
     return tenantContext.run(
       { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
@@ -155,7 +156,7 @@ export class ClientsController {
   async update(
     @Req() req: AuthenticatedRequest,
     @Param('id') id: string,
-    @Body() data: Prisma.ClientUpdateInput,
+    @Body() data: UpdateClientDto,
   ) {
     return tenantContext.run(
       { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },

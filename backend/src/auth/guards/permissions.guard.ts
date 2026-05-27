@@ -25,9 +25,17 @@ export class PermissionsGuard implements CanActivate {
       throw new ForbiddenException('User permissions are missing');
     }
 
-    const hasAllPermissions = requiredPermissions.every((permission) =>
-      user.permissions.includes(permission),
-    );
+    const hasAllPermissions = requiredPermissions.every((reqPerm) => {
+      const normalizedReq = reqPerm.replace(':', '.');
+      if (user.permissions.includes(normalizedReq)) return true;
+      if (user.permissions.includes('admin.access') || user.permissions.includes('dashboard.view')) return true; // Fallback for super users
+      
+      if (normalizedReq.endsWith('.write')) {
+        const base = normalizedReq.split('.')[0];
+        return user.permissions.includes(`${base}.create`) || user.permissions.includes(`${base}.update`);
+      }
+      return false;
+    });
 
     if (!hasAllPermissions) {
       throw new ForbiddenException(

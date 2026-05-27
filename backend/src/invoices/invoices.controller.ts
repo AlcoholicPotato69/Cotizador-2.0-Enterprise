@@ -34,6 +34,13 @@ export class InvoicesController {
     return this.service.getInvoiceReport();
   }
 
+  @Get()
+  @ApiOperation({ summary: 'List all invoices' })
+  @Permissions('invoices.read')
+  async findAll() {
+    return this.service.getInvoiceReport();
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Execute Get operation' })
   @ApiResponse({ status: 200, description: 'Successful operation' })

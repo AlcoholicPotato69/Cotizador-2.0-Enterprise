@@ -1,0 +1,813 @@
+# API CONTRACT CATALOG
+
+## Controller: AppController
+### GET 
+- **Method**: `getHello`
+- **Request DTO**: `None`
+- **Response DTO**: `string`
+- **Permission**: `'common:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: AgendaController
+### GET 
+- **Method**: `findAll`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'agenda:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST 'reserve'
+- **Method**: `reserve`
+- **Request DTO**: `CreateReservationDto`
+- **Response DTO**: `any`
+- **Permission**: `'agenda:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id/reschedule'
+- **Method**: `reschedule`
+- **Request DTO**: `RescheduleReservationDto`
+- **Response DTO**: `any`
+- **Permission**: `'agenda:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PATCH ':id/release'
+- **Method**: `release`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'agenda:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PATCH ':id/cancel'
+- **Method**: `cancel`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'agenda:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PATCH ':id/expire'
+- **Method**: `expire`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'agenda:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: AgreementsController
+### POST 
+- **Method**: `create`
+- **Request DTO**: `CreateAgreementDto`
+- **Response DTO**: `any`
+- **Permission**: `'agreements:create'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id/submit-review'
+- **Method**: `submitForReview`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'agreements:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id/approve'
+- **Method**: `approve`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'agreements:approve'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id/generate-letter'
+- **Method**: `generateLetter`
+- **Request DTO**: `string`
+- **Response DTO**: `any`
+- **Permission**: `'agreements:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id/pending-signature'
+- **Method**: `pendingSignature`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'agreements:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id/sign'
+- **Method**: `markAsSigned`
+- **Request DTO**: `string`
+- **Response DTO**: `any`
+- **Permission**: `'agreements:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: ApprovalsController
+## Controller: ArchiveController
+### POST 'entity/:model/:id'
+- **Method**: `archiveEntity`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'write:archive'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST 'retention-check'
+- **Method**: `runRetentionCheck`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'write:archive'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: AuditController
+### GET 
+- **Method**: `findAll`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'audit.read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id'
+- **Method**: `findOne`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'audit.read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: AuthController
+### POST 'login'
+- **Method**: `login`
+- **Request DTO**: `LoginDto`
+- **Response DTO**: `any`
+- **Permission**: `None`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'profile'
+- **Method**: `getProfile`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `None`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: CatalogController
+### POST 
+- **Method**: `createItem`
+- **Request DTO**: `CreateCatalogItemDto`
+- **Response DTO**: `any`
+- **Permission**: `'catalog:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: ClientsController
+### POST 
+- **Method**: `create`
+- **Request DTO**: `Omit<Prisma.ClientUncheckedCreateInput, 'tenantId'>`
+- **Response DTO**: `any`
+- **Permission**: `'clients:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 
+- **Method**: `findAll`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'clients:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id'
+- **Method**: `findById`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'clients:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id/eligibility/:transactionType'
+- **Method**: `evaluateEligibility`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'clients:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id'
+- **Method**: `update`
+- **Request DTO**: `Prisma.ClientUpdateInput`
+- **Response DTO**: `any`
+- **Permission**: `'clients:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: ContractsController
+### POST 
+- **Method**: `createContract`
+- **Request DTO**: `{ clientId: string; quoteId: string; currencyCode?: string }`
+- **Response DTO**: `any`
+- **Permission**: `'contracts:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id'
+- **Method**: `getContract`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'contracts:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 
+- **Method**: `getContracts`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'contracts:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id/status'
+- **Method**: `updateContractStatus`
+- **Request DTO**: `string`
+- **Response DTO**: `any`
+- **Permission**: `'contracts:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: CustomerCreditsController
+### GET ':clientId/balance'
+- **Method**: `getBalance`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'customer-credits:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST 'transaction'
+- **Method**: `addTransaction`
+- **Request DTO**: `AddTransactionDto`
+- **Response DTO**: `any`
+- **Permission**: `'customer-credits:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: DashboardController
+### GET 'metrics'
+- **Method**: `getMetrics`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `None`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: DocumentsController
+### POST 'generate-pdf'
+- **Method**: `generatePdf`
+- **Request DTO**: `{ documentId: string; templateId: string; data: any }`
+- **Response DTO**: `any`
+- **Permission**: `'documents:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: EventsController
+## Controller: FeatureFlagsController
+### GET ':key'
+- **Method**: `getFeatureFlag`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'feature_flags:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: HealthController
+### GET 
+- **Method**: `checkHealth`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'health:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'metrics'
+- **Method**: `getMetrics`
+- **Request DTO**: `number`
+- **Response DTO**: `any`
+- **Permission**: `'health:metrics'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: InvoicesController
+### GET 'report'
+- **Method**: `getInvoiceReport`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'reports:view'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id'
+- **Method**: `getInvoice`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'invoices:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST 'generate'
+- **Method**: `generateInvoice`
+- **Request DTO**: `GenerateInvoiceDto & { currencyCode: string }`
+- **Response DTO**: `any`
+- **Permission**: `'invoices:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST ':id/stamp'
+- **Method**: `stampInvoice`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'invoices:stamp'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST ':id/upload-manual'
+- **Method**: `uploadManualInvoice`
+- **Request DTO**: `{ xmlUrl: string; pdfUrl: string }`
+- **Response DTO**: `any`
+- **Permission**: `'invoices:stamp'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: NotificationsController
+### GET 
+- **Method**: `getUserNotifications`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'notifications:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: NumberingController
+### POST 'generate'
+- **Method**: `generateFolio`
+- **Request DTO**: `GenerateFolioDto`
+- **Response DTO**: `any`
+- **Permission**: `'numbering:generate'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: PaymentsController
+### POST 'submit'
+- **Method**: `submitPayment`
+- **Request DTO**: `SubmitPaymentDto`
+- **Response DTO**: `any`
+- **Permission**: `'payments:create'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST ':id/approve'
+- **Method**: `approvePayment`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'payments:approve'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST ':id/reject'
+- **Method**: `rejectPayment`
+- **Request DTO**: `{ rejectionReason: string }`
+- **Response DTO**: `any`
+- **Permission**: `'payments:reject'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST ':id/refund'
+- **Method**: `refundPayment`
+- **Request DTO**: `{ refundReason: string }`
+- **Response DTO**: `any`
+- **Permission**: `'payments:refund'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: QuotesController
+### POST 
+- **Method**: `createQuote`
+- **Request DTO**: `Record<string, unknown>`
+- **Response DTO**: `any`
+- **Permission**: `'quotes:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id/status'
+- **Method**: `updateStatus`
+- **Request DTO**: `QuoteStatus`
+- **Response DTO**: `any`
+- **Permission**: `'quotes:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 
+- **Method**: `getQuotes`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'quotes:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id'
+- **Method**: `getQuote`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'quotes:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id/items'
+- **Method**: `getQuoteItems`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'quotes:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: RbacController
+### POST 
+- **Method**: `create`
+- **Request DTO**: `CreateRbacDto`
+- **Response DTO**: `any`
+- **Permission**: `'rbac.manage'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 
+- **Method**: `findAll`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'rbac.read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id'
+- **Method**: `findOne`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'rbac.read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PATCH ':id'
+- **Method**: `update`
+- **Request DTO**: `UpdateRbacDto`
+- **Response DTO**: `any`
+- **Permission**: `'rbac.manage'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### DELETE ':id'
+- **Method**: `remove`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'rbac.manage'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: ReceiptsController
+### POST 'generate/payment/:paymentId'
+- **Method**: `generateForPayment`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'reports:generate'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: RegulationsController
+### POST 
+- **Method**: `createRegulation`
+- **Request DTO**: `CreateRegulationDto`
+- **Response DTO**: `any`
+- **Permission**: `'regulations:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST 'accept'
+- **Method**: `acceptRegulation`
+- **Request DTO**: `AcceptRegulationDto`
+- **Response DTO**: `any`
+- **Permission**: `'regulations:accept'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: ReportsController
+### GET 'kpis'
+- **Method**: `getKpis`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'read:analytics'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'advanced'
+- **Method**: `getAdvancedReport`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'read:advanced_reports'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: ReviewsController
+### POST 
+- **Method**: `createReview`
+- **Request DTO**: `CreateReviewDto`
+- **Response DTO**: `any`
+- **Permission**: `'reviews:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST ':id/decisions'
+- **Method**: `addDecision`
+- **Request DTO**: `AddDecisionDto`
+- **Response DTO**: `any`
+- **Permission**: `'reviews:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: SearchController
+### GET 
+- **Method**: `globalSearch`
+- **Request DTO**: `string`
+- **Response DTO**: `any`
+- **Permission**: `'read:search'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: SettingsController
+## Controller: SignaturesController
+### GET ':id'
+- **Method**: `getSignature`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'signatures:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST 'sign'
+- **Method**: `signContract`
+- **Request DTO**: `SignContractDto`
+- **Response DTO**: `any`
+- **Permission**: `'signatures:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: SnapshotsController
+## Controller: OccupancyController
+### POST 
+- **Method**: `create`
+- **Request DTO**: `Omit<Prisma.SpaceOccupancyUncheckedCreateInput, 'tenantId'>`
+- **Response DTO**: `any`
+- **Permission**: `'occupancy:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: SpacesController
+### POST 
+- **Method**: `create`
+- **Request DTO**: `CreateSpaceDto`
+- **Response DTO**: `any`
+- **Permission**: `'space:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 
+- **Method**: `findAll`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'space:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id'
+- **Method**: `findById`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'space:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PUT ':id'
+- **Method**: `update`
+- **Request DTO**: `UpdateSpaceDto`
+- **Response DTO**: `any`
+- **Permission**: `'space:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: StorageController
+### GET ':id'
+- **Method**: `getStorageObject`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'storage:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: TemplatesController
+### POST 
+- **Method**: `createTemplate`
+- **Request DTO**: `CreateTemplateDto`
+- **Response DTO**: `any`
+- **Permission**: `'templates:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST 'clauses'
+- **Method**: `createClause`
+- **Request DTO**: `CreateClauseDto`
+- **Response DTO**: `any`
+- **Permission**: `'templates:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: TenantsController
+### POST 
+- **Method**: `create`
+- **Request DTO**: `CreateTenantDto`
+- **Response DTO**: `any`
+- **Permission**: `'tenants.manage'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 
+- **Method**: `findAll`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'tenants.read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET ':id'
+- **Method**: `findOne`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `None`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### PATCH ':id'
+- **Method**: `update`
+- **Request DTO**: `UpdateTenantDto`
+- **Response DTO**: `any`
+- **Permission**: `'tenants.manage'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### DELETE ':id'
+- **Method**: `remove`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'tenants.manage'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: WorkflowController
+### POST ':versionId/transitions'
+- **Method**: `executeTransition`
+- **Request DTO**: `{ currentStateId: string; actionName: string; contextPayload: any }`
+- **Response DTO**: `any`
+- **Permission**: `'workflows:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: AgreementFileController
+### POST 
+- **Method**: `createAgreementFile`
+- **Request DTO**: `CreateAgreementFileDto`
+- **Response DTO**: `any`
+- **Permission**: `None`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'agreement/:agreementId'
+- **Method**: `getAgreementFiles`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `None`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: ClientFileController
+### POST 
+- **Method**: `createClientFile`
+- **Request DTO**: `CreateClientFileDto`
+- **Response DTO**: `any`
+- **Permission**: `'client-files:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'client/:clientId'
+- **Method**: `getClientFiles`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'client-files:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST ':id/documents'
+- **Method**: `addDocument`
+- **Request DTO**: `AddClientFileDocumentDto`
+- **Response DTO**: `any`
+- **Permission**: `'client-files:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: ContractFileController
+### POST 
+- **Method**: `createContractFile`
+- **Request DTO**: `CreateContractFileDto`
+- **Response DTO**: `any`
+- **Permission**: `'contract-files:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'contract/:contractId'
+- **Method**: `getContractFiles`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'contract-files:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: DocumentViewerController
+### GET 'generate-url'
+- **Method**: `generateSignedUrl`
+- **Request DTO**: `string`
+- **Response DTO**: `any`
+- **Permission**: `'documents:share'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'view'
+- **Method**: `viewDocument`
+- **Request DTO**: `string`
+- **Response DTO**: `any`
+- **Permission**: `'files:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: FinancialFileController
+### POST 
+- **Method**: `createFinancialFile`
+- **Request DTO**: `CreateFinancialFileDto`
+- **Response DTO**: `any`
+- **Permission**: `'financial-files:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'invoice/:invoiceId'
+- **Method**: `getFinancialFiles`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'financial-files:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: QuoteFileController
+### POST 
+- **Method**: `createQuoteFile`
+- **Request DTO**: `CreateQuoteFileDto`
+- **Response DTO**: `any`
+- **Permission**: `'quote-files:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### GET 'quote/:quoteId'
+- **Method**: `getQuoteFiles`
+- **Request DTO**: `None`
+- **Response DTO**: `any`
+- **Permission**: `'quote-files:read'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+## Controller: SpaceConfigurationController
+### POST 
+- **Method**: `setConfiguration`
+- **Request DTO**: `CreateSpaceConfigurationDto`
+- **Response DTO**: `any`
+- **Permission**: `'spaces:config:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+
+### POST 'rules'
+- **Method**: `createRule`
+- **Request DTO**: `CreateSpaceRuleDto`
+- **Response DTO**: `any`
+- **Permission**: `'spaces:rules:write'`
+- **Tenant Awareness**: Implicit via Guards
+- **Pagination/Filtering/Sorting/Search**: Varies
+

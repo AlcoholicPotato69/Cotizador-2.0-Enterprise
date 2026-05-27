@@ -1,0 +1,6 @@
+{
+  "name": "Cotizador 2.0 Enterprise",
+  "description": "Plataforma profesional para la cotización de espacios publicitarios y salones de eventos.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

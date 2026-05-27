@@ -1,0 +1,11 @@
+# WORKFLOW ENGINE
+
+Found in workflow.controller.ts
+- Class: WorkflowController
+  - Method: executeTransition
+Found in workflow.module.ts
+- Class: WorkflowsModule
+Found in workflow.service.ts
+- Class: WorkflowEngineService
+  - Method: executeTransition
+  - Method: evaluateConditions

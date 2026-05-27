@@ -1,0 +1,50 @@
+# DOMAIN EVENTS
+
+- **Consumer**: AgreementsListener::handleAgreementCreatedEvent -> listents to 'agreement.created'
+- **Consumer**: AgreementsListener::handleAgreementApprovedEvent -> listents to 'agreement.approved'
+- **Consumer**: ContractsListener::handleQuoteStatusUpdated -> listents to 'quote.status_updated', { async: true }
+- **Consumer**: CustomerCreditsListener::handleTransactionCreated -> listents to 'credit.transaction.created'
+- **Consumer**: CustomerCreditsListener::handleBalanceUpdated -> listents to 'credit.balance.updated'
+- **Consumer**: CustomerCreditsListener::handleInvoiceOverpaid -> listents to 'invoice.overpaid'
+- **Consumer**: InvoicesListener::handlePaymentApproved -> listents to 'payment.approved'
+- **Consumer**: InvoicesListener::handlePaymentRefunded -> listents to 'payment.refunded'
+- **Consumer**: NotificationsService::handleNotificationSendEvent -> listents to 'notification.send'
+- **Consumer**: NotificationsService::handleQuoteApproved -> listents to 'quote.approved'
+- **Consumer**: NotificationsService::handleContractGenerated -> listents to 'contract.generated'
+- **Consumer**: PaymentAllocationListener::handlePaymentAllocated -> listents to 'invoice.payment_allocated'
+- **Consumer**: PdfListener::handleContractGenerated -> listents to 'contract.generated', { async: true }
+- **Consumer**: PdfListener::handleAgreementApproved -> listents to 'agreement.approved', { async: true }
+- **Consumer**: QuotesListener::handleContractGenerated -> listents to 'contract.generated', { async: true }
+- **Consumer**: ReceiptsListener::handlePaymentApproved -> listents to 'PAYMENT_APPROVED'
+- **Consumer**: ReviewsListener::handleAgreementSubmitted -> listents to 'agreement.submitted_for_review'
+- **Consumer**: ReviewsListener::handleReviewCreated -> listents to 'review.created'
+- **Consumer**: ReviewsListener::handleReviewDecisionMade -> listents to 'review.decision.made'
+- **Consumer**: SnapshotsListener::handleDomainEventsForSnapshots -> listents to '*.created', { async: true }
+- **Producer Emit**: Event 'agreement.created' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.submitted_for_review' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.approved' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.rejected' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.letter_generated' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.pending_signature' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.signed' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.activated' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.completed' in agreements.service.ts
+- **Producer Emit**: Event 'agreement.cancelled' in agreements.service.ts
+- **Producer Emit**: Event 'credit.transaction.created' in customer-credits.service.ts
+- **Producer Emit**: Event 'credit.balance.updated' in customer-credits.service.ts
+- **Producer Emit**: Event 'document.pdf_generated' in documents.service.ts
+- **Producer Emit**: Event 'receipt.generated' in receipts.service.ts
+- **Producer Emit**: Event 'regulation.created' in regulations.service.ts
+- **Producer Emit**: Event 'regulation.accepted' in regulations.service.ts
+- **Producer Emit**: Event 'review.created' in reviews.service.ts
+- **Producer Emit**: Event 'review.decision.made' in reviews.service.ts
+- **Producer Emit**: Event 'template.created' in templates.service.ts
+- **Producer Emit**: Event 'clause.created' in templates.service.ts
+- **Producer Emit**: Event 'agreementFile.created' in agreement-file.service.ts
+- **Producer Emit**: Event 'clientFile.created' in client-file.service.ts
+- **Producer Emit**: Event 'clientFile.documentAdded' in client-file.service.ts
+- **Producer Emit**: Event 'contractFile.created' in contract-file.service.ts
+- **Producer Emit**: Event 'financialFile.created' in financial-file.service.ts
+- **Producer Emit**: Event 'quoteFile.created' in quote-file.service.ts
+- **Producer Emit**: Event 'space.configuration.updated' in space-configuration.service.ts
+- **Producer Emit**: Event 'space.rule.created' in space-configuration.service.ts

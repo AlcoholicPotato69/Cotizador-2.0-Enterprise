@@ -1,0 +1,32 @@
+# FRONTEND FUNCTIONAL SPECIFICATION
+
+## Commercial Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Legal Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Financial Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Agreement Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Contract Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Invoice Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Payment Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Review Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Approval Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+
+## Archive Flow
+- Inferred from FSM and Controller actions. Requires orchestrating states across multiple screens and forms.
+

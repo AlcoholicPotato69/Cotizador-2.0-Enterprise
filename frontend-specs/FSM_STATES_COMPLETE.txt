@@ -1,0 +1,190 @@
+# FSM STATES & VISUAL TIMELINES
+
+## AgreementStatusEnum
+```mermaid
+stateDiagram-v2
+    DRAFT --> UNDER_REVIEW
+    UNDER_REVIEW --> APPROVED
+    APPROVED --> LETTER_GENERATED
+    LETTER_GENERATED --> PENDING_SIGNATURE
+    PENDING_SIGNATURE --> SIGNED
+    SIGNED --> ACTIVE
+    ACTIVE --> COMPLETED
+    COMPLETED --> REJECTED
+    REJECTED --> CANCELLED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## CreditApplicationStatus
+```mermaid
+stateDiagram-v2
+    PENDING --> UNDER_REVIEW
+    UNDER_REVIEW --> APPROVED
+    APPROVED --> REJECTED
+    REJECTED --> CANCELLED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## DocumentReviewStatus
+```mermaid
+stateDiagram-v2
+    PENDING --> IN_PROGRESS
+    IN_PROGRESS --> APPROVED
+    APPROVED --> REJECTED
+    REJECTED --> CANCELLED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## OutboxStatus
+```mermaid
+stateDiagram-v2
+    PENDING --> PROCESSING
+    PROCESSING --> PUBLISHED
+    PUBLISHED --> FAILED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## InboxStatus
+```mermaid
+stateDiagram-v2
+    PENDING --> PROCESSING
+    PROCESSING --> PROCESSED
+    PROCESSED --> FAILED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## JobStatus
+```mermaid
+stateDiagram-v2
+    QUEUED --> RUNNING
+    RUNNING --> COMPLETED
+    COMPLETED --> FAILED
+    FAILED --> RETRYING
+    RETRYING --> CANCELLED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## ArchiveStatus
+```mermaid
+stateDiagram-v2
+    PENDING --> IN_PROGRESS
+    IN_PROGRESS --> COMPLETED
+    COMPLETED --> FAILED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## ClientStatus
+```mermaid
+stateDiagram-v2
+    LEAD --> PROSPECT
+    PROSPECT --> CLIENT
+    CLIENT --> INACTIVE
+    INACTIVE --> ARCHIVED
+    ARCHIVED --> BLACKLISTED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## SpaceStatus
+```mermaid
+stateDiagram-v2
+    AVAILABLE --> PRE_RESERVED
+    PRE_RESERVED --> RESERVED
+    RESERVED --> CONTRACTED
+    CONTRACTED --> BLOCKED
+    BLOCKED --> MAINTENANCE
+    MAINTENANCE --> RELEASED
+    RELEASED --> DECOMMISSIONED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## OccupancyStatus
+```mermaid
+stateDiagram-v2
+    HOLD --> RESERVED
+    RESERVED --> CONTRACTED
+    CONTRACTED --> COMPLETED
+    COMPLETED --> CANCELLED
+    CANCELLED --> EXPIRED
+    EXPIRED --> RELEASED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## QuoteStatus
+```mermaid
+stateDiagram-v2
+    DRAFT --> SENT
+    SENT --> APPROVED
+    APPROVED --> REJECTED
+    REJECTED --> EXPIRED
+    EXPIRED --> CONTRACT_GENERATED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## ContractStatus
+```mermaid
+stateDiagram-v2
+    DRAFT --> PENDING_SIGNATURE
+    PENDING_SIGNATURE --> SIGNED
+    SIGNED --> ACTIVE
+    ACTIVE --> EXPIRED
+    EXPIRED --> TERMINATED
+    TERMINATED --> REJECTED
+    REJECTED --> CANCELLED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## InvoiceStatus
+```mermaid
+stateDiagram-v2
+    DRAFT --> GENERATING
+    GENERATING --> STAMPING
+    STAMPING --> STAMPED
+    STAMPED --> SENT
+    SENT --> PARTIALLY_PAID
+    PARTIALLY_PAID --> PAID
+    PAID --> OVERDUE
+    OVERDUE --> VOIDED
+    VOIDED --> CANCELLED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+
+## PaymentStatus
+```mermaid
+stateDiagram-v2
+    DRAFT --> PENDING
+    PENDING --> UNDER_REVIEW
+    UNDER_REVIEW --> APPROVED
+    APPROVED --> REJECTED
+    REJECTED --> CANCELLED
+    CANCELLED --> REFUNDED
+```
+
+**Audit Requirements**: Yes
+**Notifications**: Triggers on state change
+

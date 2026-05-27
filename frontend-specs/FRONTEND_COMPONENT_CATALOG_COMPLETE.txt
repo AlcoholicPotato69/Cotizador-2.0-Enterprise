@@ -1,0 +1,481 @@
+# FRONTEND COMPONENT CATALOG
+
+## Derived Components
+### User Components
+- `UserTable`
+- `UserForm`
+- `UserDetailsCard`
+### Role Components
+- `RoleTable`
+- `RoleForm`
+- `RoleDetailsCard`
+### Permission Components
+- `PermissionTable`
+- `PermissionForm`
+- `PermissionDetailsCard`
+### RolePermission Components
+- `RolePermissionTable`
+- `RolePermissionForm`
+- `RolePermissionDetailsCard`
+### FeatureFlag Components
+- `FeatureFlagTable`
+- `FeatureFlagForm`
+- `FeatureFlagDetailsCard`
+### TaxConfiguration Components
+- `TaxConfigurationTable`
+- `TaxConfigurationForm`
+- `TaxConfigurationDetailsCard`
+### Currency Components
+- `CurrencyTable`
+- `CurrencyForm`
+- `CurrencyDetailsCard`
+### Client Components
+- `ClientTable`
+- `ClientForm`
+- `ClientDetailsCard`
+### Space Components
+- `SpaceTable`
+- `SpaceForm`
+- `SpaceDetailsCard`
+### SpaceOccupancy Components
+- `SpaceOccupancyTable`
+- `SpaceOccupancyForm`
+- `SpaceOccupancyDetailsCard`
+### Document Components
+- `DocumentTable`
+- `DocumentForm`
+- `DocumentDetailsCard`
+### NotificationQueue Components
+- `NotificationQueueTable`
+- `NotificationQueueForm`
+- `NotificationQueueDetailsCard`
+### Quote Components
+- `QuoteTable`
+- `QuoteForm`
+- `QuoteDetailsCard`
+### Contract Components
+- `ContractTable`
+- `ContractForm`
+- `ContractDetailsCard`
+- `ContractTimeline`
+- `ContractStatusBadge`
+### Signature Components
+- `SignatureTable`
+- `SignatureForm`
+- `SignatureDetailsCard`
+### Invoice Components
+- `InvoiceTable`
+- `InvoiceForm`
+- `InvoiceDetailsCard`
+### Payment Components
+- `PaymentTable`
+- `PaymentForm`
+- `PaymentDetailsCard`
+### PaymentEvidence Components
+- `PaymentEvidenceTable`
+- `PaymentEvidenceForm`
+- `PaymentEvidenceDetailsCard`
+### ClientFile Components
+- `ClientFileTable`
+- `ClientFileForm`
+- `ClientFileDetailsCard`
+### ClientFileDocument Components
+- `ClientFileDocumentTable`
+- `ClientFileDocumentForm`
+- `ClientFileDocumentDetailsCard`
+### QuoteFile Components
+- `QuoteFileTable`
+- `QuoteFileForm`
+- `QuoteFileDetailsCard`
+### ContractFile Components
+- `ContractFileTable`
+- `ContractFileForm`
+- `ContractFileDetailsCard`
+- `ContractFileTimeline`
+- `ContractFileStatusBadge`
+### FinancialFile Components
+- `FinancialFileTable`
+- `FinancialFileForm`
+- `FinancialFileDetailsCard`
+### AgreementFile Components
+- `AgreementFileTable`
+- `AgreementFileForm`
+- `AgreementFileDetailsCard`
+- `AgreementFileTimeline`
+- `AgreementFileStatusBadge`
+### Agreement Components
+- `AgreementTable`
+- `AgreementForm`
+- `AgreementDetailsCard`
+- `AgreementTimeline`
+- `AgreementStatusBadge`
+### AgreementVersion Components
+- `AgreementVersionTable`
+- `AgreementVersionForm`
+- `AgreementVersionDetailsCard`
+- `AgreementVersionTimeline`
+- `AgreementVersionStatusBadge`
+### AgreementItem Components
+- `AgreementItemTable`
+- `AgreementItemForm`
+- `AgreementItemDetailsCard`
+- `AgreementItemTimeline`
+- `AgreementItemStatusBadge`
+### AgreementApproval Components
+- `AgreementApprovalTable`
+- `AgreementApprovalForm`
+- `AgreementApprovalDetailsCard`
+- `AgreementApprovalTimeline`
+- `AgreementApprovalStatusBadge`
+### AgreementSignature Components
+- `AgreementSignatureTable`
+- `AgreementSignatureForm`
+- `AgreementSignatureDetailsCard`
+- `AgreementSignatureTimeline`
+- `AgreementSignatureStatusBadge`
+### AgreementEvidence Components
+- `AgreementEvidenceTable`
+- `AgreementEvidenceForm`
+- `AgreementEvidenceDetailsCard`
+- `AgreementEvidenceTimeline`
+- `AgreementEvidenceStatusBadge`
+### AgreementSnapshot Components
+- `AgreementSnapshotTable`
+- `AgreementSnapshotForm`
+- `AgreementSnapshotDetailsCard`
+- `AgreementSnapshotTimeline`
+- `AgreementSnapshotStatusBadge`
+### DocumentReview Components
+- `DocumentReviewTable`
+- `DocumentReviewForm`
+- `DocumentReviewDetailsCard`
+### DocumentReviewStep Components
+- `DocumentReviewStepTable`
+- `DocumentReviewStepForm`
+- `DocumentReviewStepDetailsCard`
+### DocumentReviewDecision Components
+- `DocumentReviewDecisionTable`
+- `DocumentReviewDecisionForm`
+- `DocumentReviewDecisionDetailsCard`
+### CustomerCreditBalance Components
+- `CustomerCreditBalanceTable`
+- `CustomerCreditBalanceForm`
+- `CustomerCreditBalanceDetailsCard`
+### CreditTransaction Components
+- `CreditTransactionTable`
+- `CreditTransactionForm`
+- `CreditTransactionDetailsCard`
+### CreditApplication Components
+- `CreditApplicationTable`
+- `CreditApplicationForm`
+- `CreditApplicationDetailsCard`
+### CatalogCategory Components
+- `CatalogCategoryTable`
+- `CatalogCategoryForm`
+- `CatalogCategoryDetailsCard`
+### CatalogItem Components
+- `CatalogItemTable`
+- `CatalogItemForm`
+- `CatalogItemDetailsCard`
+### CatalogPrice Components
+- `CatalogPriceTable`
+- `CatalogPriceForm`
+- `CatalogPriceDetailsCard`
+### CatalogVersion Components
+- `CatalogVersionTable`
+- `CatalogVersionForm`
+- `CatalogVersionDetailsCard`
+### CatalogSnapshot Components
+- `CatalogSnapshotTable`
+- `CatalogSnapshotForm`
+- `CatalogSnapshotDetailsCard`
+### ContractTemplate Components
+- `ContractTemplateTable`
+- `ContractTemplateForm`
+- `ContractTemplateDetailsCard`
+- `ContractTemplateTimeline`
+- `ContractTemplateStatusBadge`
+### ContractTemplateVersion Components
+- `ContractTemplateVersionTable`
+- `ContractTemplateVersionForm`
+- `ContractTemplateVersionDetailsCard`
+- `ContractTemplateVersionTimeline`
+- `ContractTemplateVersionStatusBadge`
+### ContractClause Components
+- `ContractClauseTable`
+- `ContractClauseForm`
+- `ContractClauseDetailsCard`
+- `ContractClauseTimeline`
+- `ContractClauseStatusBadge`
+### ClauseVersion Components
+- `ClauseVersionTable`
+- `ClauseVersionForm`
+- `ClauseVersionDetailsCard`
+### TemplateVariable Components
+- `TemplateVariableTable`
+- `TemplateVariableForm`
+- `TemplateVariableDetailsCard`
+### QuoteTemplate Components
+- `QuoteTemplateTable`
+- `QuoteTemplateForm`
+- `QuoteTemplateDetailsCard`
+### InvoiceTemplate Components
+- `InvoiceTemplateTable`
+- `InvoiceTemplateForm`
+- `InvoiceTemplateDetailsCard`
+### ReceiptTemplate Components
+- `ReceiptTemplateTable`
+- `ReceiptTemplateForm`
+- `ReceiptTemplateDetailsCard`
+### RegulationTemplate Components
+- `RegulationTemplateTable`
+- `RegulationTemplateForm`
+- `RegulationTemplateDetailsCard`
+### Regulation Components
+- `RegulationTable`
+- `RegulationForm`
+- `RegulationDetailsCard`
+### RegulationVersion Components
+- `RegulationVersionTable`
+- `RegulationVersionForm`
+- `RegulationVersionDetailsCard`
+### RegulationAcceptance Components
+- `RegulationAcceptanceTable`
+- `RegulationAcceptanceForm`
+- `RegulationAcceptanceDetailsCard`
+### CalendarEvent Components
+- `CalendarEventTable`
+- `CalendarEventForm`
+- `CalendarEventDetailsCard`
+### SpaceConfiguration Components
+- `SpaceConfigurationTable`
+- `SpaceConfigurationForm`
+- `SpaceConfigurationDetailsCard`
+### SpaceRule Components
+- `SpaceRuleTable`
+- `SpaceRuleForm`
+- `SpaceRuleDetailsCard`
+### SpaceAvailabilityRule Components
+- `SpaceAvailabilityRuleTable`
+- `SpaceAvailabilityRuleForm`
+- `SpaceAvailabilityRuleDetailsCard`
+### SignatureEvidence Components
+- `SignatureEvidenceTable`
+- `SignatureEvidenceForm`
+- `SignatureEvidenceDetailsCard`
+### PaymentAllocation Components
+- `PaymentAllocationTable`
+- `PaymentAllocationForm`
+- `PaymentAllocationDetailsCard`
+### OutboxEvent Components
+- `OutboxEventTable`
+- `OutboxEventForm`
+- `OutboxEventDetailsCard`
+### OutboxDispatch Components
+- `OutboxDispatchTable`
+- `OutboxDispatchForm`
+- `OutboxDispatchDetailsCard`
+### OutboxFailure Components
+- `OutboxFailureTable`
+- `OutboxFailureForm`
+- `OutboxFailureDetailsCard`
+### InboxEvent Components
+- `InboxEventTable`
+- `InboxEventForm`
+- `InboxEventDetailsCard`
+### JobQueue Components
+- `JobQueueTable`
+- `JobQueueForm`
+- `JobQueueDetailsCard`
+### JobExecution Components
+- `JobExecutionTable`
+- `JobExecutionForm`
+- `JobExecutionDetailsCard`
+### JobRetry Components
+- `JobRetryTable`
+- `JobRetryForm`
+- `JobRetryDetailsCard`
+### JobFailure Components
+- `JobFailureTable`
+- `JobFailureForm`
+- `JobFailureDetailsCard`
+### WorkflowDefinition Components
+- `WorkflowDefinitionTable`
+- `WorkflowDefinitionForm`
+- `WorkflowDefinitionDetailsCard`
+### WorkflowVersion Components
+- `WorkflowVersionTable`
+- `WorkflowVersionForm`
+- `WorkflowVersionDetailsCard`
+### WorkflowState Components
+- `WorkflowStateTable`
+- `WorkflowStateForm`
+- `WorkflowStateDetailsCard`
+### WorkflowTransition Components
+- `WorkflowTransitionTable`
+- `WorkflowTransitionForm`
+- `WorkflowTransitionDetailsCard`
+### WorkflowRule Components
+- `WorkflowRuleTable`
+- `WorkflowRuleForm`
+- `WorkflowRuleDetailsCard`
+### ArchivePolicy Components
+- `ArchivePolicyTable`
+- `ArchivePolicyForm`
+- `ArchivePolicyDetailsCard`
+### ArchiveJob Components
+- `ArchiveJobTable`
+- `ArchiveJobForm`
+- `ArchiveJobDetailsCard`
+### ArchiveRecord Components
+- `ArchiveRecordTable`
+- `ArchiveRecordForm`
+- `ArchiveRecordDetailsCard`
+### GlobalSearchIndex Components
+- `GlobalSearchIndexTable`
+- `GlobalSearchIndexForm`
+- `GlobalSearchIndexDetailsCard`
+### NumberingSequence Components
+- `NumberingSequenceTable`
+- `NumberingSequenceForm`
+- `NumberingSequenceDetailsCard`
+### StorageMetadata Components
+- `StorageMetadataTable`
+- `StorageMetadataForm`
+- `StorageMetadataDetailsCard`
+### HealthCheckMetric Components
+- `HealthCheckMetricTable`
+- `HealthCheckMetricForm`
+- `HealthCheckMetricDetailsCard`
+### PdfTemplate Components
+- `PdfTemplateTable`
+- `PdfTemplateForm`
+- `PdfTemplateDetailsCard`
+### PdfDocument Components
+- `PdfDocumentTable`
+- `PdfDocumentForm`
+- `PdfDocumentDetailsCard`
+### directus_access Components
+- `directus_accessTable`
+- `directus_accessForm`
+- `directus_accessDetailsCard`
+### directus_activity Components
+- `directus_activityTable`
+- `directus_activityForm`
+- `directus_activityDetailsCard`
+### directus_collections Components
+- `directus_collectionsTable`
+- `directus_collectionsForm`
+- `directus_collectionsDetailsCard`
+### directus_comments Components
+- `directus_commentsTable`
+- `directus_commentsForm`
+- `directus_commentsDetailsCard`
+### directus_dashboards Components
+- `directus_dashboardsTable`
+- `directus_dashboardsForm`
+- `directus_dashboardsDetailsCard`
+### directus_deployment_projects Components
+- `directus_deployment_projectsTable`
+- `directus_deployment_projectsForm`
+- `directus_deployment_projectsDetailsCard`
+### directus_deployment_runs Components
+- `directus_deployment_runsTable`
+- `directus_deployment_runsForm`
+- `directus_deployment_runsDetailsCard`
+### directus_deployments Components
+- `directus_deploymentsTable`
+- `directus_deploymentsForm`
+- `directus_deploymentsDetailsCard`
+### directus_extensions Components
+- `directus_extensionsTable`
+- `directus_extensionsForm`
+- `directus_extensionsDetailsCard`
+### directus_fields Components
+- `directus_fieldsTable`
+- `directus_fieldsForm`
+- `directus_fieldsDetailsCard`
+### directus_files Components
+- `directus_filesTable`
+- `directus_filesForm`
+- `directus_filesDetailsCard`
+### directus_flows Components
+- `directus_flowsTable`
+- `directus_flowsForm`
+- `directus_flowsDetailsCard`
+### directus_folders Components
+- `directus_foldersTable`
+- `directus_foldersForm`
+- `directus_foldersDetailsCard`
+### directus_migrations Components
+- `directus_migrationsTable`
+- `directus_migrationsForm`
+- `directus_migrationsDetailsCard`
+### directus_notifications Components
+- `directus_notificationsTable`
+- `directus_notificationsForm`
+- `directus_notificationsDetailsCard`
+### directus_operations Components
+- `directus_operationsTable`
+- `directus_operationsForm`
+- `directus_operationsDetailsCard`
+### directus_panels Components
+- `directus_panelsTable`
+- `directus_panelsForm`
+- `directus_panelsDetailsCard`
+### directus_permissions Components
+- `directus_permissionsTable`
+- `directus_permissionsForm`
+- `directus_permissionsDetailsCard`
+### directus_policies Components
+- `directus_policiesTable`
+- `directus_policiesForm`
+- `directus_policiesDetailsCard`
+### directus_presets Components
+- `directus_presetsTable`
+- `directus_presetsForm`
+- `directus_presetsDetailsCard`
+### directus_relations Components
+- `directus_relationsTable`
+- `directus_relationsForm`
+- `directus_relationsDetailsCard`
+### directus_revisions Components
+- `directus_revisionsTable`
+- `directus_revisionsForm`
+- `directus_revisionsDetailsCard`
+### directus_roles Components
+- `directus_rolesTable`
+- `directus_rolesForm`
+- `directus_rolesDetailsCard`
+### directus_sessions Components
+- `directus_sessionsTable`
+- `directus_sessionsForm`
+- `directus_sessionsDetailsCard`
+### directus_settings Components
+- `directus_settingsTable`
+- `directus_settingsForm`
+- `directus_settingsDetailsCard`
+### directus_shares Components
+- `directus_sharesTable`
+- `directus_sharesForm`
+- `directus_sharesDetailsCard`
+### directus_translations Components
+- `directus_translationsTable`
+- `directus_translationsForm`
+- `directus_translationsDetailsCard`
+### directus_users Components
+- `directus_usersTable`
+- `directus_usersForm`
+- `directus_usersDetailsCard`
+### directus_versions Components
+- `directus_versionsTable`
+- `directus_versionsForm`
+- `directus_versionsDetailsCard`
+### TenantSettings Components
+- `TenantSettingsTable`
+- `TenantSettingsForm`
+- `TenantSettingsDetailsCard`
+### SettingsHistory Components
+- `SettingsHistoryTable`
+- `SettingsHistoryForm`
+- `SettingsHistoryDetailsCard`

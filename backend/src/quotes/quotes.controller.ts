@@ -9,6 +9,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { QuotesService } from './quotes.service';
+import { CreateQuoteDto } from './dto/create-quote.dto';
 import { Prisma, QuoteStatus } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from '../auth/guards/permissions.guard';
@@ -56,11 +57,11 @@ export class QuotesController {
   @Permissions('quotes:write')
   async createQuote(
     @Req() req: AuthenticatedRequest,
-    @Body() body: Record<string, unknown>,
+    @Body() body: CreateQuoteDto,
   ) {
     return tenantContext.run(
       { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
-      () => this.service.create(body as Prisma.QuoteUncheckedCreateInput),
+      () => this.service.create(body as any),
     );
   }
 

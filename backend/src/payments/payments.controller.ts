@@ -5,6 +5,8 @@ import {
   Param,
   UseGuards,
   HttpCode,
+  Get,
+  Req,
 } from '@nestjs/common';
 import { PaymentsService } from './payments.service';
 import type { SubmitPaymentDto, RejectPaymentDto } from './payments.service';
@@ -14,11 +16,26 @@ import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+import { PrismaService } from '../prisma/prisma.service';
+
 @ApiTags('Payments')
 @Controller('payments')
 @UseGuards(JwtAuthGuard, PermissionsGuard, TenantIsolationGuard)
 export class PaymentsController {
-  constructor(private readonly service: PaymentsService) {}
+  constructor(
+    private readonly service: PaymentsService,
+    private readonly prisma: PrismaService,
+  ) {}
+
+  @Get()
+  @ApiOperation({ summary: 'List all payments' })
+  @Permissions('payments.read')
+  async findAll(@Req() req: any) {
+    return this.prisma.payment.findMany({
+      where: { tenantId: req.user.tenantId },
+      include: { invoice: true }
+    });
+  }
 
   @Post('submit')
   @ApiOperation({ summary: 'Execute Post operation' })

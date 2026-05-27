@@ -1,0 +1,290 @@
+# BUSINESS RULES AND PROCESSES (Extracted from Services)
+
+### Service: AppService
+- getHello() -> string
+
+### Service: AgendaService
+- getTenantId() -> string
+- findAll() -> any
+- reserve(data: CreateReservationDto) -> any
+- reschedule(id: string, data: RescheduleReservationDto) -> any
+- release(id: string) -> any
+- cancel(id: string) -> any
+- expire(id: string) -> any
+
+### Service: AgreementsService
+- create(tenantId: string, dto: CreateAgreementDto, userId: string) -> any
+- submitForReview(tenantId: string, id: string, userId: string) -> any
+- approve(tenantId: string, id: string, userId: string) -> any
+- reject(tenantId: string, id: string, userId: string, reason: string) -> any
+- generateLetter(tenantId: string, id: string, versionId: string) -> any
+- pendingSignature(tenantId: string, id: string) -> any
+- markAsSigned(tenantId: string, id: string, signatureId: string) -> any
+- activate(tenantId: string, id: string, validFrom: Date, validUntil: Date) -> any
+- complete(tenantId: string, id: string) -> any
+- cancel(tenantId: string, id: string, reason: string) -> any
+
+### Service: ApprovalsService
+- evaluateAdvancedWorkflow(requestId: string) -> Promise<string>
+- groupByOrder(steps: ApprovalStep[]) -> Record<number, ApprovalStep[]>
+- updateStatus(id: string, status: string) -> string
+- needsEscalation(steps: ApprovalStep[], now: Date) -> boolean
+- escalateStep(steps: ApprovalStep[]) -> void
+- delegateApproval(stepId: string, newApproverId: string) -> Promise<void>
+
+### Service: ArchiveEngineService
+- archiveEntity(model: 'Client' | 'Contract' | 'Quote' | 'Document', id: string, archivedBy: string) -> any
+- applyRetentionPolicies() -> any
+
+### Service: AuditService
+- logEvent(dto: CreateAuditLogDto) -> any
+
+### Service: TamperDetectionService
+- verifyAuditChain() -> any
+
+### Service: AuthService
+- login(credentials: LoginDto) -> any
+
+### Service: CatalogService
+- createItem(dto: CreateCatalogItemDto) -> any
+
+### Service: ClientsService
+- create(data: Omit<Prisma.ClientUncheckedCreateInput, 'tenantId'>) -> any
+- findById(id: string) -> any
+- findAll() -> any
+- update(id: string, data: Prisma.ClientUpdateInput) -> any
+
+### Service: ComplianceService
+- canCreateContract(client: Client) -> boolean
+- canGenerateInvoice(client: Client) -> boolean
+- canApprovePayment(client: Client) -> boolean
+
+### Service: EligibilityEngineService
+- evaluateEligibility(clientId: string, transactionType: TransactionType) -> Promise<boolean>
+
+### Service: TenantContextService
+- setTenantId(tenantId: string) -> any
+- getTenantId() -> string
+- setUserId(userId: string) -> any
+- getUserId() -> string
+
+### Service: ComplianceEngineService
+- canCreateContract(clientSnapshotId: string) -> Promise<boolean>
+- canGenerateInvoice(contractSnapshotId: string) -> Promise<boolean>
+- canProcessPayment(invoiceId: string) -> Promise<boolean>
+
+### Service: ExpirationEngineService
+- scanExpirations(tx: Prisma.TransactionClient) -> any
+
+### Service: ContractEngineService
+- createContract(dto: CreateContractDto) -> Promise<string>
+- updateContractStatus(contractId: string, newStatus: ContractStatus) -> Promise<any>
+- getContract(contractId: string) -> Promise<any>
+- findAll() -> Promise<any[]>
+
+### Service: ContractsService
+- getContract(id: string) -> any
+
+### Service: CustomerCreditsService
+- getBalance(tenantId: string, clientId: string) -> any
+- addTransaction(tenantId: string, dto: AddTransactionDto, userId: string) -> any
+
+### Service: DashboardService
+- getMetrics() -> any
+
+### Service: DocumentPolicyService
+- canDelete(document: Document) -> boolean
+- canArchive(document: Document) -> boolean
+- canPurge(document: Document) -> boolean
+
+### Service: DocumentsService
+- generatePdf(tenantId: string, documentId: string, templateId: string, data: any) -> any
+
+### Service: FeatureFlagsService
+- getFeatureFlag(key: string) -> any
+
+### Service: HealthService
+- checkHealth() -> any
+- registerMetric(dto: RegisterHealthMetricDto) -> any
+- getMetricsByTenant(tenantId: string, limit: any) -> any
+
+### Service: InvoicesService
+- generateInvoice(dto: GenerateInvoiceDto & { currencyCode: string }) -> Promise<string>
+- stampInvoice(invoiceId: string) -> Promise<StampResult>
+- uploadManualInvoiceFiles(invoiceId: string, xmlUrl: string, pdfUrl: string) -> any
+- stampWithIntelisis(invoiceId: string, tenantId: string) -> Promise<void>
+- getInvoiceReport() -> any
+
+### Service: NotificationsService
+- handleNotificationSendEvent(payload: {
+    tenantId: string;
+    userId: string;
+    message: string;
+    type: string;
+  }) -> any
+- handleQuoteApproved(payload: {
+    tenantId: string;
+    quoteId: string;
+    userId: string;
+  }) -> any
+- handleContractGenerated(payload: {
+    tenantId: string;
+    contractId: string;
+    quoteId: string;
+    userId: string;
+  }) -> any
+- dispatch(payload: {
+    tenantId: string;
+    userId: string;
+    message: string;
+    type: string;
+  }) -> any
+- getNotificationsForUser(tenantId: string, userId: string) -> any
+
+### Service: NumberingService
+- generateFolio(dto: GenerateFolioDto) -> Promise<string>
+
+### Service: PaymentsService
+- submitPayment(dto: SubmitPaymentDto) -> Promise<string>
+- approvePayment(paymentId: string) -> Promise<void>
+- rejectPayment(dto: RejectPaymentDto) -> Promise<void>
+- refundPayment(dto: RefundPaymentDto) -> Promise<void>
+
+### Service: PdfService
+- generatePdfFromView(dto: GeneratePdfDto) -> Promise<string>
+
+### Service: PricingEngineService
+- evaluatePricing(intent: PricingIntent, userRole: string) -> Promise<SealedPayload>
+- getMaxDiscountForRole(role: string) -> Prisma.Decimal
+- generateSignature(payload: Partial<SealedPayload>) -> string
+
+### Service: PrismaService
+- onModuleInit() -> any
+- onModuleDestroy() -> any
+
+### Service: QuotesService
+- create(data: Omit<Prisma.QuoteUncheckedCreateInput, 'tenantId' | 'status'>) -> any
+- updateStatus(id: string, targetStatus: QuoteStatus) -> any
+- findAll() -> any
+- findById(id: string) -> any
+- getQuoteItems(quoteId: string) -> any
+
+### Service: RbacService
+- create(createRbacDto: CreateRbacDto) -> any
+- findAll() -> any
+- findOne(id: number) -> any
+- update(id: number, updateRbacDto: UpdateRbacDto) -> any
+- remove(id: number) -> any
+
+### Service: ReceiptsService
+- generateReceiptForPayment(tenantId: string, paymentId: string) -> any
+
+### Service: RegulationsService
+- createRegulation(dto: CreateRegulationDto) -> any
+- acceptRegulation(dto: AcceptRegulationDto) -> any
+
+### Service: ReportsService
+- getKpis() -> any
+- getAdvancedReport() -> any
+
+### Service: ReviewsService
+- createReview(tenantId: string, dto: CreateReviewDto, userId: string) -> any
+- addDecision(tenantId: string, reviewId: string, dto: AddDecisionDto, userId: string) -> any
+
+### Service: GlobalSearchEngineService
+- globalSearch(query: string, tenantId: string) -> any
+
+### Service: SettingsService
+- resolveEffectiveSettings(tenantId: string) -> any
+- updateSettings(tenantId: string, updates: any) -> any
+- rollbackSettings(tenantId: string, versionId: string) -> any
+
+### Service: SignaturesService
+- getSignature(id: string, tenantId: string) -> any
+- signContract(dto: SignContractDto) -> Promise<Signature>
+- signWithDocuSign(contractId: string, participantName: string) -> Promise<{ hash: string }>
+- signInternal(contractId: string, participantName: string, signatureData: string) -> { hash: string }
+
+### Service: SnapshotsService
+- createSnapshot(dto: CreateSnapshotDto) -> any
+
+### Service: AvailabilityEngineService
+- reserveSpace(request: AvailabilityRequest, sourceId: string, sourceType: string) -> Promise<string>
+
+### Service: OccupancyService
+- createOccupancy(data: Omit<Prisma.SpaceOccupancyUncheckedCreateInput, 'tenantId'>) -> any
+
+### Service: SpacesService
+- create(data: CreateSpaceDto) -> any
+- findById(id: string) -> any
+- findAll() -> any
+- update(id: string, data: UpdateSpaceDto) -> any
+
+### Service: StorageService
+- registerMetadata(dto: RegisterMetadataDto) -> any
+- getMetadata(id: string, tenantId: string) -> any
+- getStorageInfo(id: string) -> any
+
+### Service: TemplatesService
+- createTemplate(dto: CreateTemplateDto) -> any
+- createClause(dto: CreateClauseDto) -> any
+
+### Service: TenantsService
+- create(createTenantDto: CreateTenantDto) -> any
+- findAll() -> any
+- findOne(id: string) -> any
+- update(id: string, updateTenantDto: UpdateTenantDto) -> any
+- remove(id: string) -> any
+
+### Service: WorkflowEngineService
+- executeTransition(tenantId: string, workflowVersionId: string, currentStateId: string, actionName: string, contextPayload: any) -> any
+- evaluateConditions(conditions: any, context: any) -> boolean
+
+### Service: InboxService
+- processIdempotent(tenantId: string, eventId: string, eventType: string, payload: Record<string, unknown>, handler: () => Promise<void>) -> Promise<void>
+
+### Service: PostgresJobQueueService
+- processNextJob() -> any
+- handleJobPayload(job: {
+    job_type: string;
+    [key: string]: unknown;
+  }) -> any
+- enqueueJob(tenantId: string, queueName: string, jobType: JobType, payload: Record<string, unknown>, priority: number) -> any
+
+### Service: OutboxProcessorService
+- processOutbox() -> any
+
+### Service: SchedulerService
+- executeNightlySweeps() -> any
+
+### Service: AgreementFileCreatedEvent
+
+### Service: AgreementFileService
+- createAgreementFile(tenantId: string, dto: CreateAgreementFileDto) -> any
+- getAgreementFiles(tenantId: string, agreementId: string) -> any
+
+### Service: ClientFileService
+- createClientFile(tenantId: string, dto: CreateClientFileDto) -> any
+- getClientFiles(tenantId: string, clientId: string) -> any
+- addDocument(tenantId: string, clientFileId: string, dto: AddClientFileDocumentDto) -> any
+
+### Service: ContractFileService
+- createContractFile(tenantId: string, dto: CreateContractFileDto) -> any
+- getContractFiles(tenantId: string, contractId: string) -> any
+
+### Service: DocumentViewerService
+- generateSignedUrl(tenantId: string, entityType: string, fileId: string, expiresInMinutes: any) -> string
+- viewDocument(tenantId: string, entityType: string, fileId: string, expiresAt: number, signature: string) -> any
+
+### Service: FinancialFileService
+- createFinancialFile(tenantId: string, dto: CreateFinancialFileDto) -> any
+- getFinancialFiles(tenantId: string, invoiceId: string) -> any
+
+### Service: QuoteFileService
+- createQuoteFile(tenantId: string, dto: CreateQuoteFileDto) -> any
+- getQuoteFiles(tenantId: string, quoteId: string) -> any
+
+### Service: SpaceConfigurationService
+- setConfiguration(dto: CreateSpaceConfigurationDto) -> any
+- createRule(dto: CreateSpaceRuleDto) -> any
+

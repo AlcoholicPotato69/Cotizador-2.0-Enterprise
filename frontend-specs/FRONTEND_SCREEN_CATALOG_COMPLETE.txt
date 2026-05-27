@@ -1,0 +1,1584 @@
+# FRONTEND SCREEN CATALOG
+
+## User Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Role Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Permission Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## RolePermission Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## FeatureFlag Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## TaxConfiguration Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Currency Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Client Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: Yes
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Space Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## SpaceOccupancy Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Document Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## NotificationQueue Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Quote Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: Yes
+- **Requires Viewer?**: No
+- **Requires PDF?**: Yes
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Contract Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: Yes
+- **Requires Viewer?**: No
+- **Requires PDF?**: Yes
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Signature Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Invoice Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: Yes
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Payment Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## PaymentEvidence Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ClientFile Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ClientFileDocument Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## QuoteFile Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ContractFile Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## FinancialFile Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## AgreementFile Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Agreement Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: Yes
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## AgreementVersion Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## AgreementItem Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## AgreementApproval Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## AgreementSignature Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## AgreementEvidence Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## AgreementSnapshot Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## DocumentReview Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## DocumentReviewStep Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## DocumentReviewDecision Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CustomerCreditBalance Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CreditTransaction Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CreditApplication Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CatalogCategory Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CatalogItem Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CatalogPrice Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CatalogVersion Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CatalogSnapshot Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ContractTemplate Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ContractTemplateVersion Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ContractClause Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: Yes
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ClauseVersion Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## TemplateVariable Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## QuoteTemplate Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## InvoiceTemplate Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: Yes
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ReceiptTemplate Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## RegulationTemplate Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## Regulation Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## RegulationVersion Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## RegulationAcceptance Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## CalendarEvent Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## SpaceConfiguration Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## SpaceRule Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## SpaceAvailabilityRule Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## SignatureEvidence Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## PaymentAllocation Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## OutboxEvent Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## OutboxDispatch Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## OutboxFailure Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## InboxEvent Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## JobQueue Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## JobExecution Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## JobRetry Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## JobFailure Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## WorkflowDefinition Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## WorkflowVersion Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## WorkflowState Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## WorkflowTransition Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## WorkflowRule Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ArchivePolicy Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ArchiveJob Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## ArchiveRecord Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## GlobalSearchIndex Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## NumberingSequence Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## StorageMetadata Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## HealthCheckMetric Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## PdfTemplate Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## PdfDocument Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: Yes
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_access Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_activity Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_collections Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_comments Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_dashboards Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_deployment_projects Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_deployment_runs Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_deployments Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_extensions Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_fields Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_files Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_flows Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_folders Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_migrations Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_notifications Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_operations Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_panels Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_permissions Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_policies Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_presets Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_relations Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_revisions Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_roles Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_sessions Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_settings Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_shares Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_translations Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_users Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## directus_versions Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## TenantSettings Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+
+## SettingsHistory Screens
+- **Requires List Page?**: Yes
+- **Requires Detail Page?**: Yes
+- **Requires Create Form?**: Yes
+- **Requires Edit Form?**: Yes
+- **Requires Timeline?**: No
+- **Requires Audit?**: Yes
+- **Requires Workflow?**: No
+- **Requires Dossier?**: No
+- **Requires Viewer?**: No
+- **Requires PDF?**: No
+- **Requires Reports?**: Yes
+- **Requires Notifications?**: Yes
+

@@ -1,0 +1,185 @@
+# UI DOMAIN MAP (Inferred from Controllers)
+
+### Controller: AppController
+- Endpoint: [Get]  -> getHello (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: AgendaController
+- Endpoint: [Get]  -> findAll (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] 'reserve' -> reserve (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id/reschedule' -> reschedule (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Patch] ':id/release' -> release (Decorators: Patch, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Patch] ':id/cancel' -> cancel (Decorators: Patch, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Patch] ':id/expire' -> expire (Decorators: Patch, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: AgreementsController
+- Endpoint: [Post]  -> create (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id/submit-review' -> submitForReview (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id/approve' -> approve (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id/generate-letter' -> generateLetter (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id/pending-signature' -> pendingSignature (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id/sign' -> markAsSigned (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: ApprovalsController
+
+### Controller: ArchiveController
+- Endpoint: [Post] 'entity/:model/:id' -> archiveEntity (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Post] 'retention-check' -> runRetentionCheck (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: AuditController
+- Endpoint: [Get]  -> findAll (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Get] ':id' -> findOne (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: AuthController
+- Endpoint: [Post] 'login' -> login (Decorators: Public, Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, HttpCode)
+- Endpoint: [Get] 'profile' -> getProfile (Decorators: UseGuards, Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse)
+
+### Controller: CatalogController
+- Endpoint: [Post]  -> createItem (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: ClientsController
+- Endpoint: [Post]  -> create (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get]  -> findAll (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] ':id' -> findById (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] ':id/eligibility/:transactionType' -> evaluateEligibility (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id' -> update (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: ContractsController
+- Endpoint: [Post]  -> createContract (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] ':id' -> getContract (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get]  -> getContracts (Decorators: Get, ApiOperation, ApiResponse, Permissions)
+- Endpoint: [Put] ':id/status' -> updateContractStatus (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: CustomerCreditsController
+- Endpoint: [Get] ':clientId/balance' -> getBalance (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Post] 'transaction' -> addTransaction (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: DashboardController
+- Endpoint: [Get] 'metrics' -> getMetrics (Decorators: Get)
+
+### Controller: DocumentsController
+- Endpoint: [Post] 'generate-pdf' -> generatePdf (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: EventsController
+- Endpoint: [Unknown]  -> sse (Decorators: Sse)
+
+### Controller: FeatureFlagsController
+- Endpoint: [Get] ':key' -> getFeatureFlag (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: HealthController
+- Endpoint: [Get]  -> checkHealth (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Get] 'metrics' -> getMetrics (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: InvoicesController
+- Endpoint: [Get] 'report' -> getInvoiceReport (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] ':id' -> getInvoice (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] 'generate' -> generateInvoice (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] ':id/stamp' -> stampInvoice (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] ':id/upload-manual' -> uploadManualInvoice (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: NotificationsController
+- Endpoint: [Get]  -> getUserNotifications (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: NumberingController
+- Endpoint: [Post] 'generate' -> generateFolio (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: PaymentsController
+- Endpoint: [Post] 'submit' -> submitPayment (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] ':id/approve' -> approvePayment (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, HttpCode, Permissions)
+- Endpoint: [Post] ':id/reject' -> rejectPayment (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, HttpCode, Permissions)
+- Endpoint: [Post] ':id/refund' -> refundPayment (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, HttpCode, Permissions)
+
+### Controller: QuotesController
+- Endpoint: [Post]  -> createQuote (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id/status' -> updateStatus (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get]  -> getQuotes (Decorators: Get, ApiOperation, ApiResponse, Permissions)
+- Endpoint: [Get] ':id' -> getQuote (Decorators: Get, ApiOperation, ApiResponse, Permissions)
+- Endpoint: [Get] ':id/items' -> getQuoteItems (Decorators: Get, ApiOperation, ApiResponse, Permissions)
+
+### Controller: RbacController
+- Endpoint: [Post]  -> create (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Get]  -> findAll (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Get] ':id' -> findOne (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Patch] ':id' -> update (Decorators: Patch, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Delete] ':id' -> remove (Decorators: Delete, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: ReceiptsController
+- Endpoint: [Post] 'generate/payment/:paymentId' -> generateForPayment (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: RegulationsController
+- Endpoint: [Post]  -> createRegulation (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] 'accept' -> acceptRegulation (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: ReportsController
+- Endpoint: [Get] 'kpis' -> getKpis (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Get] 'advanced' -> getAdvancedReport (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: ReviewsController
+- Endpoint: [Post]  -> createReview (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] ':id/decisions' -> addDecision (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: SearchController
+- Endpoint: [Get]  -> globalSearch (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: SettingsController
+
+### Controller: SignaturesController
+- Endpoint: [Get] ':id' -> getSignature (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] 'sign' -> signContract (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: SnapshotsController
+
+### Controller: OccupancyController
+- Endpoint: [Post]  -> create (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: SpacesController
+- Endpoint: [Post]  -> create (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get]  -> findAll (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] ':id' -> findById (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Put] ':id' -> update (Decorators: Put, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: StorageController
+- Endpoint: [Get] ':id' -> getStorageObject (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: TemplatesController
+- Endpoint: [Post]  -> createTemplate (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] 'clauses' -> createClause (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: TenantsController
+- Endpoint: [Post]  -> create (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Get]  -> findAll (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Get] ':id' -> findOne (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse)
+- Endpoint: [Patch] ':id' -> update (Decorators: Patch, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+- Endpoint: [Delete] ':id' -> remove (Decorators: Delete, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, RequirePermissions, Permissions)
+
+### Controller: WorkflowController
+- Endpoint: [Post] ':versionId/transitions' -> executeTransition (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: AgreementFileController
+- Endpoint: [Post]  -> createAgreementFile (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse)
+- Endpoint: [Get] 'agreement/:agreementId' -> getAgreementFiles (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse)
+
+### Controller: ClientFileController
+- Endpoint: [Post]  -> createClientFile (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] 'client/:clientId' -> getClientFiles (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] ':id/documents' -> addDocument (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: ContractFileController
+- Endpoint: [Post]  -> createContractFile (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] 'contract/:contractId' -> getContractFiles (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: DocumentViewerController
+- Endpoint: [Get] 'generate-url' -> generateSignedUrl (Decorators: UseGuards, Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] 'view' -> viewDocument (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: FinancialFileController
+- Endpoint: [Post]  -> createFinancialFile (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] 'invoice/:invoiceId' -> getFinancialFiles (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: QuoteFileController
+- Endpoint: [Post]  -> createQuoteFile (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Get] 'quote/:quoteId' -> getQuoteFiles (Decorators: Get, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+
+### Controller: SpaceConfigurationController
+- Endpoint: [Post]  -> setConfiguration (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+- Endpoint: [Post] 'rules' -> createRule (Decorators: Post, ApiOperation, ApiResponse, ApiResponse, ApiResponse, ApiResponse, ApiResponse, Permissions)
+

@@ -1,0 +1,14 @@
+# NOTIFICATION ENGINE
+
+Found in notifications.controller.ts
+- Class: NotificationsController
+  - Method: getUserNotifications
+Found in notifications.module.ts
+- Class: NotificationsModule
+Found in notifications.service.ts
+- Class: NotificationsService
+  - Method: handleNotificationSendEvent
+  - Method: handleQuoteApproved
+  - Method: handleContractGenerated
+  - Method: dispatch
+  - Method: getNotificationsForUser

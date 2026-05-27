@@ -1,0 +1,353 @@
+# DOMAIN DICTIONARY
+
+## Tenant
+- Extracted from Prisma Schema.
+
+## User
+- Extracted from Prisma Schema.
+
+## Role
+- Extracted from Prisma Schema.
+
+## Permission
+- Extracted from Prisma Schema.
+
+## UserRole
+- Extracted from Prisma Schema.
+
+## RolePermission
+- Extracted from Prisma Schema.
+
+## AuditLog
+- Extracted from Prisma Schema.
+
+## Snapshot
+- Extracted from Prisma Schema.
+
+## FeatureFlag
+- Extracted from Prisma Schema.
+
+## TaxConfiguration
+- Extracted from Prisma Schema.
+
+## Currency
+- Extracted from Prisma Schema.
+
+## Client
+- Extracted from Prisma Schema.
+
+## Space
+- Extracted from Prisma Schema.
+
+## SpaceOccupancy
+- Extracted from Prisma Schema.
+
+## Document
+- Extracted from Prisma Schema.
+
+## NotificationQueue
+- Extracted from Prisma Schema.
+
+## Quote
+- Extracted from Prisma Schema.
+
+## Contract
+- Extracted from Prisma Schema.
+
+## Signature
+- Extracted from Prisma Schema.
+
+## Invoice
+- Extracted from Prisma Schema.
+
+## Payment
+- Extracted from Prisma Schema.
+
+## PaymentEvidence
+- Extracted from Prisma Schema.
+
+## ClientFile
+- Extracted from Prisma Schema.
+
+## ClientFileDocument
+- Extracted from Prisma Schema.
+
+## QuoteFile
+- Extracted from Prisma Schema.
+
+## ContractFile
+- Extracted from Prisma Schema.
+
+## FinancialFile
+- Extracted from Prisma Schema.
+
+## AgreementFile
+- Extracted from Prisma Schema.
+
+## Agreement
+- Extracted from Prisma Schema.
+
+## AgreementVersion
+- Extracted from Prisma Schema.
+
+## AgreementItem
+- Extracted from Prisma Schema.
+
+## AgreementApproval
+- Extracted from Prisma Schema.
+
+## AgreementSignature
+- Extracted from Prisma Schema.
+
+## AgreementEvidence
+- Extracted from Prisma Schema.
+
+## AgreementSnapshot
+- Extracted from Prisma Schema.
+
+## DocumentReview
+- Extracted from Prisma Schema.
+
+## DocumentReviewStep
+- Extracted from Prisma Schema.
+
+## DocumentReviewDecision
+- Extracted from Prisma Schema.
+
+## CustomerCreditBalance
+- Extracted from Prisma Schema.
+
+## CreditTransaction
+- Extracted from Prisma Schema.
+
+## CreditApplication
+- Extracted from Prisma Schema.
+
+## CatalogCategory
+- Extracted from Prisma Schema.
+
+## CatalogItem
+- Extracted from Prisma Schema.
+
+## CatalogPrice
+- Extracted from Prisma Schema.
+
+## CatalogVersion
+- Extracted from Prisma Schema.
+
+## CatalogSnapshot
+- Extracted from Prisma Schema.
+
+## ContractTemplate
+- Extracted from Prisma Schema.
+
+## ContractTemplateVersion
+- Extracted from Prisma Schema.
+
+## ContractClause
+- Extracted from Prisma Schema.
+
+## ClauseVersion
+- Extracted from Prisma Schema.
+
+## TemplateVariable
+- Extracted from Prisma Schema.
+
+## QuoteTemplate
+- Extracted from Prisma Schema.
+
+## InvoiceTemplate
+- Extracted from Prisma Schema.
+
+## ReceiptTemplate
+- Extracted from Prisma Schema.
+
+## RegulationTemplate
+- Extracted from Prisma Schema.
+
+## Regulation
+- Extracted from Prisma Schema.
+
+## RegulationVersion
+- Extracted from Prisma Schema.
+
+## RegulationAcceptance
+- Extracted from Prisma Schema.
+
+## CalendarEvent
+- Extracted from Prisma Schema.
+
+## SpaceConfiguration
+- Extracted from Prisma Schema.
+
+## SpaceRule
+- Extracted from Prisma Schema.
+
+## SpaceAvailabilityRule
+- Extracted from Prisma Schema.
+
+## SignatureEvidence
+- Extracted from Prisma Schema.
+
+## PaymentAllocation
+- Extracted from Prisma Schema.
+
+## OutboxEvent
+- Extracted from Prisma Schema.
+
+## OutboxDispatch
+- Extracted from Prisma Schema.
+
+## OutboxFailure
+- Extracted from Prisma Schema.
+
+## InboxEvent
+- Extracted from Prisma Schema.
+
+## JobQueue
+- Extracted from Prisma Schema.
+
+## JobExecution
+- Extracted from Prisma Schema.
+
+## JobRetry
+- Extracted from Prisma Schema.
+
+## JobFailure
+- Extracted from Prisma Schema.
+
+## WorkflowDefinition
+- Extracted from Prisma Schema.
+
+## WorkflowVersion
+- Extracted from Prisma Schema.
+
+## WorkflowState
+- Extracted from Prisma Schema.
+
+## WorkflowTransition
+- Extracted from Prisma Schema.
+
+## WorkflowRule
+- Extracted from Prisma Schema.
+
+## ArchivePolicy
+- Extracted from Prisma Schema.
+
+## ArchiveJob
+- Extracted from Prisma Schema.
+
+## ArchiveRecord
+- Extracted from Prisma Schema.
+
+## GlobalSearchIndex
+- Extracted from Prisma Schema.
+
+## NumberingSequence
+- Extracted from Prisma Schema.
+
+## StorageMetadata
+- Extracted from Prisma Schema.
+
+## HealthCheckMetric
+- Extracted from Prisma Schema.
+
+## PdfTemplate
+- Extracted from Prisma Schema.
+
+## PdfDocument
+- Extracted from Prisma Schema.
+
+## directus_access
+- Extracted from Prisma Schema.
+
+## directus_activity
+- Extracted from Prisma Schema.
+
+## directus_collections
+- Extracted from Prisma Schema.
+
+## directus_comments
+- Extracted from Prisma Schema.
+
+## directus_dashboards
+- Extracted from Prisma Schema.
+
+## directus_deployment_projects
+- Extracted from Prisma Schema.
+
+## directus_deployment_runs
+- Extracted from Prisma Schema.
+
+## directus_deployments
+- Extracted from Prisma Schema.
+
+## directus_extensions
+- Extracted from Prisma Schema.
+
+## directus_fields
+- Extracted from Prisma Schema.
+
+## directus_files
+- Extracted from Prisma Schema.
+
+## directus_flows
+- Extracted from Prisma Schema.
+
+## directus_folders
+- Extracted from Prisma Schema.
+
+## directus_migrations
+- Extracted from Prisma Schema.
+
+## directus_notifications
+- Extracted from Prisma Schema.
+
+## directus_operations
+- Extracted from Prisma Schema.
+
+## directus_panels
+- Extracted from Prisma Schema.
+
+## directus_permissions
+- Extracted from Prisma Schema.
+
+## directus_policies
+- Extracted from Prisma Schema.
+
+## directus_presets
+- Extracted from Prisma Schema.
+
+## directus_relations
+- Extracted from Prisma Schema.
+
+## directus_revisions
+- Extracted from Prisma Schema.
+
+## directus_roles
+- Extracted from Prisma Schema.
+
+## directus_sessions
+- Extracted from Prisma Schema.
+
+## directus_settings
+- Extracted from Prisma Schema.
+
+## directus_shares
+- Extracted from Prisma Schema.
+
+## directus_translations
+- Extracted from Prisma Schema.
+
+## directus_users
+- Extracted from Prisma Schema.
+
+## directus_versions
+- Extracted from Prisma Schema.
+
+## TenantSettings
+- Extracted from Prisma Schema.
+
+## SettingsHistory
+- Extracted from Prisma Schema.
+

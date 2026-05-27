@@ -50,6 +50,7 @@ import { AgendaModule } from './agenda/agenda.module';
 
 import { TenantContextInterceptor } from './common/interceptors/tenant-context.interceptor';
 import { APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { PermissionsGuard } from './auth/guards/permissions.guard';
 import { TenantIsolationGuard } from './auth/guards/tenant-isolation.guard';
@@ -60,6 +61,10 @@ import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 100,
+    }]),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', '..', 'public'),
       exclude: ['/api/{*splat}'],
@@ -118,6 +123,10 @@ import { EventsModule } from './events/events.module';
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

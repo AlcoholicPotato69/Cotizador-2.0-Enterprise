@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cotizador Enterprise</title>
+    <script>
+      (function() {
+        var origDefineProperty = Object.defineProperty;
+        Object.defineProperty = function(obj, prop, descriptor) {
+          if (obj === window && prop === 'fetch' && descriptor && !descriptor.set) {
+            descriptor.set = function() {
+              console.warn('Intercepted window.fetch assignment');
+            };
+            if (descriptor.configurable === false) {
+              descriptor.configurable = true;
+            }
+          }
+          return origDefineProperty.call(this, obj, prop, descriptor);
+        };
+        try {
+          var desc = Object.getOwnPropertyDescriptor(window, 'fetch');
+          if (desc && desc.get && !desc.set && desc.configurable) {
+            Object.defineProperty(window, 'fetch', {
+              get: desc.get,
+              set: function() { console.warn('Ignored window.fetch assignment'); },
+              configurable: desc.configurable,
+              enumerable: desc.enumerable
+            });
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+

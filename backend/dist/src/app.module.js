@@ -55,6 +55,7 @@ const notifications_module_1 = require("./notifications/notifications.module");
 const agenda_module_1 = require("./agenda/agenda.module");
 const tenant_context_interceptor_1 = require("./common/interceptors/tenant-context.interceptor");
 const core_1 = require("@nestjs/core");
+const throttler_1 = require("@nestjs/throttler");
 const jwt_auth_guard_1 = require("./auth/guards/jwt-auth.guard");
 const permissions_guard_1 = require("./auth/guards/permissions.guard");
 const tenant_isolation_guard_1 = require("./auth/guards/tenant-isolation.guard");
@@ -68,6 +69,10 @@ exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            throttler_1.ThrottlerModule.forRoot([{
+                    ttl: 60000,
+                    limit: 100,
+                }]),
             serve_static_1.ServeStaticModule.forRoot({
                 rootPath: (0, path_1.join)(__dirname, '..', '..', 'public'),
                 exclude: ['/api/{*splat}'],
@@ -126,6 +131,10 @@ exports.AppModule = AppModule = __decorate([
         controllers: [app_controller_1.AppController],
         providers: [
             app_service_1.AppService,
+            {
+                provide: core_1.APP_GUARD,
+                useClass: throttler_1.ThrottlerGuard,
+            },
             {
                 provide: core_1.APP_GUARD,
                 useClass: jwt_auth_guard_1.JwtAuthGuard,

@@ -1,0 +1,36 @@
+# DOCUMENT ENGINE
+
+Found in document-policy.service.ts
+- Class: DocumentPolicyService
+  - Method: canDelete
+  - Method: canArchive
+  - Method: canPurge
+Found in documents.controller.ts
+- Class: DocumentsController
+  - Method: generatePdf
+Found in documents.module.ts
+- Class: DocumentsModule
+Found in documents.repository.ts
+- Class: DocumentsRepository
+  - Method: create
+  - Method: findLatest
+Found in documents.service.spec.ts
+Found in documents.service.ts
+- Class: DocumentsService
+  - Method: generatePdf
+Found in create-document.dto.ts
+- Class: CreateDocumentDto
+Found in update-document.dto.ts
+- Class: UpdateDocumentDto
+Found in document.entity.ts
+- Class: Document
+Found in document-viewer.controller.spec.ts
+Found in document-viewer.controller.ts
+- Class: DocumentViewerController
+  - Method: generateSignedUrl
+  - Method: viewDocument
+Found in document-viewer.service.spec.ts
+Found in document-viewer.service.ts
+- Class: DocumentViewerService
+  - Method: generateSignedUrl
+  - Method: viewDocument

@@ -36,8 +36,7 @@ export class AuditController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  @RequirePermissions('audit.read')
-  @Permissions('audit:read')
+  @Permissions('audit.read')
   async findAll(@Req() req: AuthenticatedRequest) {
     const tenantId = req.user.tenantId;
     return this.auditRepo.findByTenantId(tenantId);
@@ -50,8 +49,7 @@ export class AuditController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  @RequirePermissions('audit.read')
-  @Permissions('audit:read')
+  @Permissions('audit.read')
   async findOne(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
     const tenantId = req.user.tenantId;
     return this.auditRepo.findByIdAndTenant(tenantId, id);

@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  
+  --color-bg-base: var(--bg-base);
+  --color-bg-surface: var(--bg-surface);
+  --color-bg-surface-hover: var(--bg-surface-hover);
+  --color-bg-inverted: var(--bg-inverted);
+  
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-inverted: var(--text-inverted);
+  
+  --color-border-base: var(--border-base);
+  --color-border-strong: var(--border-strong);
+  
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-active: var(--brand-active);
+  --color-brand-subtle: var(--brand-subtle);
+  
+  --color-brand-secondary: var(--brand-secondary);
+  --color-brand-accent: var(--brand-accent);
+
+  --color-danger: var(--danger);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+}
+
+@layer base {
+  /* Default to Plaza Mayor Light */
+  :root {
+    --bg-base: #F5F5F5;
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f1f5f9;
+    --bg-inverted: #111827;
+    
+    --text-primary: #111827;
+    --text-secondary: #475569;
+    --text-tertiary: #94a3b8;
+    --text-inverted: #ffffff;
+    
+    --border-base: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --brand-primary: #C8102E;
+    --brand-hover: #A00D25;
+    --brand-active: #8A1538;
+    --brand-subtle: #fce7eb;
+    
+    --brand-secondary: #8A1538;
+    --brand-accent: #D4AF37;
+    
+    --danger: #ef4444;
+    --success: #10b981;
+    --warning: #f59e0b;
+  }
+
+  /* Plaza Mayor Dark */
+  :root.dark {
+    --bg-base: #111827;
+    --bg-surface: #1f2937;
+    --bg-surface-hover: #374151;
+    --bg-inverted: #F5F5F5;
+    
+    --text-primary: #f9fafb;
+    --text-secondary: #9ca3af;
+    --text-tertiary: #6b7280;
+    --text-inverted: #111827;
+    
+    --border-base: #374151;
+    --border-strong: #4b5563;
+
+    --brand-primary: #C8102E;
+    --brand-hover: #e51335;
+    --brand-active: #ff1c40;
+    --brand-subtle: #4a0d18;
+    
+    --brand-secondary: #8A1538;
+    --brand-accent: #D4AF37;
+  }
+
+  /* Casa de Piedra Light */
+  :root[data-tenant="casa-de-piedra"] {
+    --bg-base: #F8F6F2;
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f1ede6;
+    --bg-inverted: #1F2937;
+    
+    --text-primary: #1F2937;
+    --text-secondary: #5f5a53;
+    --text-tertiary: #9c9489;
+    --text-inverted: #ffffff;
+    
+    --border-base: #e5e0d8;
+    --border-strong: #d1c8bd;
+
+    --brand-primary: #6B4F3A;
+    --brand-hover: #543e2e;
+    --brand-active: #402f23;
+    --brand-subtle: #f0e9e4;
+    
+    --brand-secondary: #8B7355;
+    --brand-accent: #C2A878;
+  }
+
+  /* Casa de Piedra Dark */
+  :root.dark[data-tenant="casa-de-piedra"] {
+    --bg-base: #1F2937;
+    --bg-surface: #2d3748;
+    --bg-surface-hover: #4a5568;
+    --bg-inverted: #F8F6F2;
+    
+    --text-primary: #f7fafc;
+    --text-secondary: #a0aec0;
+    --text-tertiary: #718096;
+    --text-inverted: #1F2937;
+    
+    --border-base: #4a5568;
+    --border-strong: #718096;
+
+    --brand-primary: #8B7355;
+    --brand-hover: #a18868;
+    --brand-active: #b59f80;
+    --brand-subtle: #3a2b1f;
+    
+    --brand-secondary: #6B4F3A;
+    --brand-accent: #C2A878;
+  }
+  /* Admin Light */
+  :root[data-tenant="admin"] {
+    --bg-base: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-hover: #f1f5f9;
+    --bg-inverted: #0f172a;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-tertiary: #94a3b8;
+    --text-inverted: #ffffff;
+    
+    --border-base: #e2e8f0;
+    --border-strong: #cbd5e1;
+
+    --brand-primary: #334155;
+    --brand-hover: #1e293b;
+    --brand-active: #0f172a;
+    --brand-subtle: #e2e8f0;
+    
+    --brand-secondary: #475569;
+    --brand-accent: #64748b;
+  }
+
+  /* Admin Dark */
+  :root.dark[data-tenant="admin"] {
+    --bg-base: #0f172a;
+    --bg-surface: #1e293b;
+    --bg-surface-hover: #334155;
+    --bg-inverted: #f8fafc;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-tertiary: #64748b;
+    --text-inverted: #0f172a;
+    
+    --border-base: #334155;
+    --border-strong: #475569;
+
+    --brand-primary: #94a3b8;
+    --brand-hover: #cbd5e1;
+    --brand-active: #f1f5f9;
+    --brand-subtle: #1e293b;
+    
+    --brand-secondary: #64748b;
+    --brand-accent: #475569;
+  }
+}
+
+body {
+  @apply bg-bg-base text-text-primary antialiased font-sans transition-colors duration-200;
+}
+
+/* Scrollbar for crisp look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-border-strong rounded-full;
+}
