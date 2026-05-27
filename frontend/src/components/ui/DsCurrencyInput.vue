@@ -23,3 +23,4 @@ import InputNumber from 'primevue/inputnumber';
 const modelValue = defineModel<number>();
 defineProps({ label: String, error: String, disabled: Boolean });
 </script>
+

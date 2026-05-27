@@ -24,6 +24,10 @@ export class ClientsRepository {
     return this.prisma.client.findFirst({ where });
   }
 
+  async findMany(where: Prisma.ClientWhereInput): Promise<Client[]> {
+    return this.prisma.client.findMany({ where });
+  }
+
   async update(
     id: string,
     tenantId: string,

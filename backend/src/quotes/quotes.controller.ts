@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Post,
   Body,
   Param,
@@ -15,7 +16,7 @@ import { Permissions } from '../auth/decorators/permissions.decorator';
 import { Request } from 'express';
 import { tenantContext } from '../prisma/tenant-context';
 import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 interface AuthenticatedRequest extends Request {
   user: {
@@ -87,6 +88,42 @@ export class QuotesController {
     return tenantContext.run(
       { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
       () => this.service.updateStatus(id, status),
+    );
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Get all quotes for the current tenant' })
+  @ApiResponse({ status: 200, description: 'Successful operation' })
+  @Permissions('quotes:read')
+  async getQuotes(@Req() req: AuthenticatedRequest) {
+    return tenantContext.run(
+      { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
+      () => this.service.findAll(),
+    );
+  }
+
+  @Get(':id')
+  @ApiOperation({ summary: 'Get quote by ID' })
+  @ApiResponse({ status: 200, description: 'Successful operation' })
+  @Permissions('quotes:read')
+  async getQuote(@Req() req: AuthenticatedRequest, @Param('id') id: string) {
+    return tenantContext.run(
+      { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
+      () => this.service.findById(id),
+    );
+  }
+
+  @Get(':id/items')
+  @ApiOperation({ summary: 'Get quote items' })
+  @ApiResponse({ status: 200, description: 'Successful operation' })
+  @Permissions('quotes:read')
+  async getQuoteItems(
+    @Req() req: AuthenticatedRequest,
+    @Param('id') id: string,
+  ) {
+    return tenantContext.run(
+      { tenantId: req.user.tenantId, userId: req.user.id, role: req.user.role },
+      () => this.service.getQuoteItems(id),
     );
   }
 }

@@ -1,169 +1,185 @@
 <template>
-  <div class="spaces-view flex flex-col gap-6">
-    <div class="view-header">
-      <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Catálogo de Espacios</h1>
-      <p class="text-slate-500">Explora y descubre nuestros recintos, salones y espacios disponibles.</p>
+  <div class="spaces-view p-6 max-w-[1400px] mx-auto flex flex-col gap-8 w-full">
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+      <div>
+        <h1 class="text-3xl font-extrabold text-surface-900 dark:text-surface-0 mb-2 tracking-tight">Catálogo de Espacios</h1>
+        <p class="text-surface-500 dark:text-surface-400 font-medium">Explora y descubre nuestros recintos, salones y espacios disponibles.</p>
+      </div>
+      <div class="flex gap-3">
+        <DsButton v-if="permissionsStore.can('spaces.manage')" label="Crear Espacio" icon="pi pi-plus" class="!bg-indigo-600 !border-none hover:!bg-indigo-700 !text-white !px-5 !py-2.5 !rounded-xl shadow-md transition-all" @click="openCreateSpace" />
+      </div>
     </div>
 
     <!-- Filtros -->
-    <div class="filters bg-white p-4 border border-slate-200 rounded-xl flex flex-wrap gap-4 items-center">
-      <div class="flex-1 min-w-[200px]">
-        <InputText v-model="searchQuery" placeholder="Buscar espacio..." class="w-full !p-3 !bg-slate-50 !border-slate-300 !rounded-lg" />
+    <div class="p-[1px] bg-gradient-to-r from-surface-200 to-transparent dark:from-surface-700 rounded-2xl">
+      <div class="bg-surface-0 dark:bg-surface-900 p-5 rounded-2xl flex flex-wrap gap-4 items-center shadow-sm">
+        <div class="flex-1 min-w-[200px] relative">
+          <i class="pi pi-search absolute left-4 top-1/2 -translate-y-1/2 text-surface-400"></i>
+          <DsInput v-model="searchQuery" placeholder="Buscar espacio por nombre o descripción..." class="w-full pl-11 !p-3 !bg-surface-50 dark:!bg-surface-950 !border-surface-200 dark:!border-surface-700 !rounded-xl" />
+        </div>
+        <div class="w-full sm:w-auto min-w-[200px]">
+          <Dropdown v-model="selectedType" :options="spaceTypes" optionLabel="label" optionValue="value" placeholder="Tipo de Espacio" class="w-full !rounded-xl !bg-surface-50 dark:!bg-surface-950 !border-surface-200 dark:!border-surface-700" />
+        </div>
       </div>
-      <div class="w-full sm:w-auto">
-        <Dropdown v-model="selectedType" :options="spaceTypes" optionLabel="label" optionValue="value" placeholder="Tipo de Espacio" class="w-full sm:w-48 !p-1 !bg-slate-50 !border-slate-300 !rounded-lg" />
-      </div>
-      <Button label="Buscar" icon="pi pi-search" class="!bg-indigo-600 !border-none !text-white !p-3 !rounded-lg hover:!bg-indigo-700 transition-colors" @click="fetchSpaces" />
     </div>
 
     <!-- Error/Loading States -->
-    <div v-if="loading" class="flex justify-center py-12">
-      <ProgressSpinner />
+    <div v-if="spaceStore.loading" class="flex justify-center py-20">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
     </div>
     
-    <div v-else-if="error" class="bg-red-50 text-red-700 p-4 rounded-xl flex items-center gap-3">
+    <div v-else-if="error" class="bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 p-4 rounded-xl flex items-center gap-3 border border-red-100 dark:border-red-800/30">
       <i class="pi pi-exclamation-triangle text-2xl"></i>
-      <p>{{ error }}</p>
+      <p class="font-medium">{{ error }}</p>
     </div>
 
-    <div v-else-if="filteredSpaces.length === 0" class="bg-slate-50 border border-slate-200 rounded-xl p-12 text-center">
-      <i class="pi pi-inbox text-5xl text-slate-400 mb-4"></i>
-      <h3 class="text-xl font-bold text-slate-700">No se encontraron espacios</h3>
-      <p class="text-slate-500 mt-2">Intenta ajustar los filtros de búsqueda.</p>
+    <div v-else-if="filteredSpaces.length === 0" class="bg-surface-0 dark:bg-surface-900 border border-surface-200 dark:border-surface-700 rounded-2xl p-16 text-center shadow-sm">
+      <div class="w-20 h-20 bg-surface-100 dark:bg-surface-800 rounded-full flex items-center justify-center mx-auto mb-6">
+        <i class="pi pi-inbox text-4xl text-surface-400 dark:text-surface-500"></i>
+      </div>
+      <h3 class="text-xl font-bold text-surface-800 dark:text-surface-100">No se encontraron espacios</h3>
+      <p class="text-surface-500 dark:text-surface-400 mt-2 max-w-md mx-auto">Intenta ajustar los filtros de búsqueda o crea un nuevo espacio en el sistema.</p>
     </div>
 
     <!-- Catálogo Grid -->
-    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      <div v-for="space in filteredSpaces" :key="space.id" class="bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer" @click="openSpaceDetails(space)">
-        <!-- Imagen (Placeholder si no hay) -->
-        <div class="h-48 bg-slate-100 relative overflow-hidden">
-          <img :src="getSpaceImage(space)" alt="Space Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+    <div v-else class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-10">
+      <div v-for="space in filteredSpaces" :key="space.id" class="group bg-surface-0 dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-700 overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col cursor-pointer relative" @click="openSpaceDetails(space)">
+        
+        <!-- Imagen -->
+        <div class="h-48 bg-surface-100 dark:bg-surface-800 relative overflow-hidden">
+          <img :src="getSpaceImage(space)" alt="Space Image" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out" />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60"></div>
+          
           <div class="absolute top-3 right-3 flex gap-2">
-            <Tag :value="space.status" :severity="getStatusSeverity(space.status)" class="!rounded-full !px-3 !font-semibold" />
+            <DsTag :value="space.status" :severity="getStatusSeverity(space.status)" class="!rounded-full !px-3 !py-1 !font-bold text-xs shadow-sm backdrop-blur-md bg-surface-0/90 dark:bg-surface-950/90" />
+          </div>
+          
+          <div class="absolute bottom-3 left-4 right-4 flex justify-between items-end">
+            <h3 class="text-xl font-bold text-white line-clamp-1 drop-shadow-md" :title="space.name">{{ space.name }}</h3>
           </div>
         </div>
         
         <!-- Contenido -->
-        <div class="p-5 flex-1 flex flex-col">
-          <div class="flex justify-between items-start mb-2">
-            <h3 class="text-lg font-bold text-slate-800 line-clamp-1" :title="space.name">{{ space.name }}</h3>
-          </div>
-          
-          <p class="text-sm text-slate-500 mb-4 line-clamp-2 min-h-[40px]">{{ space.description || 'Sin descripción disponible.' }}</p>
+        <div class="p-5 flex-1 flex flex-col gap-4">
+          <p class="text-sm text-surface-600 dark:text-surface-400 line-clamp-2 min-h-[40px] leading-relaxed">{{ space.description || 'Sin descripción disponible para este espacio.' }}</p>
           
           <!-- Metadatos -->
-          <div class="grid grid-cols-2 gap-3 mb-4 mt-auto">
-            <div class="flex items-center gap-2 text-slate-600 text-sm">
-              <i class="pi pi-users text-indigo-500"></i>
+          <div class="grid grid-cols-2 gap-3 mt-auto bg-surface-50 dark:bg-surface-950/50 p-3 rounded-xl border border-surface-100 dark:border-surface-800">
+            <div class="flex items-center gap-2.5 text-surface-700 dark:text-surface-300 text-sm font-medium">
+              <i class="pi pi-users text-indigo-500 dark:text-indigo-400"></i>
               <span>{{ space.capacity }} pax</span>
             </div>
-            <div class="flex items-center gap-2 text-slate-600 text-sm">
-              <i class="pi pi-expand text-indigo-500"></i>
+            <div class="flex items-center gap-2.5 text-surface-700 dark:text-surface-300 text-sm font-medium">
+              <i class="pi pi-expand text-indigo-500 dark:text-indigo-400"></i>
               <span>{{ space.areaSqm }} m²</span>
-            </div>
-            <div class="flex items-center gap-2 text-slate-600 text-sm col-span-2">
-              <i class="pi pi-tag text-indigo-500"></i>
-              <span class="capitalize">{{ space.spaceType }}</span>
             </div>
           </div>
           
-          <div class="border-t border-slate-100 pt-4 flex justify-between items-center mt-auto">
+          <div class="flex justify-between items-center pt-2">
             <div>
-              <p class="text-xs text-slate-400 font-medium uppercase tracking-wider">Precio Base</p>
-              <p class="text-lg font-bold text-indigo-700">${{ formatPrice(space.basePricePerHour) }} <span class="text-sm font-normal text-slate-500">/ hr</span></p>
+              <p class="text-[10px] text-surface-400 dark:text-surface-500 font-bold uppercase tracking-wider mb-0.5">Precio Base</p>
+              <p class="text-lg font-extrabold text-surface-900 dark:text-surface-0">{{ formatPrice(space.basePricePerHour) }} <span class="text-xs font-medium text-surface-500 dark:text-surface-400">/ hr</span></p>
             </div>
-            <Button icon="pi pi-arrow-right" rounded text class="!text-indigo-600 hover:!bg-indigo-50" />
+            <div class="w-10 h-10 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 flex items-center justify-center group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300">
+              <i class="pi pi-arrow-right"></i>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Dialogo de Detalles -->
-    <Dialog v-model:visible="detailsDialogVisible" modal :header="selectedSpace?.name" :style="{ width: '50rem' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }" class="!rounded-2xl overflow-hidden">
-      <div v-if="selectedSpace" class="flex flex-col md:flex-row gap-6 p-4">
-        <div class="w-full md:w-1/2">
-          <img :src="getSpaceImage(selectedSpace)" class="w-full h-64 object-cover rounded-xl shadow-sm" />
+    <DsModal v-model:visible="detailsDialogVisible" modal :header="selectedSpace?.name" class="!rounded-2xl overflow-hidden shadow-2xl" :style="{ width: '55rem' }" :breakpoints="{ '1199px': '75vw', '575px': '95vw' }">
+      <div v-if="selectedSpace" class="flex flex-col md:flex-row gap-8 p-2">
+        <div class="w-full md:w-5/12">
+          <div class="rounded-2xl overflow-hidden shadow-inner h-64 md:h-full relative">
+            <img :src="getSpaceImage(selectedSpace)" class="w-full h-full object-cover" />
+            <div class="absolute top-4 right-4">
+               <DsTag :value="selectedSpace.status" :severity="getStatusSeverity(selectedSpace.status)" class="!rounded-full !px-3 shadow-md" />
+            </div>
+          </div>
         </div>
-        <div class="w-full md:w-1/2 flex flex-col gap-4">
+        <div class="w-full md:w-7/12 flex flex-col gap-6 py-2">
           <div>
-            <h4 class="font-bold text-slate-800 text-xl mb-1">Descripción</h4>
-            <p class="text-slate-600 leading-relaxed">{{ selectedSpace.description || 'N/A' }}</p>
+            <div class="flex justify-between items-start mb-2">
+              <h4 class="font-extrabold text-surface-900 dark:text-surface-0 text-2xl tracking-tight">{{ selectedSpace.name }}</h4>
+              <p class="font-bold text-xl text-indigo-600 dark:text-indigo-400">{{ formatPrice(selectedSpace.basePricePerHour) }}<span class="text-sm text-surface-500 font-medium">/hr</span></p>
+            </div>
+            <DsTag :value="selectedSpace.spaceType" class="!bg-surface-100 !text-surface-700 dark:!bg-surface-800 dark:!text-surface-300 !text-xs !font-bold uppercase tracking-wider mb-4" />
+            <p class="text-surface-600 dark:text-surface-300 leading-relaxed text-sm">{{ selectedSpace.description || 'Sin descripción detallada disponible.' }}</p>
           </div>
           
-          <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl">
+          <div class="grid grid-cols-2 gap-4 bg-surface-50 dark:bg-surface-950/50 p-5 rounded-2xl border border-surface-200 dark:border-surface-800">
             <div>
-              <p class="text-xs text-slate-500 font-semibold uppercase">Capacidad</p>
-              <p class="font-medium text-slate-800">{{ selectedSpace.capacity }} personas</p>
+              <p class="text-xs text-surface-500 dark:text-surface-400 font-bold uppercase tracking-wider mb-1">Capacidad Máx.</p>
+              <p class="font-semibold text-surface-900 dark:text-surface-100 text-lg flex items-center gap-2"><i class="pi pi-users text-surface-400"></i> {{ selectedSpace.capacity }} pax</p>
             </div>
             <div>
-              <p class="text-xs text-slate-500 font-semibold uppercase">Superficie</p>
-              <p class="font-medium text-slate-800">{{ selectedSpace.areaSqm }} m²</p>
+              <p class="text-xs text-surface-500 dark:text-surface-400 font-bold uppercase tracking-wider mb-1">Superficie</p>
+              <p class="font-semibold text-surface-900 dark:text-surface-100 text-lg flex items-center gap-2"><i class="pi pi-expand text-surface-400"></i> {{ selectedSpace.areaSqm }} m²</p>
             </div>
             <div>
-              <p class="text-xs text-slate-500 font-semibold uppercase">Categoría</p>
-              <p class="font-medium text-slate-800 capitalize">{{ selectedSpace.spaceType }}</p>
-            </div>
-            <div>
-              <p class="text-xs text-slate-500 font-semibold uppercase">Estado</p>
-              <Tag :value="selectedSpace.status" :severity="getStatusSeverity(selectedSpace.status)" />
+              <p class="text-xs text-surface-500 dark:text-surface-400 font-bold uppercase tracking-wider mb-1">Código</p>
+              <p class="font-mono text-surface-900 dark:text-surface-100 font-medium">{{ selectedSpace.code || 'N/A' }}</p>
             </div>
           </div>
 
           <div class="mt-auto pt-4 flex gap-3">
-            <Button label="Ver Agenda" icon="pi pi-calendar" outlined class="flex-1 !border-indigo-600 !text-indigo-600 hover:!bg-indigo-50 !rounded-lg" @click="goToAgenda(selectedSpace.id)" />
-            <Button label="Reservar" icon="pi pi-check" class="flex-1 !bg-indigo-600 !border-none !text-white hover:!bg-indigo-700 !rounded-lg" @click="goToReservation(selectedSpace.id)" />
+            <DsButton v-if="permissionsStore.can('spaces.manage')" label="Editar" icon="pi pi-pencil" text class="!text-surface-600 hover:!bg-surface-100 dark:hover:!bg-surface-800 !rounded-xl" @click="openEditSpace(selectedSpace)" />
+            <div class="flex-1"></div>
+            <DsButton label="Ver Agenda" icon="pi pi-calendar" outlined class="!border-surface-300 dark:!border-surface-600 !text-surface-700 dark:!text-surface-200 hover:!bg-surface-50 dark:hover:!bg-surface-800 !rounded-xl px-4" @click="goToAgenda(selectedSpace.id)" />
+            <DsButton label="Reservar" icon="pi pi-check" class="!bg-indigo-600 !border-none hover:!bg-indigo-700 !text-white !rounded-xl px-6 shadow-md" @click="goToReservation(selectedSpace.id)" />
           </div>
         </div>
       </div>
-    </Dialog>
+    </DsModal>
+
+    <!-- Dialogo para Builder -->
+    <DsModal v-model:visible="builderDialogVisible" modal :header="isEditing ? 'Editar Espacio' : 'Crear Espacio'" class="!rounded-2xl" :style="{ width: '60rem' }" :breakpoints="{ '1199px': '75vw', '575px': '95vw' }" :closable="false">
+      <SpaceBuilderForm v-if="builderDialogVisible" :initial-data="selectedSpace" @cancel="builderDialogVisible = false" @saved="onSpaceSaved" />
+    </DsModal>
+
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import InputText from 'primevue/inputtext';
-import Dropdown from 'primevue/dropdown';
-import Button from 'primevue/button';
-import ProgressSpinner from 'primevue/progressspinner';
-import Tag from 'primevue/tag';
-import Dialog from 'primevue/dialog';
 import { useRouter } from 'vue-router';
+import { usePermissionsStore } from '../stores/permissionsStore';
+import { useSpaceStore } from '../stores/spaceStore';
+import type { Space } from '../services/spaceService';
+import SpaceBuilderForm from '../components/spaces/SpaceBuilderForm.vue';
 
 const router = useRouter();
+const permissionsStore = usePermissionsStore();
+const spaceStore = useSpaceStore();
 
 // Estado
-const spaces = ref<any[]>([]);
-const loading = ref(false);
 const error = ref<string | null>(null);
 
 // Filtros
 const searchQuery = ref('');
 const selectedType = ref('all');
 const spaceTypes = ref([
-  { label: 'Todos', value: 'all' },
-  { label: 'Salones', value: 'salones' },
-  { label: 'Espacios', value: 'espacios' },
+  { label: 'Todos los tipos', value: 'all' },
+  { label: 'Salones de Eventos', value: 'salones' },
   { label: 'Publicidad Física', value: 'publicidad_fisica' },
   { label: 'Publicidad Digital', value: 'publicidad_digital' },
 ]);
 
-// Detalles
+// Detalles y Edición
 const detailsDialogVisible = ref(false);
-const selectedSpace = ref<any>(null);
-
-import { http } from '../api/http';
+const builderDialogVisible = ref(false);
+const selectedSpace = ref<Space | undefined>(undefined);
+const isEditing = ref(false);
 
 const fetchSpaces = async () => {
-  loading.value = true;
   error.value = null;
   try {
-    const res = await http.get('/spaces');
-    spaces.value = res.data;
-  } catch (err: any) {
-    console.error(err);
-    error.value = 'Error al cargar el catálogo de espacios. Verifica tu conexión o sesión.';
-  } finally {
-    loading.value = false;
+    await spaceStore.fetchSpaces();
+  } catch (err) {
+    console.error('Error fetching spaces:', err);
+    error.value = 'Error al cargar el catálogo de espacios. Verifica tu conexión.';
   }
 };
 
@@ -173,18 +189,18 @@ onMounted(() => {
 
 // Computados
 const filteredSpaces = computed(() => {
-  return spaces.value.filter(space => {
-    const matchesSearch = space.name.toLowerCase().includes(searchQuery.value.toLowerCase()) || 
+  return spaceStore.spaces.filter(space => {
+    const matchesSearch = space.name?.toLowerCase().includes(searchQuery.value.toLowerCase()) || 
                           (space.description || '').toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesType = selectedType.value === 'all' || space.spaceType.toLowerCase().replace(' ', '_') === selectedType.value;
+    const matchesType = selectedType.value === 'all' || space.spaceType?.toLowerCase() === selectedType.value;
     return matchesSearch && matchesType;
   });
 });
 
 // Utilidades
-const formatPrice = (price: any) => {
+const formatPrice = (price: unknown) => {
   const num = Number(price);
-  return isNaN(num) ? '0.00' : num.toLocaleString('es-MX', { minimumFractionDigits: 2 });
+  return isNaN(num) ? '$0.00' : new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(num);
 };
 
 const getStatusSeverity = (status: string) => {
@@ -196,24 +212,35 @@ const getStatusSeverity = (status: string) => {
   }
 };
 
-const getSpaceImage = (space: any) => {
-  // Mock image generator based on space name/type for visual appeal since we don't store raw images yet
-  const typeMap: Record<string, string> = {
-    'salones': 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&q=80&w=800',
-    'publicidad': 'https://images.unsplash.com/photo-1542204165-65bf26472b9b?auto=format&fit=crop&q=80&w=800',
-  };
-  
-  const match = Object.keys(typeMap).find(k => space.spaceType?.toLowerCase().includes(k));
-  if (match) return typeMap[match];
-  
-  // Default meeting room
-  return `https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800&sig=${space.id}`;
+const getSpaceImage = (space: Space) => {
+  const defaultImg = `https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&q=80&w=800&sig=${space.id}`;
+  if (space.images && Array.isArray(space.images) && space.images.length > 0) {
+    return space.images[0].url || defaultImg;
+  }
+  return defaultImg;
 };
 
 // Acciones
-const openSpaceDetails = (space: any) => {
+const openSpaceDetails = (space: Space) => {
   selectedSpace.value = space;
   detailsDialogVisible.value = true;
+};
+
+const openCreateSpace = () => {
+  selectedSpace.value = undefined;
+  isEditing.value = false;
+  builderDialogVisible.value = true;
+};
+
+const openEditSpace = (space: Space) => {
+  detailsDialogVisible.value = false;
+  selectedSpace.value = space;
+  isEditing.value = true;
+  builderDialogVisible.value = true;
+};
+
+const onSpaceSaved = () => {
+  builderDialogVisible.value = false;
 };
 
 const goToAgenda = (spaceId: string) => {
@@ -228,9 +255,6 @@ const goToReservation = (spaceId: string) => {
 </script>
 
 <style scoped>
-/* Las clases de Tailwind manejan la mayoría del estilo.
-   Usamos !important (!) en algunas clases de PrimeVue porque 
-   PrimeVue unstyled puede requerir inyección específica. */
 .line-clamp-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;
@@ -244,3 +268,4 @@ const goToReservation = (spaceId: string) => {
   overflow: hidden;
 }
 </style>
+

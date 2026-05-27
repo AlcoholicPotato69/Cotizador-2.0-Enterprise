@@ -1,110 +1,128 @@
 <template>
-  <div class="p-6 max-w-7xl mx-auto flex flex-col gap-6 w-full">
-    <div class="flex justify-between items-center">
+  <div class="space-y-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-surface-200 dark:border-surface-800 gap-4">
       <div>
-        <h1 class="text-3xl font-bold text-slate-900 m-0">Cartas Convenio y Acuerdos</h1>
-        <p class="text-slate-500 m-0 mt-1 text-sm">Gestin de anexos y acuerdos suplementarios</p>
+        <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-50 tracking-tight">Cartas Convenio y Acuerdos</h1>
+        <p class="text-sm text-surface-500">Gestión de anexos y acuerdos suplementarios</p>
       </div>
-      <Button v-if="permissionsStore.can('agreements.create')" label="Nuevo Acuerdo" icon="pi pi-plus" class="p-button-primary" />
+      <DsButton v-if="permissionsStore.can('agreements.create')" label="Nuevo Acuerdo" icon="pi pi-plus" @click="createAgreement" severity="primary" />
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-      <DataTable 
-        :value="agreements" 
-        :paginator="true" 
+    <!-- Data Table Container -->
+    <div class="bg-surface-0 dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm overflow-hidden p-4">
+      <DsTable 
+        :value="agreementStore.agreements" 
+        :loading="agreementStore.loading" 
+        paginator 
         :rows="10" 
         dataKey="id" 
+        filterDisplay="row" 
         v-model:filters="filters"
-        filterDisplay="menu"
-        :globalFilterFields="['id', 'contractId', 'clientName', 'type']"
-        emptyMessage="No se encontraron acuerdos."
+        :globalFilterFields="['id', 'contractId', 'clientName', 'type', 'status']"
+        emptyMessage="No se encontraron acuerdos registrados."
         class="p-datatable-sm"
       >
         <template #header>
-          <div class="flex justify-end mb-3">
-            <span class="p-input-icon-left w-full sm:w-auto">
-              <i class="pi pi-search" />
-              <InputText v-model="filters['global'].value" placeholder="Buscar por ID, Tipo..." class="w-full sm:w-80" />
-            </span>
-          </div>
+            <div class="flex justify-end">
+                <span class="relative">
+                    <i class="pi pi-search absolute top-2/4 -mt-2 left-3 text-surface-400 dark:text-surface-500" />
+                    <DsInput v-model="filters['global'].value" placeholder="Buscar acuerdo..." class="pl-10 w-full sm:w-auto" />
+                </span>
+            </div>
         </template>
         
-        <Column field="id" header="ID Acuerdo" sortable>
+        <DsColumn field="id" header="ID Acuerdo" sortable>
           <template #body="{ data }">
-            <span class="font-mono text-primary-600 font-semibold">{{ data.id }}</span>
+            <button @click="goToDossier(data.id)" class="text-primary-600 hover:underline font-mono focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-1">
+              {{ data.id || 'N/A' }}
+            </button>
           </template>
-        </Column>
+        </DsColumn>
 
-        <Column field="contractId" header="Contrato Base" sortable>
+        <DsColumn field="contractId" header="Contrato Base" sortable>
           <template #body="{ data }">
-            <span class="font-mono text-slate-500">{{ data.contractId }}</span>
+            <span class="font-mono text-surface-500 dark:text-surface-400">{{ data.contractId }}</span>
           </template>
-        </Column>
+        </DsColumn>
         
-        <Column field="clientName" header="Cliente" sortable>
+        <DsColumn field="clientName" header="Cliente" sortable>
           <template #body="{ data }">
-            <span class="font-semibold text-slate-900">{{ data.clientName }}</span>
+            <span class="font-semibold text-surface-900 dark:text-surface-0">{{ data.clientName }}</span>
           </template>
-        </Column>
+        </DsColumn>
 
-        <Column field="type" header="Tipo de Acuerdo" sortable></Column>
+        <DsColumn field="type" header="Tipo de Acuerdo" sortable></DsColumn>
         
-        <Column field="status" header="Estado" sortable>
+        <DsColumn field="status" header="Estado" sortable>
           <template #body="{ data }">
-            <Tag 
-              :severity="getStatusSeverity(data.status)" 
-              :value="data.status" 
-            />
+            <DsTag :value="translateStatus(data.status)" :severity="getStatusSeverity(data.status)" />
           </template>
-        </Column>
+        </DsColumn>
 
-        <Column header="Acciones" :exportable="false" style="min-width:8rem">
+        <DsColumn header="Acciones" :exportable="false" style="min-width:8rem">
           <template #body="{ data }">
-            <Button 
+            <DsButton 
               icon="pi pi-folder-open" 
-              class="p-button-rounded p-button-text p-button-secondary" 
+              outlined
+              rounded
+              severity="info"
               title="Ver Expediente de Acuerdo"
               @click="goToDossier(data.id)" 
             />
           </template>
-        </Column>
-      </DataTable>
+        </DsColumn>
+      </DsTable>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { FilterMatchMode } from '@primevue/core/api';
 import { usePermissionsStore } from '../stores/permissionsStore';
+import { useAgreementStore } from '../stores/agreementStore';
 
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
 
 const router = useRouter();
 const permissionsStore = usePermissionsStore();
+const agreementStore = useAgreementStore();
 
 const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+    global: { value: null, matchMode: 'contains' }
 });
 
-const agreements = ref([
-  { id: 'AGR-001', contractId: 'CTR-001', clientName: 'Empresa A', type: 'Carta de Confidencialidad', status: 'FIRMADO' },
-  { id: 'AGR-002', contractId: 'CTR-002', clientName: 'Mara Garca', type: 'Adendum de Pagos', status: 'BORRADOR' },
-]);
-
-const getStatusSeverity = (status: string) => {
-  if (status === 'FIRMADO') return 'success';
-  if (status === 'BORRADOR') return 'warning';
-  if (status === 'EN_REVISION') return 'info';
-  return 'secondary';
-};
+onMounted(() => {
+  agreementStore.fetchAgreements();
+});
 
 const goToDossier = (id: string) => {
   router.push(`/legal/agreements/${id}`);
 };
+
+const createAgreement = () => {
+    // Action to create
+};
+
+const translateStatus = (status: string) => {
+    const map: Record<string, string> = {
+        'DRAFT': 'Borrador',
+        'BORRADOR': 'Borrador',
+        'IN_REVIEW': 'En Revisión',
+        'EN_REVISION': 'En Revisión',
+        'APPROVED': 'Aprobado',
+        'PENDING_SIGNATURE': 'Firma Pendiente',
+        'SIGNED': 'Firmado',
+        'FIRMADO': 'Firmado'
+    };
+    return map[status?.toUpperCase()] || status;
+};
+
+const getStatusSeverity = (status: string) => {
+    const s = status?.toUpperCase();
+    if (s === 'SIGNED' || s === 'FIRMADO' || s === 'APPROVED') return 'success';
+    if (s === 'DRAFT' || s === 'BORRADOR') return 'warn';
+    if (s === 'IN_REVIEW' || s === 'EN_REVISION' || s === 'PENDING_SIGNATURE') return 'info';
+    return 'secondary';
+};
 </script>
+

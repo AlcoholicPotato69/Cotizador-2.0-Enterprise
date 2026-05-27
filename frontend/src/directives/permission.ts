@@ -1,17 +1,16 @@
 import type { App, DirectiveBinding } from 'vue';
-import { usePermissionsStore } from '../stores/permissions';
+import { hasPermission } from '../app/access-context';
 
 export const permissionDirective = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding;
-    const permissionsStore = usePermissionsStore();
 
     if (!value) {
       console.warn('v-permission necesita un valor');
       return;
     }
 
-    if (!permissionsStore.can(value)) {
+    if (!hasPermission(value)) {
       el.parentNode?.removeChild(el); // Oculta el elemento del DOM si no tiene permiso
     }
   },
@@ -24,14 +23,13 @@ export const permissionDirective = {
 export const canAnyDirective = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding;
-    const permissionsStore = usePermissionsStore();
 
     if (!Array.isArray(value)) {
       console.warn('v-can-any necesita un array de permisos');
       return;
     }
 
-    if (!permissionsStore.canAny(value)) {
+    if (!hasPermission(value)) {
       el.parentNode?.removeChild(el);
     }
   }
@@ -40,14 +38,14 @@ export const canAnyDirective = {
 export const canAllDirective = {
   mounted(el: HTMLElement, binding: DirectiveBinding) {
     const { value } = binding;
-    const permissionsStore = usePermissionsStore();
 
     if (!Array.isArray(value)) {
       console.warn('v-can-all necesita un array de permisos');
       return;
     }
 
-    if (!permissionsStore.canAll(value)) {
+    const hasAllPermissions = value.every((permission) => hasPermission(permission));
+    if (!hasAllPermissions) {
       el.parentNode?.removeChild(el);
     }
   }

@@ -43,6 +43,12 @@ let ClientsService = class ClientsService {
             throw new common_1.NotFoundException('Tenant context missing');
         return this.repo.findById(id, ctx.tenantId);
     }
+    async findAll() {
+        const ctx = tenant_context_1.tenantContext.getStore();
+        if (!ctx || !ctx.tenantId)
+            throw new common_1.NotFoundException('Tenant context missing');
+        return this.repo.findMany({ tenantId: ctx.tenantId, deletedAt: null });
+    }
     async update(id, data) {
         const ctx = tenant_context_1.tenantContext.getStore();
         if (!ctx || !ctx.tenantId)

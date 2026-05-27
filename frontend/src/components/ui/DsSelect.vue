@@ -26,3 +26,4 @@ import Select from 'primevue/select';
 defineProps({ options: Array, optionLabel: String, optionValue: String, label: String, placeholder: String, error: String, disabled: Boolean });
 const model = defineModel<any>();
 </script>
+

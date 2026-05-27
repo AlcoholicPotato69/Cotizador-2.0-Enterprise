@@ -18,31 +18,6 @@ export class SpacesService {
     if (!ctx || !ctx.tenantId)
       throw new NotFoundException('Tenant context missing');
 
-    const typeLower = data.spaceType.toLowerCase();
-    const pmAllowed = [
-      'publicidad física',
-      'publicidad digital',
-      'publicidad fisica',
-    ];
-    const cpAllowed = [
-      'salones',
-      'espacios',
-      'publicidad física',
-      'publicidad digital',
-      'publicidad fisica',
-    ];
-
-    if (ctx.tenantId === 'pm' && !pmAllowed.includes(typeLower)) {
-      throw new Error(
-        'Plaza Mayor solo puede crear espacios de tipo Publicidad Física o Digital.',
-      );
-    }
-    if (ctx.tenantId === 'cp' && !cpAllowed.includes(typeLower)) {
-      throw new Error(
-        'Casa de Piedra solo puede crear Salones, Espacios o Publicidad.',
-      );
-    }
-
     if (!data.planoPdf) {
       throw new Error('Todo espacio requiere un plano_pdf.');
     }
@@ -86,33 +61,6 @@ export class SpacesService {
     const ctx = tenantContext.getStore();
     if (!ctx || !ctx.tenantId)
       throw new NotFoundException('Tenant context missing');
-
-    if (data.spaceType) {
-      const typeLower = data.spaceType.toLowerCase();
-      const pmAllowed = [
-        'publicidad física',
-        'publicidad digital',
-        'publicidad fisica',
-      ];
-      const cpAllowed = [
-        'salones',
-        'espacios',
-        'publicidad física',
-        'publicidad digital',
-        'publicidad fisica',
-      ];
-
-      if (ctx.tenantId === 'pm' && !pmAllowed.includes(typeLower)) {
-        throw new Error(
-          'Plaza Mayor solo puede crear espacios de tipo Publicidad Física o Digital.',
-        );
-      }
-      if (ctx.tenantId === 'cp' && !cpAllowed.includes(typeLower)) {
-        throw new Error(
-          'Casa de Piedra solo puede crear Salones, Espacios o Publicidad.',
-        );
-      }
-    }
 
     if (data.planoPdf !== undefined && !data.planoPdf) {
       throw new Error('Todo espacio requiere un plano_pdf.');

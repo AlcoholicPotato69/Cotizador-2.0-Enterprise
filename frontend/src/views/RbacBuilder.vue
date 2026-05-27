@@ -14,18 +14,18 @@
         <div class="card h-full">
           <div class="flex justify-content-between align-items-center mb-3">
              <h3 class="m-0">Roles del Tenant</h3>
-             <Button icon="pi pi-plus" size="small" outlined aria-label="Nuevo Rol" />
+             <DsButton icon="pi pi-plus" size="small" outlined aria-label="Nuevo Rol" />
           </div>
           
           <ul class="list-none p-0 m-0">
-             <li v-for="r in roles" :key="r.id" class="p-3 border-bottom flex justify-content-between align-items-center hover-bg cursor-pointer" :class="{'bg-blue-50 border-blue-200': selectedRole?.id === r.id}" @click="selectRole(r)">
+             <li v-for="r in roles" :key="r.id" class="p-3 border-bottom flex justify-content-between align-items-center hover-bg cursor-pointer" :class="{'bg-primary-50 dark:bg-primary-900 border-blue-200': selectedRole?.id === r.id}" @click="selectRole(r)">
                 <div>
-                   <span class="font-bold block text-slate-800">{{ r.name }}</span>
-                   <span class="text-xs text-slate-500">{{ r.description || 'Sin descripción' }}</span>
+                   <span class="font-bold block text-surface-800 dark:text-surface-100">{{ r.name }}</span>
+                   <span class="text-xs text-surface-500 dark:text-surface-400">{{ r.description || 'Sin descripción' }}</span>
                 </div>
-                <i class="pi pi-chevron-right text-slate-400"></i>
+                <i class="pi pi-chevron-right text-surface-400 dark:text-surface-500"></i>
              </li>
-             <li v-if="roles.length === 0" class="p-3 text-center text-slate-400 text-sm">
+             <li v-if="roles.length === 0" class="p-3 text-center text-surface-400 dark:text-surface-500 text-sm">
                No hay roles configurados.
              </li>
           </ul>
@@ -35,21 +35,21 @@
       <!-- Permission Assignment -->
       <div class="col-12 lg:col-8">
         <div class="card h-full">
-           <div v-if="!selectedRole" class="flex align-items-center justify-content-center h-full text-slate-400">
+           <div v-if="!selectedRole" class="flex align-items-center justify-content-center h-full text-surface-400 dark:text-surface-500">
              Seleccione un rol de la izquierda para administrar sus permisos.
            </div>
            <div v-else>
               <div class="flex justify-content-between align-items-center mb-4 border-bottom pb-3">
                  <div>
-                   <h3 class="m-0 text-slate-800">{{ selectedRole.name }}</h3>
-                   <span class="text-xs text-slate-500">Marque las casillas para asignar permisos atómicos.</span>
+                   <h3 class="m-0 text-surface-800 dark:text-surface-100">{{ selectedRole.name }}</h3>
+                   <span class="text-xs text-surface-500 dark:text-surface-400">Marque las casillas para asignar permisos atómicos.</span>
                  </div>
-                 <Button label="Guardar Configuración" icon="pi pi-save" :loading="saving" @click="savePermissions" />
+                 <DsButton label="Guardar Configuración" icon="pi pi-save" :loading="saving" @click="savePermissions" />
               </div>
 
               <!-- Permission Tree grouped by Module -->
               <div v-for="(perms, module) in groupedPermissions" :key="module" class="mb-4">
-                 <h4 class="uppercase text-xs font-bold text-slate-500 border-bottom pb-1 mb-2">{{ module }}</h4>
+                 <h4 class="uppercase text-xs font-bold text-surface-500 dark:text-surface-400 border-bottom pb-1 mb-2">{{ module }}</h4>
                  <div class="grid">
                     <div class="col-12 lg:col-6" v-for="p in perms" :key="p.id">
                        <div class="flex align-items-center mb-2">
@@ -69,48 +69,51 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { pb } from '../services/pb';
-import { useTenantStore } from '../stores/tenant';
+import { http } from '../api/http';
+import { rbacService, type Role, type Permission } from '../services/rbacService';
+import { useTenantStore } from '../stores/tenantStore';
 import { useNotificationStore } from '../stores/notificationStore';
+import { useAuthStore } from '../stores/authStore';
 import PermissionSimulator from './PermissionSimulator.vue';
-import Button from 'primevue/button';
 
 const tenantStore = useTenantStore();
 const notificationStore = useNotificationStore();
-const roles = ref<any[]>([]);
-const allPermissions = ref<any[]>([]);
-const selectedRole = ref<any>(null);
+const authStore = useAuthStore();
+const roles = ref<Role[]>([]);
+const allPermissions = ref<Permission[]>([]);
+const selectedRole = ref<Role | null>(null);
 const selectedPermissionIds = ref<string[]>([]);
 const saving = ref(false);
 
 onMounted(async () => {
-  if (!tenantStore.activeTenantId) return;
+  if (!tenantStore.activeTenant?.id) return;
   
-  // Load roles for active tenant
-  roles.value = await pb.collection('rbac_roles').getFullList({
-    filter: `tenant = "${tenantStore.activeTenantId}"`
-  });
+  try {
+    // Load roles for active tenant
+    roles.value = await rbacService.getRoles(tenantStore.activeTenant.id);
 
-  // Load all available atomic permissions
-  allPermissions.value = await pb.collection('rbac_permissions').getFullList({
-    filter: `active = true`
-  });
+    // Load all available atomic permissions
+    allPermissions.value = await rbacService.getPermissions();
+  } catch (err: unknown) {
+    console.error('Error loading RBAC data', err);
+  }
 });
 
-const selectRole = async (role: any) => {
+const selectRole = async (role: Role) => {
   selectedRole.value = role;
   selectedPermissionIds.value = [];
   
-  // Load existing assigned permissions for this role
-  const rolePerms = await pb.collection('rbac_role_permissions').getFullList({
-    filter: `role = "${role.id}"`
-  });
-  
-  selectedPermissionIds.value = rolePerms.map((rp: any) => rp.permission);
+  try {
+    // Load existing assigned permissions for this role
+    const rolePerms = await rbacService.getRolePermissions(role.id);
+    selectedPermissionIds.value = rolePerms.map((rp: Record<string, unknown>) => rp.permission as string);
+  } catch (err: unknown) {
+    console.error('Error fetching role permissions', err);
+  }
 };
 
 const groupedPermissions = computed(() => {
-  const groups: Record<string, any[]> = {};
+  const groups: Record<string, Permission[]> = {};
   allPermissions.value.forEach(p => {
     if (!groups[p.module]) groups[p.module] = [];
     groups[p.module].push(p);
@@ -119,25 +122,28 @@ const groupedPermissions = computed(() => {
 });
 
 const savePermissions = async () => {
+  if (!selectedRole.value) return;
   saving.value = true;
   try {
     // Muy simplificado: Borrar todos y recrear (En producción optimizar delta)
-    const existing = await pb.collection('rbac_role_permissions').getFullList({ filter: `role = "${selectedRole.value.id}"` });
+    const existing = await rbacService.getRolePermissions(selectedRole.value.id);
     for (const ex of existing) {
-       await pb.collection('rbac_role_permissions').delete(ex.id);
+       if (ex.id) {
+         await rbacService.deleteRolePermission(ex.id);
+       }
     }
     
     for (const pid of selectedPermissionIds.value) {
-       await pb.collection('rbac_role_permissions').create({
+       await rbacService.createRolePermission({
          role: selectedRole.value.id,
          permission: pid
        });
     }
 
     // Auditoría
-    await pb.collection('admin_audit_log').create({
-       tenant: tenantStore.activeTenantId,
-       user: (pb as any).authStore?.model?.id || 'system',
+    await http.post('/admin_audit_log', {
+       tenant: tenantStore.activeTenant?.id,
+       user: authStore.user?.id || 'system',
        action: 'ROLE_PERMISSIONS_UPDATE',
        entity_type: 'rbac_roles',
        entity_id: selectedRole.value.id,
@@ -149,7 +155,7 @@ const savePermissions = async () => {
       message: 'Permisos guardados y auditados exitosamente.',
       domainEvent: 'PERMISSIONS_UPDATED'
     });
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
   } finally {
     saving.value = false;
@@ -159,7 +165,8 @@ const savePermissions = async () => {
 
 <style scoped>
 .rbac-builder { display: flex; flex-direction: column; gap: 1rem; }
-.card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+.card { background: var(--tenant-surface-0); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid var(--tenant-surface-200); }
+.dark .card { background: var(--tenant-surface-900); border-color: var(--tenant-surface-700); }
 .title { margin: 0; font-size: 1.5rem; font-weight: 800; color: #0f172a; }
 .subtitle { margin: 0.25rem 0 0 0; font-size: 0.875rem; color: #64748b; }
 .border-bottom { border-bottom: 1px solid #e2e8f0; }
@@ -197,9 +204,13 @@ const savePermissions = async () => {
 .h-full { height: 100%; }
 .list-none { list-style: none; }
 .text-center { text-align: center; }
-.text-slate-800 { color: #1e293b; }
-.text-slate-500 { color: #64748b; }
-.text-slate-400 { color: #94a3b8; }
-.bg-blue-50 { background-color: #eff6ff; }
+.text-surface-800 { color: #1e293b; }
+.text-surface-500 { color: #64748b; }
+.text-surface-400 { color: #94a3b8; }
+.bg-primary-50 { background-color: #eff6ff; }
 .border-blue-200 { border-color: #bfdbfe; }
 </style>
+
+
+
+

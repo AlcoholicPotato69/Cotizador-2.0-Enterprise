@@ -1,5 +1,6 @@
 <template>
   <Dialog 
+    v-bind="$attrs"
     v-model:visible="visible" 
     :modal="true" 
     :header="header"
@@ -13,6 +14,9 @@
       footer: { class: 'flex justify-end gap-2 p-6 border-t border-surface-100 dark:border-surface-800' }
     }"
   >
+    <template #header v-if="$slots.header">
+      <slot name="header"></slot>
+    </template>
     <slot></slot>
     <template #footer v-if="$slots.footer">
       <slot name="footer"></slot>
@@ -24,3 +28,4 @@ import Dialog from 'primevue/dialog';
 const visible = defineModel<boolean>('visible');
 defineProps({ header: String });
 </script>
+

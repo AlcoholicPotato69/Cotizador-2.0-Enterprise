@@ -8,7 +8,7 @@ import { Request } from 'express';
 import { Req } from '@nestjs/common';
 import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
 import { Permissions } from '../auth/decorators/permissions.decorator';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 interface AuthenticatedRequest extends Request {
   user: {

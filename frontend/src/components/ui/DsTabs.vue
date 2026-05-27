@@ -21,3 +21,4 @@
 const modelValue = defineModel<string>();
 defineProps({ tabs: { type: Array as () => { label: string, value: string }[], required: true } });
 </script>
+

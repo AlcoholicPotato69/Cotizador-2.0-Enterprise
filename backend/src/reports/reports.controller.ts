@@ -5,7 +5,7 @@ import { PermissionsGuard } from '../rbac/guards/permissions.guard';
 import { RequirePermissions } from '../rbac/decorators/permissions.decorator';
 import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
 import { Permissions } from '../auth/decorators/permissions.decorator';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Reports')
 @Controller('reports')

@@ -16,3 +16,4 @@
 <script setup lang="ts">
 defineProps({ title: { type: String, default: 'Sin datos' }, description: { type: String, default: 'No se encontraron registros.' } });
 </script>
+

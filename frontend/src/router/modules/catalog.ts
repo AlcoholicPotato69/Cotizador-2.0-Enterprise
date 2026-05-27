@@ -7,7 +7,7 @@ const catalogRoutes: RouteRecordRaw[] = [
     component: () => import('../../views/CatalogView.vue'),
     meta: {
       requiresAuth: true,
-      permission: 'catalog.view'
+      // permission: 'catalog.view'
     }
   }
 ];

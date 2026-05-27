@@ -1,43 +1,19 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { clientService, type Client, type ClientPayload } from '../services/clientService';
-
-export interface ClientModel {
-    id: string;
-    type: string;
-    rfc: string;
-    name: string;
-    status: string;
-    createdAt?: string;
-    email?: string;
-    phone?: string;
-}
-
-export interface ClientFormData {
-    name: string;
-    rfc: string;
-    email?: string;
-}
+import { clientService } from '../services/clientService';
+import type { Client } from '../services/clientService';
 
 export const useClientStore = defineStore('client', () => {
-    const clients = ref<ClientModel[]>([]);
-    const currentClient = ref<ClientModel | null>(null);
+    const clients = ref<Client[]>([]);
+    const currentClient = ref<Client | null>(null);
     const loading = ref(false);
 
     async function fetchClients() {
         loading.value = true;
         try {
-            const records = await clientService.getClients();
-            clients.value = records.data.map((r: Client) => ({
-                id: r.id,
-                type: 'moral', 
-                rfc: r.rfc,
-                name: r.razon_social,
-                status: r.status_validacion,
-                createdAt: r.created
-            }));
+            clients.value = await clientService.getAll();
         } catch (err) {
-            console.error("Error fetching clients:", err);
+            console.error("Error fetching clients:", err instanceof Error ? err.message : 'Unknown error');
             clients.value = [];
         } finally {
             loading.value = false;
@@ -47,38 +23,23 @@ export const useClientStore = defineStore('client', () => {
     async function fetchClientById(id: string) {
         loading.value = true;
         try {
-            const record = await clientService.getClientById(id);
-            currentClient.value = { 
-                id: record.id, 
-                type: 'moral', 
-                rfc: record.rfc, 
-                name: record.razon_social, 
-                status: record.status_validacion, 
-                email: record.contacto, 
-                phone: '' 
-            };
+            currentClient.value = await clientService.getById(id);
         } catch (err) {
-            console.error("Error fetching client by id:", err);
+            console.error("Error fetching client by id:", err instanceof Error ? err.message : 'Unknown error');
             currentClient.value = null;
         } finally {
             loading.value = false;
         }
     }
 
-    async function saveClient(clientData: ClientFormData) {
+    async function saveClient(clientData: Partial<Client>) {
         loading.value = true;
         try {
-            const payload: ClientPayload = {
-                razon_social: clientData.name,
-                rfc: clientData.rfc,
-                contacto: clientData.email || '',
-                status_validacion: 'pendiente'
-            };
-            const record = await clientService.createClient(payload);
+            const record = await clientService.create(clientData);
             await fetchClients(); // Refresh list
             return record;
         } catch (err) {
-            console.error("Error saving client:", err);
+            console.error("Error saving client:", err instanceof Error ? err.message : 'Unknown error');
             throw err;
         } finally {
             loading.value = false;

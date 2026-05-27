@@ -1,265 +1,277 @@
 <template>
-  <div class="space-y-8 pb-10">
-    <!-- Corporate Header -->
-    <header class="flex flex-col md:flex-row md:items-end justify-between border-b border-surface-200 pb-5 gap-4">
-      <div>
-        <h1 class="text-3xl font-display font-bold text-surface-900 tracking-tight">Panel Gerencial</h1>
-        <p class="text-sm text-surface-500 mt-1 font-body">
-          Visión consolidada de métricas operativas y comerciales
-        </p>
-      </div>
-      
-      <!-- Actions -->
-      <div class="flex items-center gap-3">
-        <Button 
-          v-if="permissionsStore.can('quotes.create')"
-          icon="pi pi-plus" 
-          label="Nueva Cotización" 
-          class="bg-primary-600 hover:bg-primary-500 text-white border-none shadow-[var(--tenant-glow)] px-4 py-2 font-medium text-sm rounded-md transition-colors"
-        />
-        <Button 
-          icon="pi pi-download" 
-          label="Exportar" 
-          outlined
-          class="border-surface-300 text-surface-700 hover:bg-surface-50 px-4 py-2 font-medium text-sm rounded-md transition-colors"
-        />
+  <div class="h-full flex flex-col space-y-6">
+    <!-- Header Command Center -->
+    <header class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-900 to-surface-800 dark:from-surface-950 dark:to-surface-900 p-8 shadow-2xl shadow-surface-900/20 text-white flex-shrink-0">
+      <!-- Decorative Glass Overlay -->
+      <div class="absolute inset-0 bg-surface-0/5 backdrop-blur-[2px] pointer-events-none"></div>
+      <!-- Background Shapes -->
+      <div class="absolute -right-20 -top-20 w-64 h-64 bg-primary-500/20 blur-3xl rounded-full pointer-events-none"></div>
+      <div class="absolute right-40 -bottom-20 w-48 h-48 bg-purple-500/20 blur-3xl rounded-full pointer-events-none"></div>
+
+      <div class="relative z-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-0/10 border border-white/10 text-xs font-semibold tracking-widest uppercase mb-4 shadow-[0_0_15px_rgba(255,255,255,0.05)]">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Sistema Operativo
+          </div>
+          <h1 class="text-4xl md:text-5xl font-display font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-white/70">
+            Command Center
+          </h1>
+          <p class="text-surface-300 mt-2 font-medium text-sm md:text-base max-w-xl">
+            Visión global del flujo comercial. Monitorea cotizaciones, gestiona contratos y analiza los ingresos en tiempo real.
+          </p>
+        </div>
+        
+        <!-- Quick Actions -->
+        <div class="flex items-center gap-3">
+          <DsButton 
+            v-if="permissionsStore.can('quotes.create')"
+            icon="pi pi-plus" 
+            label="Nueva Cotización" 
+            class="!bg-primary-500 !hover:bg-primary-400 !text-white !border-none !shadow-[0_0_20px_rgba(var(--primary-500),0.3)] !px-5 !py-3 !rounded-xl !font-bold transition-all duration-300 hover:scale-105"
+            @click="router.push('/quotes/creator')"
+          />
+        </div>
       </div>
     </header>
 
-    <!-- Loading State -->
-    <div v-if="dashboardStore.isLoading" class="flex justify-center items-center py-20">
-      <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
-    </div>
-
-    <!-- Dashboard Content -->
-    <div v-else class="space-y-8">
+    <!-- Main Grid -->
+    <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-0 overflow-y-auto custom-scroll pr-1">
       
-      <!-- KPIs Grid -->
-      <section>
-        <h2 class="text-xs font-bold text-surface-400 uppercase tracking-widest mb-4">Métricas Principales</h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- Ingresos -->
-          <Card class="bg-surface-base shadow-[var(--tenant-glow)] border border-surface-subtle !rounded-xl">
-            <template #content>
-              <div class="flex justify-between items-start">
-                <div>
-                  <p class="text-sm font-semibold text-surface-muted mb-1">Ingresos (Mensual)</p>
-                  <p class="text-3xl font-display font-bold text-surface-900">
-                    {{ formatCurrency(dashboardStore.metrics.totalRevenue) }}
-                  </p>
-                </div>
-                <div class="p-2 bg-surface-alt rounded-lg text-primary-600">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                </div>
+      <!-- Left Column: Metrics & Pipeline (Span 8) -->
+      <div class="lg:col-span-8 space-y-6 flex flex-col">
+        
+        <!-- KPI Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Revenue -->
+          <div class="group relative bg-surface-0 dark:bg-surface-800 p-6 rounded-3xl border border-surface-200 dark:border-white/5 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/0 to-emerald-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="relative z-10 flex justify-between items-start">
+              <div>
+                <p class="text-[11px] font-bold text-surface-400 dark:text-surface-500 uppercase tracking-widest mb-1">Ingresos MTD</p>
+                <p class="text-3xl font-display font-black text-surface-900 dark:text-white tracking-tight">
+                  {{ formatCurrency(dashboardStore.metrics.totalRevenue) }}
+                </p>
               </div>
-              <div class="mt-4 flex items-center text-sm">
-                <span :class="dashboardStore.metrics.revenueGrowth >= 0 ? 'text-emerald-600' : 'text-rose-600'" class="font-medium flex items-center">
-                  <svg v-if="dashboardStore.metrics.revenueGrowth >= 0" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                  <svg v-else class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
-                  {{ Math.abs(dashboardStore.metrics.revenueGrowth) }}%
-                </span>
-                <span class="ml-2 text-surface-400">vs mes anterior</span>
+              <div class="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                <i class="pi pi-wallet text-xl"></i>
               </div>
-            </template>
-          </Card>
+            </div>
+            <div class="relative z-10 mt-4 flex items-center text-xs font-semibold">
+              <span :class="dashboardStore.metrics.revenueGrowth >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'" class="flex items-center">
+                <i :class="dashboardStore.metrics.revenueGrowth >= 0 ? 'pi pi-arrow-up-right' : 'pi pi-arrow-down-right'" class="mr-1 text-[10px]"></i>
+                {{ Math.abs(dashboardStore.metrics.revenueGrowth) }}%
+              </span>
+              <span class="ml-2 text-surface-400">vs mes anterior</span>
+            </div>
+          </div>
 
-          <!-- Ocupación -->
-          <Card class="bg-surface-base shadow-[var(--tenant-glow)] border border-surface-subtle !rounded-xl">
-            <template #content>
-              <div class="flex justify-between items-start">
-                <div>
-                  <p class="text-sm font-semibold text-surface-muted mb-1">Ocupación Global</p>
-                  <p class="text-3xl font-display font-bold text-surface-900">
-                    {{ dashboardStore.metrics.occupancyRate }}%
-                  </p>
-                </div>
-                <div class="p-2 bg-surface-alt rounded-lg text-primary-600">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
-                </div>
+          <!-- Active Quotes -->
+          <div class="group relative bg-surface-0 dark:bg-surface-800 p-6 rounded-3xl border border-surface-200 dark:border-white/5 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-blue-500/0 to-blue-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="relative z-10 flex justify-between items-start">
+              <div>
+                <p class="text-[11px] font-bold text-surface-400 dark:text-surface-500 uppercase tracking-widest mb-1">Cotizaciones Activas</p>
+                <p class="text-3xl font-display font-black text-surface-900 dark:text-white tracking-tight">
+                  {{ dashboardStore.metrics.activeQuotes }}
+                </p>
               </div>
-              <div class="mt-4">
-                <div class="w-full bg-surface-200 rounded-full h-1.5">
-                  <div class="bg-primary-600 h-1.5 rounded-full" :style="{ width: `${dashboardStore.metrics.occupancyRate}%` }"></div>
-                </div>
+              <div class="w-10 h-10 rounded-2xl bg-blue-50 dark:bg-blue-500/10 flex items-center justify-center text-blue-600 dark:text-blue-400">
+                <i class="pi pi-file-edit text-xl"></i>
               </div>
-            </template>
-          </Card>
+            </div>
+            <div class="relative z-10 mt-4 flex items-center text-xs font-semibold">
+              <span :class="dashboardStore.metrics.quotesGrowth >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-rose-600 dark:text-rose-400'" class="flex items-center">
+                <i :class="dashboardStore.metrics.quotesGrowth >= 0 ? 'pi pi-arrow-up-right' : 'pi pi-arrow-down-right'" class="mr-1 text-[10px]"></i>
+                {{ Math.abs(dashboardStore.metrics.quotesGrowth) }}%
+              </span>
+              <span class="ml-2 text-surface-400">tendencia actual</span>
+            </div>
+          </div>
 
-          <!-- Cotizaciones Activas -->
-          <Card class="bg-surface-base shadow-[var(--tenant-glow)] border border-surface-subtle !rounded-xl">
-            <template #content>
-              <div class="flex justify-between items-start">
-                <div>
-                  <p class="text-sm font-semibold text-surface-muted mb-1">Cotizaciones Activas</p>
-                  <p class="text-3xl font-display font-bold text-surface-900">
-                    {{ dashboardStore.metrics.activeQuotes }}
-                  </p>
-                </div>
-                <div class="p-2 bg-surface-alt rounded-lg text-primary-600">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                </div>
+          <!-- Occupancy -->
+          <div class="group relative bg-surface-0 dark:bg-surface-800 p-6 rounded-3xl border border-surface-200 dark:border-white/5 shadow-sm hover:shadow-xl transition-all duration-500 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+            <div class="relative z-10 flex justify-between items-start">
+              <div>
+                <p class="text-[11px] font-bold text-surface-400 dark:text-surface-500 uppercase tracking-widest mb-1">Ocupación Global</p>
+                <p class="text-3xl font-display font-black text-surface-900 dark:text-white tracking-tight">
+                  {{ dashboardStore.metrics.occupancyRate }}%
+                </p>
               </div>
-              <div class="mt-4 flex items-center text-sm">
-                <span :class="dashboardStore.metrics.quotesGrowth >= 0 ? 'text-emerald-600' : 'text-rose-600'" class="font-medium flex items-center">
-                  <svg v-if="dashboardStore.metrics.quotesGrowth >= 0" class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-                  <svg v-else class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path></svg>
-                  {{ Math.abs(dashboardStore.metrics.quotesGrowth) }}%
-                </span>
-                <span class="ml-2 text-surface-400">vs mes anterior</span>
+              <div class="w-10 h-10 rounded-2xl bg-purple-50 dark:bg-purple-500/10 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                <i class="pi pi-chart-pie text-xl"></i>
               </div>
-            </template>
-          </Card>
-
-          <!-- Firmas Pendientes -->
-          <Card class="bg-surface-base shadow-[var(--tenant-glow)] border border-surface-subtle !rounded-xl">
-            <template #content>
-              <div class="flex justify-between items-start">
-                <div>
-                  <p class="text-sm font-semibold text-surface-muted mb-1">Firmas Pendientes</p>
-                  <p class="text-3xl font-display font-bold text-surface-900">
-                    {{ dashboardStore.metrics.pendingSignatures }}
-                  </p>
-                </div>
-                <div class="p-2 bg-surface-alt rounded-lg text-primary-600">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                </div>
-              </div>
-              <div class="mt-4">
-                <button class="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors">
-                  Gestionar contratos &rarr;
-                </button>
-              </div>
-            </template>
-          </Card>
+            </div>
+            <div class="relative z-10 mt-4">
+               <div class="w-full bg-surface-100 dark:bg-surface-700 rounded-full h-2 overflow-hidden">
+                  <div class="bg-gradient-to-r from-purple-500 to-purple-400 h-full rounded-full transition-all duration-1000" :style="{ width: `${dashboardStore.metrics.occupancyRate}%` }"></div>
+               </div>
+            </div>
+          </div>
         </div>
-      </section>
 
-      <!-- Actividad Reciente y Pipeline -->
-      <section class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Actividad Reciente -->
-        <Card class="lg:col-span-2 bg-surface-base shadow-[var(--tenant-glow)] border border-surface-subtle !rounded-xl">
-          <template #title>
-            <div class="text-lg font-display font-bold text-surface-900 border-b border-surface-subtle pb-4">Actividad Reciente</div>
-          </template>
-          <template #content>
-            <div class="divide-y divide-surface-subtle mt-2">
-              <div v-for="activity in dashboardStore.metrics.recentActivity" :key="activity.id" class="py-4 flex items-center justify-between hover:bg-surface-hover transition-colors rounded-lg px-2 -mx-2">
-                <div class="flex items-center gap-4">
-                  <div :class="[
-                    'p-2 rounded-full',
-                    activity.type === 'CONTRACT' ? 'bg-blue-50 text-blue-600' :
-                    activity.type === 'QUOTE' ? 'bg-purple-50 text-purple-600' :
-                    'bg-emerald-50 text-emerald-600'
-                  ]">
-                    <svg v-if="activity.type === 'CONTRACT'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
-                    <svg v-else-if="activity.type === 'QUOTE'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-surface-900 text-sm">{{ activity.title }}</p>
-                    <p class="text-xs text-surface-500 mt-0.5">{{ formatDate(activity.date) }}</p>
-                  </div>
+        <!-- Conversion Pipeline -->
+        <div class="bg-surface-0 dark:bg-surface-800 rounded-3xl border border-surface-200 dark:border-white/5 shadow-sm p-6 flex-1 flex flex-col">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="font-display font-bold text-lg text-surface-900 dark:text-white">Pipeline de Conversión</h2>
+            <button class="text-primary-600 hover:text-primary-500 font-semibold text-xs tracking-wide uppercase transition-colors">
+              Ver Análisis &rarr;
+            </button>
+          </div>
+          <div class="flex-1 flex flex-col justify-center gap-8">
+            <div class="relative group">
+              <div class="flex justify-between text-sm mb-2 font-semibold">
+                <span class="text-surface-500 flex items-center gap-2"><i class="pi pi-users text-surface-400"></i> Leads Generados</span>
+                <span class="text-surface-900 dark:text-white font-display text-lg">{{ dashboardStore.metrics.pipeline?.leads || 0 }}</span>
+              </div>
+              <div class="w-full bg-surface-100 dark:bg-surface-700 rounded-full h-3 overflow-hidden shadow-inner">
+                <div class="bg-surface-400 dark:bg-surface-500 h-full rounded-full w-full"></div>
+              </div>
+            </div>
+            
+            <div class="relative group">
+              <div class="flex justify-between text-sm mb-2 font-semibold">
+                <span class="text-surface-500 flex items-center gap-2"><i class="pi pi-file-o text-surface-400"></i> Cotizaciones Enviadas</span>
+                <span class="text-surface-900 dark:text-white font-display text-lg">{{ dashboardStore.metrics.pipeline?.quotes || 0 }}</span>
+              </div>
+              <div class="w-full bg-surface-100 dark:bg-surface-700 rounded-full h-3 overflow-hidden shadow-inner">
+                <div class="bg-blue-400 h-full rounded-full transition-all duration-1000" :style="{ width: `${((dashboardStore.metrics.pipeline?.quotes || 0) / (dashboardStore.metrics.pipeline?.leads || 1)) * 100}%` }"></div>
+              </div>
+            </div>
+
+            <div class="relative group">
+              <div class="flex justify-between text-sm mb-2 font-semibold">
+                <span class="text-surface-500 flex items-center gap-2"><i class="pi pi-check-circle text-surface-400"></i> Negocios Cerrados</span>
+                <span class="text-surface-900 dark:text-white font-display text-lg">{{ dashboardStore.metrics.pipeline?.contracts || 0 }}</span>
+              </div>
+              <div class="w-full bg-surface-100 dark:bg-surface-700 rounded-full h-3 overflow-hidden shadow-inner">
+                <div class="bg-emerald-400 h-full rounded-full transition-all duration-1000 shadow-[0_0_10px_rgba(52,211,153,0.5)]" :style="{ width: `${((dashboardStore.metrics.pipeline?.contracts || 0) / (dashboardStore.metrics.pipeline?.leads || 1)) * 100}%` }"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: Recent Activity (Span 4) -->
+      <div class="lg:col-span-4 bg-surface-0 dark:bg-surface-800 rounded-3xl border border-surface-200 dark:border-white/5 shadow-sm p-6 flex flex-col h-full overflow-hidden relative">
+        <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-surface-0 dark:from-surface-800 to-transparent z-10 pointer-events-none"></div>
+        <div class="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-surface-0 dark:from-surface-800 to-transparent z-10 pointer-events-none"></div>
+        
+        <div class="flex justify-between items-center mb-6 relative z-20">
+          <h2 class="font-display font-bold text-lg text-surface-900 dark:text-white">Log Operativo</h2>
+          <span class="px-2 py-1 bg-surface-100 dark:bg-surface-700 text-surface-600 dark:text-surface-300 rounded-lg text-[10px] font-bold tracking-widest uppercase">En vivo</span>
+        </div>
+
+        <div class="flex-1 overflow-y-auto custom-scroll pr-2 relative z-0 pb-4">
+          <div class="space-y-4">
+            <div v-for="activity in dashboardStore.metrics.recentActivity" :key="activity.id" class="group p-4 rounded-2xl bg-surface-50 dark:bg-surface-900/50 border border-transparent hover:border-surface-200 dark:hover:border-white/5 transition-all duration-300 hover:shadow-md relative overflow-hidden">
+              <div class="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"
+                :class="{
+                  'bg-emerald-500': activity.type === 'CONTRACT',
+                  'bg-blue-500': activity.type === 'QUOTE',
+                  'bg-primary-500': activity.type === 'PAYMENT'
+                }"
+              ></div>
+              <div class="flex items-start gap-3">
+                <div :class="[
+                  'w-8 h-8 rounded-xl flex items-center justify-center shrink-0 mt-0.5',
+                  activity.type === 'CONTRACT' ? 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400' :
+                  activity.type === 'QUOTE' ? 'bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400' :
+                  'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400'
+                ]">
+                  <i v-if="activity.type === 'CONTRACT'" class="pi pi-file-edit text-sm"></i>
+                  <i v-else-if="activity.type === 'QUOTE'" class="pi pi-file-o text-sm"></i>
+                  <i v-else class="pi pi-dollar text-sm"></i>
                 </div>
-                <div class="text-right">
-                  <p v-if="activity.amount" class="font-medium text-surface-900 text-sm">{{ formatCurrency(activity.amount) }}</p>
-                  <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase mt-1" :class="getStatusBadgeClass(activity.status)">
-                    {{ activity.status }}
-                  </span>
+                <div class="flex-1 min-w-0">
+                  <p class="font-bold text-surface-900 dark:text-white text-sm truncate">{{ activity.title }}</p>
+                  <p class="text-xs text-surface-500 mt-1 font-medium">{{ formatDate(activity.date) }}</p>
+                </div>
+                <div class="text-right shrink-0">
+                  <p v-if="activity.amount" class="font-display font-bold text-surface-900 dark:text-white text-sm">{{ formatCurrency(activity.amount) }}</p>
+                  <div class="mt-1">
+                     <span class="inline-flex px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider" :class="getStatusBadgeClass(activity.status)">
+                       {{ activity.status }}
+                     </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </template>
-        </Card>
-
-        <!-- Pipeline Comercial -->
-        <Card class="bg-surface-base shadow-[var(--tenant-glow)] border border-surface-subtle !rounded-xl">
-          <template #title>
-            <div class="text-lg font-display font-bold text-surface-900 border-b border-surface-subtle pb-4">Conversión (MTD)</div>
-          </template>
-          <template #content>
-            <div class="mt-6 flex flex-col gap-6">
-              <div>
-                <div class="flex justify-between text-sm mb-1">
-                  <span class="font-medium text-surface-600">Leads Generados</span>
-                  <span class="font-bold text-surface-900">124</span>
-                </div>
-                <div class="w-full bg-surface-200 rounded-full h-2">
-                  <div class="bg-primary-300 h-2 rounded-full" style="width: 100%"></div>
-                </div>
-              </div>
-              
-              <div>
-                <div class="flex justify-between text-sm mb-1">
-                  <span class="font-medium text-surface-600">Cotizaciones Enviadas</span>
-                  <span class="font-bold text-surface-900">89</span>
-                </div>
-                <div class="w-full bg-surface-200 rounded-full h-2">
-                  <div class="bg-primary-400 h-2 rounded-full" style="width: 72%"></div>
-                </div>
-              </div>
-              
-              <div>
-                <div class="flex justify-between text-sm mb-1">
-                  <span class="font-medium text-surface-600">Contratos Cerrados</span>
-                  <span class="font-bold text-surface-900">32</span>
-                </div>
-                <div class="w-full bg-surface-200 rounded-full h-2">
-                  <div class="bg-primary-600 h-2 rounded-full" style="width: 25%"></div>
-                </div>
-              </div>
-
-              <div class="mt-4 p-4 bg-surface-alt rounded-lg flex items-center justify-between border border-surface-subtle">
-                <span class="text-sm font-semibold text-surface-600">Tasa de Conversión</span>
-                <span class="text-xl font-bold text-primary-600">25.8%</span>
-              </div>
+            
+            <div v-if="!dashboardStore.metrics.recentActivity?.length" class="text-center py-10">
+              <i class="pi pi-inbox text-4xl text-surface-300 dark:text-surface-600 mb-3 block"></i>
+              <p class="text-surface-500 font-medium text-sm">No hay actividad reciente registrada en este tenant.</p>
             </div>
-          </template>
-        </Card>
-      </section>
-
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { usePermissionsStore } from '../stores/permissionsStore';
+import { useRouter } from 'vue-router';
 import { useDashboardStore } from '../stores/dashboardStore';
-import Card from 'primevue/card';
-import Button from 'primevue/button';
+import { usePermissionsStore } from '../stores/permissionsStore';
 
-const permissionsStore = usePermissionsStore();
+const router = useRouter();
 const dashboardStore = useDashboardStore();
+const permissionsStore = usePermissionsStore();
 
-onMounted(() => {
-  dashboardStore.fetchDashboardMetrics();
+onMounted(async () => {
+  await dashboardStore.fetchDashboardMetrics();
 });
 
-const formatCurrency = (value: number) => {
-  return new Intl.NumberFormat('es-MX', {
-    style: 'currency',
-    currency: 'MXN',
-    maximumFractionDigits: 0
-  }).format(value);
+const formatCurrency = (value: number | undefined) => {
+  if (value === undefined) return '$0.00';
+  return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value);
 };
 
-const formatDate = (dateStr: string) => {
-  const date = new Date(dateStr);
-  return new Intl.DateTimeFormat('es-MX', { month: 'short', day: 'numeric', year: 'numeric' }).format(date);
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat('es-MX', { 
+    month: 'short', 
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(date);
 };
 
 const getStatusBadgeClass = (status: string) => {
-  switch (status) {
-    case 'SIGNED':
-    case 'PAID':
+  switch (status?.toUpperCase()) {
     case 'APPROVED':
-      return 'bg-emerald-100 text-emerald-800';
+    case 'SIGNED':
+    case 'COMPLETED':
+      return 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-300';
     case 'PENDING':
-      return 'bg-amber-100 text-amber-800';
+    case 'DRAFT':
+      return 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-300';
     case 'REJECTED':
-      return 'bg-rose-100 text-rose-800';
+    case 'CANCELLED':
+      return 'bg-rose-100 text-rose-800 dark:bg-rose-900/50 dark:text-rose-300';
     default:
-      return 'bg-surface-200 text-surface-700';
+      return 'bg-surface-100 text-surface-800 dark:bg-surface-800 dark:text-surface-300';
   }
 };
 </script>
+
+<style scoped>
+.custom-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--surface-300);
+  border-radius: 10px;
+}
+.dark .custom-scroll::-webkit-scrollbar-thumb {
+  background: var(--surface-700);
+}
+</style>
+

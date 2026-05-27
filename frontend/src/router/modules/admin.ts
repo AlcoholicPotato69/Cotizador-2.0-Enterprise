@@ -36,6 +36,33 @@ const adminRoutes: RouteRecordRaw[] = [
       requiresAuth: true,
       permission: 'admin.access'
     }
+  },
+  {
+    path: '/admin/governance',
+    name: 'AdminGovernance',
+    component: () => import('../../views/DocumentGovernanceView.vue'),
+    meta: {
+      requiresAuth: true,
+      permission: 'admin.access' // or config.manage
+    }
+  },
+  {
+    path: '/admin/audit-logs',
+    name: 'AdminAuditLogs',
+    component: () => import('../../views/AuditLogView.vue'),
+    meta: {
+      requiresAuth: true,
+      permission: 'admin.access'
+    }
+  },
+  {
+    path: '/admin/integrations',
+    name: 'AdminIntegrations',
+    component: () => import('../../views/IntegrationsView.vue'),
+    meta: {
+      requiresAuth: true,
+      permission: 'admin.access'
+    }
   }
 ];
 

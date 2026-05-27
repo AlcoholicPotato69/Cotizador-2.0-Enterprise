@@ -7,53 +7,53 @@
         </h1>
         <p class="text-surface-400 mt-2">Gestiona las propuestas comerciales y sus versiones</p>
       </div>
-      <Button v-if="canCreate" label="Nueva Cotización" icon="pi pi-plus" @click="router.push('/quotes/new')" 
+      <DsButton v-if="canCreate" label="Nueva Cotización" icon="pi pi-plus" @click="router.push('/quotes/new')" 
               class="bg-gradient-to-r from-emerald-500 to-teal-600 border-none hover:from-emerald-400 hover:to-teal-500 shadow-lg shadow-emerald-500/30" />
     </div>
 
     <div v-if="quoteStore.loading" class="flex justify-center p-12">
-      <ProgressSpinner />
+      <DsProgressSpinner />
     </div>
     <div v-else-if="quoteStore.error" class="p-4 bg-red-900/30 border border-red-500 text-red-200 rounded-xl">
       {{ quoteStore.error }}
     </div>
     <div v-else class="glass-panel p-6 rounded-2xl border border-surface-700/50">
-      <DataTable :value="quoteStore.quotes" :paginator="true" :rows="10" 
+      <DsTable :value="quoteStore.quotes" :paginator="true" :rows="10" 
                  class="p-datatable-sm w-full"
                  responsiveLayout="scroll">
-        <Column field="folio" header="Folio" sortable>
+        <DsColumn field="folio" header="Folio" sortable>
           <template #body="slotProps">
             <span class="font-mono text-emerald-400 font-semibold">{{ slotProps.data.folio }}</span>
           </template>
-        </Column>
-        <Column field="client_id" header="Cliente" sortable>
+        </DsColumn>
+        <DsColumn field="client_id" header="Cliente" sortable>
           <template #body="slotProps">
             {{ getClientName(slotProps.data.client_id) }}
           </template>
-        </Column>
-        <Column field="total_amount" header="Total" sortable>
+        </DsColumn>
+        <DsColumn field="total_amount" header="Total" sortable>
           <template #body="slotProps">
             <span class="font-medium">${{ slotProps.data.total_amount?.toLocaleString('es-MX', { minimumFractionDigits: 2 }) }}</span>
           </template>
-        </Column>
-        <Column field="status" header="Estatus" sortable>
+        </DsColumn>
+        <DsColumn field="status" header="Estatus" sortable>
           <template #body="slotProps">
             <span :class="getStatusClass(slotProps.data.status)" class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
               {{ slotProps.data.status }}
             </span>
           </template>
-        </Column>
-        <Column field="current_version" header="v." sortable>
+        </DsColumn>
+        <DsColumn field="current_version" header="v." sortable>
           <template #body="slotProps">
             <span class="text-surface-400">v{{ slotProps.data.current_version }}</span>
           </template>
-        </Column>
-        <Column header="Acciones">
+        </DsColumn>
+        <DsColumn header="Acciones">
           <template #body="slotProps">
-            <Button icon="pi pi-chevron-right" text rounded aria-label="Ver" @click="goToDetail(slotProps.data.id)" />
+            <DsButton icon="pi pi-chevron-right" text rounded aria-label="Ver" @click="goToDetail(slotProps.data.id)" />
           </template>
-        </Column>
-      </DataTable>
+        </DsColumn>
+      </DsTable>
     </div>
 
     <!-- Create dialog has been extracted to QuoteCreateView -->
@@ -101,3 +101,4 @@ const goToDetail = (id: string) => {
   router.push(`/quotes/${id}`);
 };
 </script>
+

@@ -1,28 +1,26 @@
 import type { Directive, DirectiveBinding } from 'vue';
 import type { App } from 'vue';
-import { usePermissionsStore } from '../stores/permissionsStore';
+import { hasPermission } from '../app/access-context';
 
 export const vPermission: Directive = {
     mounted(el: HTMLElement, binding: DirectiveBinding) {
-        const permissionsStore = usePermissionsStore();
         const requiredPermission = binding.value;
 
         if (requiredPermission) {
-            const hasPermission = permissionsStore.hasPermission(requiredPermission);
+            const isAllowed = hasPermission(requiredPermission);
             
-            if (!hasPermission) {
+            if (!isAllowed) {
                 el.parentNode?.removeChild(el);
             }
         }
     },
     updated(el, binding) {
-        const permissionsStore = usePermissionsStore();
         const requiredPermission = binding.value;
 
         if (requiredPermission) {
-            const hasPermission = permissionsStore.hasPermission(requiredPermission);
+            const isAllowed = hasPermission(requiredPermission);
             
-            if (!hasPermission) {
+            if (!isAllowed) {
                 if (el.parentNode) {
                     el.parentNode.removeChild(el);
                 } else {

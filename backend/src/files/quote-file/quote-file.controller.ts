@@ -14,7 +14,7 @@ import { PermissionsGuard } from '../../auth/guards/permissions.guard';
 import { Permissions } from '../../auth/decorators/permissions.decorator';
 import { Request } from 'express';
 import { TenantIsolationGuard } from '../../auth/guards/tenant-isolation.guard';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 interface AuthenticatedRequest extends Request {
   user: {

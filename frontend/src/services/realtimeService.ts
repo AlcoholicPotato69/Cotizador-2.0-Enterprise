@@ -21,6 +21,9 @@ export class RealtimeService {
   }
 
   private connect() {
+    // Don't connect if not initialized (prevents errors on login page)
+    if (!this.store || !this.toastService) return;
+
     // Prevent multiple connections
     if (this.eventSource) {
       this.eventSource.close();
@@ -28,10 +31,9 @@ export class RealtimeService {
 
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:3000';
     
-    // Connect to the NestJS SSE endpoint
-    this.eventSource = new EventSource(`${apiUrl}/api/events/sse`, {
-      withCredentials: true
-    });
+    try {
+      // Connect to the NestJS SSE endpoint without credentials to avoid CORS issues
+      this.eventSource = new EventSource(`${apiUrl}/api/v1/events/sse`);
 
     this.eventSource.onopen = () => {
       if (this.reconnectTimeout) {
@@ -60,18 +62,22 @@ export class RealtimeService {
       }
     });
 
-    this.eventSource.onerror = (error) => {
-      console.error('[RealtimeService] SSE Error:', error);
-      this.eventSource?.close();
-      
-      // Attempt to reconnect after 5 seconds
-      if (!this.reconnectTimeout) {
-        this.reconnectTimeout = setTimeout(() => {
-          this.reconnectTimeout = null;
-          this.connect();
-        }, 5000);
-      }
-    };
+      this.eventSource.onerror = (_error) => {
+        // Prevent noisy console errors if backend isn't ready
+        this.eventSource?.close();
+        this.eventSource = null;
+        
+        // Exponential backoff or simple long delay
+        if (!this.reconnectTimeout) {
+          this.reconnectTimeout = setTimeout(() => {
+            this.reconnectTimeout = null;
+            this.connect();
+          }, 15000); // 15 seconds retry instead of 5
+        }
+      };
+    } catch {
+      // SSE endpoint may not exist yet — silently ignore
+    }
   }
 
   private handleEvent(data: RealtimeEventPayload) {

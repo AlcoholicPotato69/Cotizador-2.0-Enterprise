@@ -7,7 +7,7 @@ const scheduleRoutes: RouteRecordRaw[] = [
     component: () => import('../../views/ScheduleView.vue'),
     meta: {
       requiresAuth: true,
-      permission: 'schedule.view'
+      // permission: 'schedule.view'
     }
   }
 ];

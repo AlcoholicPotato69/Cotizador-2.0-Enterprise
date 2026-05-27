@@ -10,7 +10,7 @@
       <div class="col-12 md:col-6">
         <div class="card">
           <h3>1. Definir Contexto (Entradas)</h3>
-          <p class="text-sm text-slate-500 mb-3">Simula las variables exactas que el sistema recibe al cotizar o verificar un cliente.</p>
+          <p class="text-sm text-surface-500 dark:text-surface-400 mb-3">Simula las variables exactas que el sistema recibe al cotizar o verificar un cliente.</p>
           
           <div class="field mb-3">
             <label class="block font-bold mb-1">Tipo de Simulación</label>
@@ -27,7 +27,7 @@
             <small class="text-red-600" v-else>JSON Inválido</small>
           </div>
 
-          <Button label="Ejecutar Simulación" icon="pi pi-play" class="p-button-primary w-full" @click="runSimulation" :disabled="!isValidJSON" />
+          <DsButton label="Ejecutar Simulación" icon="pi pi-play" class="p-button-primary w-full" @click="runSimulation" :disabled="!isValidJSON" />
         </div>
       </div>
 
@@ -36,21 +36,21 @@
         <div class="card h-full surface-ground">
           <h3>2. Resultados de Simulación</h3>
           
-          <div v-if="!simulationRan" class="flex align-items-center justify-content-center h-full text-slate-400">
+          <div v-if="!simulationRan" class="flex align-items-center justify-content-center h-full text-surface-400 dark:text-surface-500">
             Presiona Ejecutar para ver la Trazabilidad
           </div>
 
           <div v-else>
             <!-- Eligibility Result -->
             <div v-if="simulationType === 'eligibility'">
-              <Tag :severity="eligibilityResult.eligible ? 'success' : 'danger'" :value="eligibilityResult.eligible ? 'ELEGIBLE' : 'BLOQUEADO'" class="text-xl mb-3" />
+              <DsTag :severity="eligibilityResult.eligible ? 'success' : 'danger'" :value="eligibilityResult.eligible ? 'ELEGIBLE' : 'BLOQUEADO'" class="text-xl mb-3" />
               
               <div class="mb-3">
                 <strong>¿Puede Cotizar?</strong> {{ eligibilityResult.canQuote ? 'Sí' : 'No' }}<br/>
                 <strong>¿Puede Contratar?</strong> {{ eligibilityResult.canContract ? 'Sí' : 'No' }}
               </div>
 
-              <div class="mb-3" v-if="eligibilityResult.reasons.length">
+              <div class="mb-3" v-if="Array.isArray(eligibilityResult.reasons) && eligibilityResult.reasons.length">
                 <strong>Motivos / Avisos:</strong>
                 <ul class="mt-1 pl-3">
                   <li v-for="reason in eligibilityResult.reasons" :key="reason" class="text-red-600">{{ reason }}</li>
@@ -61,23 +61,23 @@
             <!-- Pricing/Promotion Result -->
             <div v-if="simulationType === 'pricing'">
                <h4 class="mb-2">Trazabilidad de Precios:</h4>
-               <p v-if="appliedRules.length === 0" class="text-slate-500">Ninguna regla aplicó al contexto actual.</p>
+               <p v-if="appliedRules.length === 0" class="text-surface-500 dark:text-surface-400">Ninguna regla aplicó al contexto actual.</p>
                <ul class="mt-1 pl-3">
                  <li v-for="rule in appliedRules" :key="rule.id" class="mb-2">
                    <strong>{{ rule.name }} (v{{ rule.version }})</strong><br/>
-                   <span class="text-sm text-blue-600">Acción: {{ JSON.stringify(rule.actions) }}</span>
+                   <span class="text-sm text-primary-600 dark:text-primary-400">Acción: {{ JSON.stringify(rule.action) }}</span>
                  </li>
                </ul>
             </div>
 
             <!-- Audit Trail Global -->
             <div class="mt-4 pt-3 border-top-1 border-300">
-              <h4 class="mb-2 text-slate-600">Rule Engine Audit Trail (Motor Universal)</h4>
+              <h4 class="mb-2 text-surface-600 dark:text-surface-300">Rule Engine Audit Trail (Motor Universal)</h4>
               <p class="text-sm"><strong>Reglas Evaluadas:</strong> {{ rulesEvaluatedCount }}</p>
               <p class="text-sm"><strong>Reglas que Aplicaron:</strong> {{ appliedRules.length }}</p>
-              <div class="text-xs bg-gray-800 text-green-400 p-2 border-round mt-2 overflow-auto" style="max-height: 150px;">
+              <div class="text-xs bg-surface-800 dark:bg-surface-100 text-success-400 p-2 border-round mt-2 overflow-auto" style="max-height: 150px;">
                  <div v-for="rule in appliedRules" :key="'audit'+rule.id">
-                   > Match Condition: {{ JSON.stringify(rule.conditions) }}
+                   > Match Condition: {{ JSON.stringify(rule.conditions_ast) }}
                  </div>
               </div>
             </div>
@@ -91,70 +91,139 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
-// import { http } from '../api/http';
+import { ruleService, type Rule } from '../services/ruleService';
+import { useTenantStore } from '../stores/tenantStore';
 import { useNotificationStore } from '../stores/notificationStore';
 
 const notificationStore = useNotificationStore();
+const tenantStore = useTenantStore();
+
 const simulationType = ref('pricing');
 const contextJSON = ref(`{
-  "tenant": { "slug": "casa_de_piedra" },
-  "espacio": { "tipo": "Salon" },
-  "cotizacion": { "requiere_premontaje": true }
+  "context": {
+    "espacio": { "categoria": "Salón" },
+    "cliente": { "tipo_persona": "Moral" },
+    "fechas": { "dia_semana": "Sabado" }
+  }
 }`);
 
 const simulationRan = ref(false);
 const rulesEvaluatedCount = ref(0);
-const appliedRules = ref<any[]>([]);
-const eligibilityResult = ref<any>({});
+const appliedRules = ref<Rule[]>([]);
+const eligibilityResult = ref<{ eligible?: boolean; canQuote?: boolean; canContract?: boolean; reasons?: string[] }>({});
+const isRunning = ref(false);
 
 const isValidJSON = computed(() => {
   try {
     JSON.parse(contextJSON.value);
     return true;
-  } catch(e) {
+  } catch(e: unknown) {
     return false;
   }
 });
 
+// AST Evaluator Helper
+const getNestedValue = (obj: any, path: string) => {
+  return path.split('.').reduce((acc: any, part: string) => acc && acc[part], obj);
+};
+
+const evaluateRuleCondition = (rule: any, contextData: any): boolean => {
+  if (rule.type === 'AND') {
+    if (!rule.rules || rule.rules.length === 0) return true;
+    return rule.rules.every((r: any) => evaluateRuleCondition(r, contextData));
+  }
+  if (rule.type === 'OR') {
+    if (!rule.rules || rule.rules.length === 0) return true;
+    return rule.rules.some((r: any) => evaluateRuleCondition(r, contextData));
+  }
+  
+  // Basic condition
+  const actualValue = getNestedValue(contextData, rule.field);
+  const expectedValue = rule.value;
+  
+  switch (rule.operator) {
+    case 'EQUALS': return String(actualValue).toLowerCase() === String(expectedValue).toLowerCase();
+    case 'NOT_EQUALS': return String(actualValue).toLowerCase() !== String(expectedValue).toLowerCase();
+    case 'CONTAINS': return String(actualValue).toLowerCase().includes(String(expectedValue).toLowerCase());
+    case 'GREATER_THAN': return Number(actualValue) > Number(expectedValue);
+    case 'LESS_THAN': return Number(actualValue) < Number(expectedValue);
+    case 'IN': return expectedValue.split(',').map((s: string) => s.trim().toLowerCase()).includes(String(actualValue).toLowerCase());
+    default: return false;
+  }
+};
+
 const runSimulation = async () => {
+  if (!isValidJSON.value || !tenantStore.activeTenant?.id) return;
+  
+  isRunning.value = true;
+  simulationRan.value = false;
+  
   try {
-    JSON.parse(contextJSON.value);
+    const parsedData = JSON.parse(contextJSON.value);
+    const contextData = parsedData.context || parsedData;
     
-    // Fetch rules from DB based on type
-    // Fetch rules metadata for the UI (Optional)
-    // In real app, we filter by tenant as well
-    // const rules = await pb.collection('rule_registry').getFullList({ filter: `rule_type = "${ruleType}" && status = "active"` });
+    // Fetch rules from DB based on type and tenant
+    const rules = await ruleService.getFullList({ 
+      filter: `tenant = "${tenantStore.activeTenant.id}" && rule_type = "${simulationType.value}" && status = "active"`,
+      sort: '-priority,-created'
+    });
 
-    // En lugar de evaluar localmente, delegamos al backend:
-    // const response = await http.post('/api/simulator/evaluate', { type: ruleType, context: context });
+    rulesEvaluatedCount.value = rules.length;
     
-    // MOCK RESPUESTA BACKEND (hasta que esté listo)
-    await new Promise(resolve => setTimeout(resolve, 800)); // Simulate latency
-    
-    rulesEvaluatedCount.value = 5; // MOCK
+    const matched: Rule[] = [];
+    let isBlocked = false;
+    const blockReasons: string[] = [];
 
-    if (simulationType.value === 'pricing') {
-       appliedRules.value = []; // MOCK: response.data.appliedRules
+    for (const rule of rules) {
+      const ast = rule.conditions_ast;
+      const applies = ast && Object.keys(ast).length > 0 ? evaluateRuleCondition(ast, contextData) : true;
+      
+      if (applies) {
+        matched.push(rule);
+        
+        if (rule.action?.type === 'block') {
+          isBlocked = true;
+          blockReasons.push(rule.action.message || 'Bloqueado por regla del sistema');
+        }
+
+        if (rule.stop_processing) {
+          break; // Hard abort
+        }
+        if (rule.is_exclusive) {
+          // If exclusive, don't apply any other rules (for this simple engine, we just stop)
+          break;
+        }
+      }
+    }
+
+    appliedRules.value = matched;
+
+    if (simulationType.value === 'eligibility') {
+       eligibilityResult.value = { 
+         eligible: !isBlocked, 
+         canQuote: !isBlocked, 
+         canContract: !isBlocked, 
+         reasons: blockReasons 
+       };
     } else {
-       eligibilityResult.value = { eligible: true, canQuote: true, canContract: true, reasons: [] }; // MOCK: response.data.eligibilityResult
-       appliedRules.value = []; // MOCK: response.data.appliedRules
+       eligibilityResult.value = {};
     }
 
     simulationRan.value = true;
     notificationStore.addNotification({
         type: 'success',
-        message: 'Simulación procesada en Backend',
+        message: 'Simulación completada con éxito',
         domainEvent: 'SIMULATION_COMPLETED'
     });
-  } catch (err) {
+  } catch (err: unknown) {
     console.error(err);
     notificationStore.addNotification({
       type: 'error',
-      message: 'Error ejecutando simulación. Revisa la consola.',
+      message: 'Error ejecutando simulación. Revisa el formato JSON.',
       domainEvent: 'SIMULATION_ERROR'
     });
+  } finally {
+    isRunning.value = false;
   }
 };
 </script>
@@ -162,9 +231,10 @@ const runSimulation = async () => {
 <style scoped>
 .rule-simulator { display: flex; flex-direction: column; }
 .card {
-  background: white; border-radius: 1rem; padding: 1.5rem;
-  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #e2e8f0;
+  background: var(--tenant-surface-0); border-radius: 1rem; padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid var(--tenant-surface-200);
 }
+.dark .card { background: var(--tenant-surface-900); border-color: var(--tenant-surface-700); }
 .surface-ground { background-color: #f8fafc; }
 .border-top-1 { border-top: 1px solid; }
 .border-300 { border-color: #cbd5e1; }
@@ -194,14 +264,18 @@ const runSimulation = async () => {
 .text-xl { font-size: 1.25rem; }
 .font-bold { font-weight: 700; }
 .font-mono { font-family: monospace; }
-.text-slate-400 { color: #94a3b8; }
-.text-slate-500 { color: #64748b; }
-.text-slate-600 { color: #475569; }
+.text-surface-400 { color: #94a3b8; }
+.text-surface-500 { color: #64748b; }
+.text-surface-600 { color: #475569; }
 .text-green-600 { color: #16a34a; }
 .text-red-600 { color: #dc2626; }
-.text-blue-600 { color: #2563eb; }
-.bg-gray-800 { background-color: #1e293b; }
-.text-green-400 { color: #4ade80; }
+.text-primary-600 { color: #2563eb; }
+.bg-surface-800 { background-color: #1e293b; }
+.text-success-400 { color: #4ade80; }
 .border-round { border-radius: 0.5rem; }
 .overflow-auto { overflow: auto; }
 </style>
+
+
+
+

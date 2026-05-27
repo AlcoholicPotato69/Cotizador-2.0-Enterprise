@@ -8,6 +8,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import { useAuthStore } from '../stores/authStore';
 import { useTenantStore } from '../stores/tenantStore';
 import { usePermissionsStore } from '../stores/permissionsStore';
+import { hasPermission, currentTenant } from '../app/access-context';
 import clientsRoutes from './modules/clients';
 import devtoolsRoutes from './modules/devtools';
 import quotesRoutes from './modules/quotes';
@@ -35,12 +36,13 @@ const router = createRouter({
       children: [
         {
           path: '',
-          redirect: '/playground'
+          redirect: '/dashboard'
         },
         {
           path: 'playground',
           name: 'playground',
-          component: () => import('../views/PlaygroundView.vue')
+          component: () => import('../views/PlaygroundView.vue'),
+          meta: { permission: 'devtools.playground' }
         },
         ...clientsRoutes,
         ...devtoolsRoutes,
@@ -51,7 +53,15 @@ const router = createRouter({
         ...catalogRoutes,
         ...spacesRoutes,
         ...scheduleRoutes,
-        ...legalRoutes
+        ...legalRoutes,
+        { path: 'quotes', name: 'quotes', component: () => import('../views/QuotesView.vue'), meta: { permission: 'quotes.read' } },
+        { path: 'quotes/creator', name: 'quote-creator', component: () => import('../views/QuoteCreatorView.vue'), meta: { permission: 'quotes.create' } },
+        { path: 'legal/contracts', name: 'contracts', component: () => import('../views/ContractsView.vue'), meta: { permission: 'contracts.read' } },
+        { path: 'legal/agreements', name: 'agreements', component: () => import('../views/AgreementsView.vue'), meta: { permission: 'agreements.read' } },
+        { path: 'finance/receipts', name: 'receipts', component: () => import('../views/ReceiptsView.vue'), meta: { permission: 'finance.view' } },
+        { path: 'finance/invoices', name: 'invoices', component: () => import('../views/InvoicesView.vue'), meta: { permission: 'finance.view' } },
+        { path: 'reports', name: 'reports', component: () => import('../views/ReportsView.vue'), meta: { permission: 'reports.read' } },
+        { path: 'tac', name: 'tac', component: () => import('../views/AdminConfigView.vue'), meta: { permission: 'tac.access' } }
       ]
     }
   ]
@@ -84,7 +94,7 @@ router.beforeEach(async (to, _from) => {
     const user = authStore.user;
     const tenantStore = useTenantStore();
     
-    if (!tenantStore.activeTenant) {
+    if (!currentTenant()) {
         if (user?.tenant_id) {
             await tenantStore.syncWithUser(user);
         } else {
@@ -95,19 +105,28 @@ router.beforeEach(async (to, _from) => {
     }
 
     const permStore = usePermissionsStore();
+    
+    // Auto-sync permissions on first load if they are empty
+    if (permStore.permissions.length === 0 && user) {
+        permStore.syncWithUser(user);
+    }
 
     const requiredPermission = to.meta.permission as string;
 
     // Zero-Trust: If a route requires authentication but has no explicit permission defined,
     // deny access by default, unless it's explicitly allowed without permissions (e.g., playground).
-    const isPublicAuthRoute = ['playground', 'login'].includes(to.name as string);
+    const isPublicAuthRoute = ['playground', 'login', 'dashboard', 'catalog', 'schedule'].includes(to.name as string);
 
-    if (!requiredPermission && !isPublicAuthRoute) {
+    if (isPublicAuthRoute) {
+      return true;
+    }
+
+    if (!requiredPermission) {
       console.warn(`Access denied. Route ${to.path} lacks explicit permission mapping.`);
       return '/';
     }
 
-    if (requiredPermission && !permStore.hasPermission(requiredPermission)) {
+    if (!hasPermission(requiredPermission)) {
       console.warn(`Access denied. Missing permission: ${requiredPermission}`);
       return '/';
     }

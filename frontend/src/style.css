@@ -1,107 +1,126 @@
 @import "tailwindcss";
 
 @theme {
+  --color-primary-50: var(--tenant-primary-50);
+  --color-primary-100: var(--tenant-primary-100);
+  --color-primary-200: var(--tenant-primary-200);
+  --color-primary-300: var(--tenant-primary-300);
   --color-primary-400: var(--tenant-primary-400);
   --color-primary-500: var(--tenant-primary-500);
   --color-primary-600: var(--tenant-primary-600);
-  --color-surface: var(--tenant-surface-base);
-  --color-surface-hover: var(--tenant-surface-hover);
-  --color-surface-alt: var(--tenant-surface-alt);
-  --color-text-base: var(--tenant-text-base);
-  --color-text-muted: var(--tenant-text-muted);
-  --color-text-inverse: var(--tenant-text-inverse);
-  --color-border: var(--tenant-border-subtle);
-  
-  --shadow-ambient: var(--tenant-glow);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
+  --color-primary-700: var(--tenant-primary-700);
+  --color-primary-800: var(--tenant-primary-800);
+  --color-primary-900: var(--tenant-primary-900);
+  --color-primary-950: var(--tenant-primary-950);
+
+  --color-surface-0: var(--tenant-surface-0);
+  --color-surface-50: var(--tenant-surface-50);
+  --color-surface-100: var(--tenant-surface-100);
+  --color-surface-200: var(--tenant-surface-200);
+  --color-surface-300: var(--tenant-surface-300);
+  --color-surface-400: var(--tenant-surface-400);
+  --color-surface-500: var(--tenant-surface-500);
+  --color-surface-600: var(--tenant-surface-600);
+  --color-surface-700: var(--tenant-surface-700);
+  --color-surface-800: var(--tenant-surface-800);
+  --color-surface-900: var(--tenant-surface-900);
+  --color-surface-950: var(--tenant-surface-950);
+
+  --font-display: 'Clash Display', 'Geist', sans-serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
 }
 
 @layer base {
   :root,
-  :root[data-tenant="plaza-mayor"] {
-    --font-display: 'Clash Display', 'Geist', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
+  :root[data-tenant="pm"] {
+    /* Plaza Mayor - Light Mode (Corporate Slate/Red) */
+    --tenant-primary-50: #fef2f2;
+    --tenant-primary-100: #fee2e2;
+    --tenant-primary-200: #fecaca;
+    --tenant-primary-300: #fca5a5;
+    --tenant-primary-400: #E53935; 
+    --tenant-primary-500: #C81D25; 
+    --tenant-primary-600: #8B0000; 
+    --tenant-primary-700: #7f1d1d;
+    --tenant-primary-800: #691c1c;
+    --tenant-primary-900: #571a1a;
+    --tenant-primary-950: #2b0b0b;
     
-    /* Plaza Mayor - Modo Claro (Predeterminado) */
-    /* Rojo, Negro, Blanco, Gris */
-    --tenant-primary-400: #E53935; /* Rojo claro */
-    --tenant-primary-500: #C81D25; /* Rojo corporativo */
-    --tenant-primary-600: #8B0000; /* Rojo oscuro */
-    
-    --tenant-surface-base: #FFFFFF; /* Blanco */
-    --tenant-surface-hover: #F9FAFB; /* Gris claro */
-    --tenant-surface-alt: #F3F4F6; /* Gris */
-    
-    --tenant-text-base: #000000; /* Negro (Contraste absoluto) */
-    --tenant-text-muted: #374151; /* Gris oscuro */
-    --tenant-text-inverse: #FFFFFF; /* Blanco */
-    
-    --tenant-border-subtle: #E5E7EB; /* Gris */
-    --tenant-glow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Sombra enterprise, sin glassmorphism */
+    --tenant-surface-0: #ffffff;
+    --tenant-surface-50: #fafafa;
+    --tenant-surface-100: #f4f4f5;
+    --tenant-surface-200: #e4e4e7;
+    --tenant-surface-300: #d4d4d8;
+    --tenant-surface-400: #a1a1aa;
+    --tenant-surface-500: #71717a;
+    --tenant-surface-600: #52525b;
+    --tenant-surface-700: #3f3f46;
+    --tenant-surface-800: #27272a;
+    --tenant-surface-900: #18181b;
+    --tenant-surface-950: #09090b;
   }
 
   .dark,
-  .dark[data-tenant="plaza-mayor"] {
-    /* Plaza Mayor - Modo Oscuro Elegante */
-    --tenant-primary-400: #EF5350; /* Rojo claro para dark mode */
-    --tenant-primary-500: #E53935; /* Rojo */
-    --tenant-primary-600: #C81D25; /* Rojo base */
-    
-    --tenant-surface-base: #111111; /* Casi negro */
-    --tenant-surface-hover: #1A1A1A;
-    --tenant-surface-alt: #262626;
-    
-    --tenant-text-base: #FFFFFF; /* Blanco */
-    --tenant-text-muted: #9CA3AF; /* Gris claro */
-    --tenant-text-inverse: #000000; /* Negro */
-    
-    --tenant-border-subtle: #333333;
-    --tenant-glow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 24px 60px -15px rgba(212, 175, 55, 0.15); /* Ligero brillo dorado */
+  .dark[data-tenant="pm"] {
+    /* Plaza Mayor - Dark Mode Refinements */
+    --tenant-primary-400: #EF5350; 
+    --tenant-primary-500: #E53935; 
+    --tenant-primary-600: #C81D25; 
+
+    --tenant-surface-900: #141417; /* Ultra deep corporate slate */
+    --tenant-surface-950: #0a0a0c;
   }
 
-  :root[data-tenant="casa-piedra"] {
-    /* Casa de Piedra - Modo Claro (Cobre, Arena, Gris Cálido, Beige) */
-    --tenant-primary-400: #D4A373; /* Cobre claro */
-    --tenant-primary-500: #B87333; /* Cobre base */
-    --tenant-primary-600: #7A4B21; /* Cobre oscuro */
+  :root[data-tenant="cp"] {
+    /* Casa de Piedra - Light Mode (Warm Stone/Copper) */
+    --tenant-primary-50: #fcf9f5;
+    --tenant-primary-100: #f7efe6;
+    --tenant-primary-200: #eedbcc;
+    --tenant-primary-300: #e3c0ab;
+    --tenant-primary-400: #D4A373; 
+    --tenant-primary-500: #B87333; 
+    --tenant-primary-600: #7A4B21; 
+    --tenant-primary-700: #633a17;
+    --tenant-primary-800: #4f2d12;
+    --tenant-primary-900: #3f230f;
+    --tenant-primary-950: #211005;
     
-    --tenant-surface-base: #FDFBF7; /* Beige muy claro */
-    --tenant-surface-hover: #F4F1EA; /* Arena / Beige */
-    --tenant-surface-alt: #EAE6DE; /* Gris cálido */
-    
-    --tenant-text-base: #1A1816; /* Casi negro cálido (Contraste absoluto) */
-    --tenant-text-muted: #5C554D; /* Gris cálido oscuro */
-    --tenant-text-inverse: #FFFFFF;
-    
-    --tenant-border-subtle: #D6D2C4;
-    --tenant-glow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    --tenant-surface-0: #ffffff;
+    --tenant-surface-50: #fdfbf7;
+    --tenant-surface-100: #f4f1ea;
+    --tenant-surface-200: #eae6de;
+    --tenant-surface-300: #d6d2c4;
+    --tenant-surface-400: #b8b3a5;
+    --tenant-surface-500: #9e9889;
+    --tenant-surface-600: #857e6f;
+    --tenant-surface-700: #6b6457;
+    --tenant-surface-800: #544d41;
+    --tenant-surface-900: #3b352b;
+    --tenant-surface-950: #242019;
   }
 
-  .dark[data-tenant="casa-piedra"] {
-    /* Casa de Piedra - Modo Oscuro Elegante */
-    --tenant-primary-400: #E6B990; /* Cobre claro para dark mode */
-    --tenant-primary-500: #D4A373; /* Cobre */
-    --tenant-primary-600: #B87333; /* Cobre base */
+  .dark[data-tenant="cp"] {
+    /* Casa de Piedra - Dark Mode Refinements */
+    --tenant-primary-400: #E6B990;
+    --tenant-primary-500: #D4A373;
+    --tenant-primary-600: #B87333;
     
-    --tenant-surface-base: #1F1C18; /* Gris cálido oscuro */
-    --tenant-surface-hover: #2A2621;
-    --tenant-surface-alt: #36322B;
-    
-    --tenant-text-base: #FDFBF7; /* Beige muy claro */
-    --tenant-text-muted: #A8A29A;
-    --tenant-text-inverse: #FFFFFF;
-    
-    --tenant-border-subtle: #4A443B;
-    --tenant-glow: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 24px 60px -15px rgba(194, 80, 58, 0.15);
+    --tenant-surface-900: #1f1c18;
+    --tenant-surface-950: #14120f;
   }
 
   body {
-    background-color: var(--tenant-surface-base);
-    color: var(--tenant-text-base);
+    background-color: var(--tenant-surface-50);
+    color: var(--tenant-surface-900);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    transition: background-color 0.5s ease, color 0.5s ease;
     font-family: var(--font-body);
   }
+  
+  .dark body {
+    background-color: var(--tenant-surface-950);
+    color: var(--tenant-surface-50);
+  }
 }
+

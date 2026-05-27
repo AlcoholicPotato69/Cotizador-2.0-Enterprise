@@ -25,3 +25,4 @@ const emit = defineEmits(['search', 'clear']);
 const query = ref('');
 function clear() { query.value = ''; emit('clear'); }
 </script>
+

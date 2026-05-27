@@ -13,7 +13,7 @@ import { RequirePermissions } from '../rbac/decorators/permissions.decorator';
 import { tenantContext } from '../prisma/tenant-context';
 import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
 import { Permissions } from '../auth/decorators/permissions.decorator';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Search')
 @Controller('search')

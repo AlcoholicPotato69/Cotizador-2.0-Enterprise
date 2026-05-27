@@ -17,23 +17,23 @@
 
       <DsTable :data="clientStore.clients" :loading="clientStore.loading" class="mt-4">
         <template #default>
-          <Column field="rfc" header="RFC" />
-          <Column field="name" header="Nombre / Razón Social" />
-          <Column field="type" header="Tipo">
+          <DsColumn field="rfc" header="RFC" />
+          <DsColumn field="name" header="Nombre / Razón Social" />
+          <DsColumn field="type" header="Tipo">
             <template #body="slotProps">
               <span class="capitalize">{{ slotProps.data.type }}</span>
             </template>
-          </Column>
-          <Column field="status" header="Estado">
+          </DsColumn>
+          <DsColumn field="status" header="Estado">
             <template #body="slotProps">
               <DsStatusBadge :status="slotProps.data.status" />
             </template>
-          </Column>
-          <Column header="Acciones">
+          </DsColumn>
+          <DsColumn header="Acciones">
             <template #body="slotProps">
               <DsButton variant="ghost" size="sm" @click="router.push(`/clients/${slotProps.data.id}`)">Expediente</DsButton>
             </template>
-          </Column>
+          </DsColumn>
         </template>
       </DsTable>
       
@@ -54,7 +54,6 @@ import DsSelect from '../../components/ui/DsSelect.vue';
 import DsTable from '../../components/ui/DsTable.vue';
 import DsStatusBadge from '../../components/ui/DsStatusBadge.vue';
 import DsPagination from '../../components/ui/DsPagination.vue';
-import Column from 'primevue/column';
 
 const router = useRouter();
 const permissions = usePermissionsStore();
@@ -66,3 +65,4 @@ onMounted(() => {
 
 function onSearch() { /* Searching for q */ }
 </script>
+

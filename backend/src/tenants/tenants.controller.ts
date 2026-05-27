@@ -16,7 +16,7 @@ import { PermissionsGuard } from '../auth/guards/permissions.guard';
 import { RequirePermissions } from '../auth/decorators/require-permissions.decorator';
 import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
 import { Permissions } from '../auth/decorators/permissions.decorator';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('Tenants')
 @Controller('tenants')
@@ -57,10 +57,8 @@ export class TenantsController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   @ApiResponse({ status: 404, description: 'Not Found' })
   @ApiResponse({ status: 500, description: 'Internal Server Error' })
-  @RequirePermissions('tenants.read')
-  @Permissions('tenants:read')
   findOne(@Param('id') id: string) {
-    return this.tenantsService.findOne(+id);
+    return this.tenantsService.findOne(id);
   }
 
   @Patch(':id')
@@ -73,7 +71,7 @@ export class TenantsController {
   @RequirePermissions('tenants.manage')
   @Permissions('tenants:write')
   update(@Param('id') id: string, @Body() updateTenantDto: UpdateTenantDto) {
-    return this.tenantsService.update(+id, updateTenantDto);
+    return this.tenantsService.update(id, updateTenantDto);
   }
 
   @Delete(':id')
@@ -86,6 +84,6 @@ export class TenantsController {
   @RequirePermissions('tenants.manage')
   @Permissions('tenants:delete')
   remove(@Param('id') id: string) {
-    return this.tenantsService.remove(+id);
+    return this.tenantsService.remove(id);
   }
 }

@@ -1,0 +1,13 @@
+{
+  "name": "cotizador-directus",
+  "version": "1.0.0",
+  "description": "Panel de Administracion Directus para TI",
+  "scripts": {
+    "start": "npx directus start",
+    "bootstrap": "npx directus bootstrap"
+  },
+  "dependencies": {
+    "directus": "^11.0.0",
+    "pg": "^8.13.0"
+  }
+}

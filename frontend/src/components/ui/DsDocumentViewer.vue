@@ -12,12 +12,12 @@
       <!-- Watermark Simulation -->
       <div class="absolute inset-0 pointer-events-none opacity-5 flex flex-col justify-center items-center overflow-hidden rotate-[-30deg]">
         <div v-for="i in 10" :key="i" class="text-4xl font-bold mb-32 whitespace-nowrap">
-          RESTRICTED - USER_ID: auth_user_89 - IP: 192.168.1.1
+          RESTRICTED - USER_ID: {{ authStore.user?.id || 'UNKNOWN' }} - IP: {{ userIp }}
         </div>
       </div>
       
       <!-- Document Provider Box -->
-      <div class="w-full max-w-4xl bg-white shadow-2xl h-full flex flex-col border overflow-y-auto">
+      <div class="w-full max-w-4xl bg-surface-0 dark:bg-surface-900 shadow-2xl h-full flex flex-col border overflow-y-auto">
         <slot name="document">
           <div class="text-surface-400 text-sm m-auto">
             [ {{ mimeType }} Render Provider ]
@@ -50,8 +50,14 @@
   </div>
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
 import DsDocumentToolbar from './DsDocumentToolbar.vue';
+import { useAuthStore } from '../../stores/authStore';
+
+const authStore = useAuthStore();
+const userIp = ref('127.0.0.1'); // Could be fetched from a service if needed
 
 defineProps({ filename: String, mimeType: { type: String, default: 'application/pdf' } });
 defineEmits(['close']);
 </script>
+

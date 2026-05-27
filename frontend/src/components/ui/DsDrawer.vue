@@ -22,3 +22,4 @@ import Drawer from 'primevue/drawer';
 const visible = defineModel<boolean>('visible');
 defineProps({ header: String });
 </script>
+

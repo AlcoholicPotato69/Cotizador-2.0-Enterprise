@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString, IsUUID } from 'class-validator';
 export class CreateAgreementFileDto {
   @IsNotEmpty()
-@IsUUID()
+  @IsUUID()
   agreementId: string;
   @IsNotEmpty()
-@IsString()
+  @IsString()
   url: string;
 }

@@ -21,3 +21,4 @@ import DsButton from './DsButton.vue';
 const isOpen = ref(false);
 defineProps({ columns: { type: Array as () => { field: string, header: string, visible: boolean }[], required: true } });
 </script>
+

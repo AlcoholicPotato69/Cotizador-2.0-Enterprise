@@ -33,6 +33,8 @@ async function main() {
         { action: 'manage', resource: 'users', name: 'users.manage' },
         { action: 'manage', resource: 'roles', name: 'roles.manage' },
         { action: 'read', resource: 'audit', name: 'audit.read' },
+        { action: 'view', resource: 'dashboard', name: 'dashboard.view' },
+        { action: 'view', resource: 'settings', name: 'settings.view' },
     ];
     const createdPermissions = [];
     for (const perm of permissions) {
@@ -56,11 +58,11 @@ async function main() {
     const rolesData = [
         { name: 'SYSTEM_ADMIN', permissions: createdPermissions.map(p => p.name) },
         { name: 'TENANT_ADMIN', permissions: createdPermissions.map(p => p.name) },
-        { name: 'SALES_MANAGER', permissions: ['clients.create', 'clients.read', 'clients.update', 'quotes.create', 'quotes.read', 'quotes.update', 'contracts.read', 'spaces.read'] },
-        { name: 'OPERATIONS_MANAGER', permissions: ['spaces.create', 'spaces.read', 'spaces.update', 'spaces.delete'] },
-        { name: 'FINANCE_MANAGER', permissions: ['invoices.create', 'invoices.read', 'payments.create', 'payments.read', 'clients.read', 'contracts.read'] },
-        { name: 'AUDITOR', permissions: ['clients.read', 'spaces.read', 'quotes.read', 'contracts.read', 'invoices.read', 'payments.read', 'audit.read'] },
-        { name: 'BASIC_USER', permissions: ['clients.read', 'spaces.read'] },
+        { name: 'SALES_MANAGER', permissions: ['clients.create', 'clients.read', 'clients.update', 'quotes.create', 'quotes.read', 'quotes.update', 'contracts.read', 'spaces.read', 'dashboard.view'] },
+        { name: 'OPERATIONS_MANAGER', permissions: ['spaces.create', 'spaces.read', 'spaces.update', 'spaces.delete', 'dashboard.view'] },
+        { name: 'FINANCE_MANAGER', permissions: ['invoices.create', 'invoices.read', 'payments.create', 'payments.read', 'clients.read', 'contracts.read', 'dashboard.view'] },
+        { name: 'AUDITOR', permissions: ['clients.read', 'spaces.read', 'quotes.read', 'contracts.read', 'invoices.read', 'payments.read', 'audit.read', 'dashboard.view'] },
+        { name: 'BASIC_USER', permissions: ['clients.read', 'spaces.read', 'dashboard.view'] },
     ];
     for (const roleDef of rolesData) {
         const role = await prisma.role.upsert({

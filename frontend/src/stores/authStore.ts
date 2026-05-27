@@ -8,17 +8,20 @@ import { ref } from 'vue';
 import { authService } from '../services/authService';
 import { useTenantStore } from './tenantStore';
 import { usePermissionsStore } from './permissionsStore';
+import { useThemeStore } from './themeStore';
 import type { User } from '../types/user';
 import { secureStorage } from '../utils/secureStorage';
 
 export const useAuthStore = defineStore('auth', () => {
-    let storedUser = null;
-    let storedToken = null;
+    let storedUser: User | null = null;
+    let storedToken: string | null = null;
     try {
         const u = secureStorage.get('auth_user');
-        storedUser = u ? (typeof u === 'string' ? JSON.parse(u) : u) : null;
-        storedToken = secureStorage.get('auth_token') || null;
-    } catch(e) {}
+        const parsedUser = u ? (typeof u === 'string' ? JSON.parse(u) : u) : null;
+        storedUser = parsedUser && typeof parsedUser === 'object' ? (parsedUser as User) : null;
+        const parsedToken = secureStorage.get('auth_token');
+        storedToken = typeof parsedToken === 'string' ? parsedToken : null;
+    } catch {}
     
     /** @type {import('vue').Ref<User | null>} The currently authenticated user */
     const user = ref<User | null>(storedUser);
@@ -86,6 +89,9 @@ export const useAuthStore = defineStore('auth', () => {
         if (token.value) secureStorage.set('auth_token', token.value);
         
         setupActivityListeners();
+
+        const themeStore = useThemeStore();
+        themeStore.initializeTheme();
         
         // Sync Tenant
         const tenantStore = useTenantStore();
@@ -136,7 +142,13 @@ export const useAuthStore = defineStore('auth', () => {
                     token.value = authData.token || null;
                     isAuthenticated.value = true;
                     
+                    secureStorage.set('auth_user', JSON.stringify(user.value));
+                    if (token.value) secureStorage.set('auth_token', token.value);
+                    
                     setupActivityListeners();
+
+                    const themeStore = useThemeStore();
+                    themeStore.initializeTheme();
                     
                     const tenantStore = useTenantStore();
                     if (user.value && user.value.tenant_id) {

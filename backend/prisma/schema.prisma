@@ -258,6 +258,10 @@ model Currency {
 model Client {
   id                 String                  @id @default(uuid())
   tenantId           String                  @map("tenant_id")
+  name               String                  @default("")
+  email              String?
+  phone              String?
+  rfc                String?
   status             ClientStatus            @default(LEAD)
   bankReference      String?                 @map("bank_reference")
   isTaxValidated     Boolean                 @default(false) @map("is_tax_validated")

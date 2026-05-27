@@ -9,8 +9,8 @@
     >
       <template #actions>
         <DsActionBar>
-          <DsButton v-if="permissions.can('client.update')" variant="outline">Editar Datos</DsButton>
-          <DsButton v-if="permissions.can('client.delete')" variant="danger">Suspender</DsButton>
+          <DsButton v-if="permissions.can('clients:write')" variant="outline">Editar Datos</DsButton>
+          <DsButton v-if="permissions.can('clients:delete')" variant="danger">Suspender</DsButton>
         </DsActionBar>
       </template>
     </DsPageHeader>
@@ -35,8 +35,8 @@
         <!-- DOCUMENTOS -->
         <div v-if="activeTab === 'documents'" class="space-y-4">
           <div class="flex justify-between items-center mb-4">
-            <h3 class="font-bold">Auditoría Documental ({{ clientStore.currentClient?.type === 'moral' ? 'Persona Moral' : 'Persona Física' }})</h3>
-            <DsButton v-if="permissions.can('client.documents.upload')" size="sm" variant="outline">Subir Documento</DsButton>
+            <h3 class="font-bold">Auditoría Documental</h3>
+            <DsButton v-if="permissions.can('clients:documents:write')" size="sm" variant="outline">Subir Documento</DsButton>
           </div>
           
           <!-- Document Grid (Mock) -->
@@ -58,20 +58,20 @@
         
         <!-- INFORMACIÓN BANCARIA -->
         <div v-if="activeTab === 'banking'">
-          <div v-if="permissions.can('client.banking.read')" class="max-w-2xl">
+          <div v-if="permissions.can('clients:banking:read')" class="max-w-2xl">
              <DsCard>
                <template #header>Estatus Financiero y Conciliación</template>
                <div class="space-y-4">
                  <DsFormField label="Referencia Bancaria Única">
                    <div class="flex gap-2">
                      <input type="text" value="PM-2026-XAXX0" readonly class="flex-1 rounded-md border border-surface-300 bg-surface-100 px-3 py-2 text-sm font-mono" />
-                     <DsButton v-if="permissions.can('client.banking.update')" variant="secondary">Asignar Referencia</DsButton>
+                     <DsButton v-if="permissions.can('clients:banking:write')" variant="secondary">Asignar Referencia</DsButton>
                    </div>
                  </DsFormField>
                </div>
              </DsCard>
           </div>
-          <DsEmptyState v-else title="Acceso Restringido" description="No posees los permisos (client.banking.read) para visualizar información financiera." />
+          <DsEmptyState v-else title="Acceso Restringido" description="No posees los permisos (clients:banking:read) para visualizar información financiera." />
         </div>
         
         <!-- ACTIVIDAD / TIMELINE -->
@@ -104,7 +104,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { useClientStore } from '../../stores/clientStore';
 import { usePermissionsStore } from '../../stores/permissionsStore';
@@ -122,18 +122,22 @@ const clientStore = useClientStore();
 const permissions = usePermissionsStore();
 
 const activeTab = ref('general');
-const tabs = [
-  { label: 'General', value: 'general' },
-  { label: 'Documentos', value: 'documents' },
-  { label: 'Información Bancaria', value: 'banking' },
-  { label: 'Cotizaciones', value: 'quotes' },
-  { label: 'Contratos', value: 'contracts' },
-  { label: 'Pagos', value: 'payments' },
-  { label: 'Facturas', value: 'invoices' },
-  { label: 'Actividad', value: 'timeline' }
-];
+const tabs = computed(() => {
+  const allTabs = [
+    { label: 'General', value: 'general', req: null },
+    { label: 'Documentos', value: 'documents', req: 'clients:documents:read' },
+    { label: 'Información Bancaria', value: 'banking', req: 'clients:banking:read' },
+    { label: 'Cotizaciones', value: 'quotes', req: 'quotes:read' },
+    { label: 'Contratos', value: 'contracts', req: 'contracts:read' },
+    { label: 'Pagos', value: 'payments', req: 'finance:view' },
+    { label: 'Facturas', value: 'invoices', req: 'finance:view' },
+    { label: 'Actividad', value: 'timeline', req: null }
+  ];
+  return allTabs.filter(tab => !tab.req || permissions.can(tab.req));
+});
 
 onMounted(() => {
   clientStore.fetchClientById(route.params.id as string);
 });
 </script>
+

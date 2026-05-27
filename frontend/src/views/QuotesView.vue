@@ -5,12 +5,12 @@
         <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-50 tracking-tight">Motor de Cotizaciones</h1>
         <p class="text-sm text-surface-500">Gestión Comercial (Ola 3) - Sin Mocks</p>
       </div>
-      <Button v-if="permissionsStore.can('quotes.create')" label="Nueva Cotización" icon="pi pi-plus" @click="createQuote" severity="primary" />
+      <DsButton v-if="permissionsStore.can('quotes.create')" label="Nueva Cotización" icon="pi pi-plus" @click="createQuote" severity="primary" />
     </div>
 
     <!-- Data Table Container -->
     <div class="bg-surface-0 dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm overflow-hidden p-4">
-      <DataTable 
+      <DsTable 
         :value="quoteStore.quotes" 
         :loading="quoteStore.loading" 
         paginator 
@@ -26,39 +26,39 @@
             <div class="flex justify-end">
                 <span class="relative">
                     <i class="pi pi-search absolute top-2/4 -mt-2 left-3 text-surface-400 dark:text-surface-500" />
-                    <InputText v-model="filters['global'].value" placeholder="Buscar cotización..." class="pl-10 w-full sm:w-auto" />
+                    <DsInput v-model="filters['global'].value" placeholder="Buscar cotización..." class="pl-10 w-full sm:w-auto" />
                 </span>
             </div>
         </template>
-        <Column field="folio" header="Folio" sortable>
+        <DsColumn field="folio" header="Folio" sortable>
           <template #body="{ data }">
             <button @click="openDossier(data.id)" class="text-primary-600 hover:underline font-mono focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-1">
               {{ data.folio || 'N/A' }}
             </button>
           </template>
-        </Column>
-        <Column field="client_id" header="Cliente (ID)" sortable></Column>
-        <Column field="status" header="Estado" sortable>
+        </DsColumn>
+        <DsColumn field="client_id" header="Cliente (ID)" sortable></DsColumn>
+        <DsColumn field="status" header="Estado" sortable>
           <template #body="{ data }">
-            <Tag :value="translateStatus(data.status)" :severity="getStatusSeverity(data.status)" />
+            <DsTag :value="translateStatus(data.status)" :severity="getStatusSeverity(data.status)" />
           </template>
-        </Column>
-        <Column field="total_amount" header="Total" sortable>
+        </DsColumn>
+        <DsColumn field="total_amount" header="Total" sortable>
           <template #body="{ data }">
             <span class="font-bold">{{ formatCurrency(data.total_amount) }}</span>
           </template>
-        </Column>
-        <Column field="updated" header="Última Actualización" sortable>
+        </DsColumn>
+        <DsColumn field="updated" header="Última Actualización" sortable>
             <template #body="{ data }">
                 {{ formatDate(data.updated) }}
             </template>
-        </Column>
-        <Column :exportable="false" style="min-width:8rem">
+        </DsColumn>
+        <DsColumn :exportable="false" style="min-width:8rem">
           <template #body="{ data }">
-            <Button icon="pi pi-eye" outlined rounded severity="info" class="mr-2" @click="openDossier(data.id)" aria-label="Revisar" />
+            <DsButton icon="pi pi-eye" outlined rounded severity="info" class="mr-2" @click="openDossier(data.id)" aria-label="Revisar" />
           </template>
-        </Column>
-      </DataTable>
+        </DsColumn>
+      </DsTable>
     </div>
   </div>
 </template>
@@ -75,11 +75,6 @@ import { useRouter } from 'vue-router';
 import { usePermissionsStore } from '../stores/permissionsStore';
 import { useQuoteStore } from '../stores/quoteStore';
 
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
-import InputText from 'primevue/inputtext';
 
 const router = useRouter();
 const permissionsStore = usePermissionsStore();
@@ -175,3 +170,4 @@ const getStatusSeverity = (status: string) => {
     }
 };
 </script>
+

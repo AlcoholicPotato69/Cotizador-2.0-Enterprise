@@ -1,7 +1,7 @@
 <template>
   <div class="p-8 max-w-4xl mx-auto">
     <div class="flex items-center gap-3 mb-8">
-      <Button icon="pi pi-arrow-left" text rounded @click="router.push('/quotes')" class="text-surface-400 p-0 w-8 h-8" />
+      <DsButton icon="pi pi-arrow-left" text rounded @click="router.push('/quotes')" class="text-surface-400 p-0 w-8 h-8" />
       <div>
         <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-500">
           Nueva Cotización
@@ -28,12 +28,12 @@
         
         <div class="flex flex-col gap-2">
           <label class="text-surface-300 font-medium">Notas Iniciales</label>
-          <Textarea v-model="newQuote.notes" rows="4" class="w-full bg-surface-800" placeholder="Ej: Cotización base solicitada en junta de ventas..." />
+          <DsTextarea v-model="newQuote.notes" rows="4" class="w-full bg-surface-800" placeholder="Ej: Cotización base solicitada en junta de ventas..." />
         </div>
 
         <div class="flex justify-end gap-3 mt-4 pt-6 border-t border-surface-700/50">
-          <Button label="Cancelar" icon="pi pi-times" text @click="router.push('/quotes')" />
-          <Button label="Crear Cotización" icon="pi pi-check" @click="submit" :loading="isCreating" class="bg-gradient-to-r from-emerald-500 to-teal-600 border-none hover:from-emerald-400 hover:to-teal-500 shadow-lg shadow-emerald-500/30" />
+          <DsButton label="Cancelar" icon="pi pi-times" text @click="router.push('/quotes')" />
+          <DsButton label="Crear Cotización" icon="pi pi-check" @click="submit" :loading="isCreating" class="bg-gradient-to-r from-emerald-500 to-teal-600 border-none hover:from-emerald-400 hover:to-teal-500 shadow-lg shadow-emerald-500/30" />
         </div>
       </div>
     </div>
@@ -88,3 +88,4 @@ const submit = async () => {
   }
 };
 </script>
+

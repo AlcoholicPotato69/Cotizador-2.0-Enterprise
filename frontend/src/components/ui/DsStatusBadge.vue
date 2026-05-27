@@ -17,9 +17,10 @@ const statusMap: Record<string, string> = {
   cancelled: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800/50',
   unpaid: 'bg-red-50 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-800/50',
   partial: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-800/50',
-  validated: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800/50',
+  validated: 'bg-primary-50 dark:bg-primary-900 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800/50',
 };
 
 const label = computed(() => props.status.charAt(0).toUpperCase() + props.status.slice(1));
 const colorClass = computed(() => statusMap[props.status] || statusMap['draft']);
 </script>
+

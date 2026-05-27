@@ -7,6 +7,41 @@ const path = require('path');
     const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
     const page = await context.newPage();
 
+    // INTERCEPT NETWORK TO BYPASS OFFLINE BACKEND FOR VISUAL AUDIT ONLY
+    await page.route('**/auth/login', async route => {
+        const json = {
+            token: "mock-jwt-token-for-visual-audit",
+            user: {
+                id: "1",
+                email: "admin@acme.com",
+                name: "Admin Acme",
+                role: "admin",
+                tenantId: "pm"
+            }
+        };
+        await route.fulfill({ json });
+    });
+
+    await page.route('**/auth/profile', async route => {
+        const json = {
+            id: "1",
+            email: "admin@acme.com",
+            name: "Admin Acme",
+            role: "admin",
+            tenantId: "pm"
+        };
+        await route.fulfill({ json });
+    });
+
+    // Mock clients list for rendering DataTables
+    await page.route('**/clients*', async route => {
+        const json = [
+            { id: 1, name: "Cliente Prueba A", email: "a@cliente.com" },
+            { id: 2, name: "Cliente Prueba B", email: "b@cliente.com" }
+        ];
+        await route.fulfill({ json });
+    });
+
     const outDir = path.join(__dirname, 'screenshots');
     if (!fs.existsSync(outDir)) {
         fs.mkdirSync(outDir);
@@ -42,12 +77,11 @@ const path = require('path');
 
         // Check if tenant change is visually changing things
         await page.evaluate(() => {
-            document.body.classList.remove('tenant-pm');
-            document.body.classList.add('tenant-cp');
+            document.documentElement.setAttribute('data-tenant', 'cp');
         });
         await page.screenshot({ path: path.join(outDir, '06_clients_light_cp.png') });
 
-        console.log("Audit screenshots completed!");
+        console.log("Audit screenshots completed successfully using mocked routes!");
     } catch (err) {
         console.error("Error during audit:", err);
     } finally {

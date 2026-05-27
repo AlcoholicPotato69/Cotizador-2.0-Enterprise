@@ -7,3 +7,4 @@
 // Logic for usePermissions().can() is applied on the buttons passed to the slot by the parent.
 // Example: <DsButton v-if="permissionsStore.can('contract.approve')">Aprobar</DsButton>
 </script>
+

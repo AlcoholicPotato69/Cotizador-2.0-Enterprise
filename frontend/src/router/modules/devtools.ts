@@ -16,6 +16,15 @@ const devtoolsRoutes: RouteRecordRaw[] = [
         next();
       }
     }
+  },
+  {
+    path: '/devtools/simulator',
+    name: 'OperationSimulator',
+    component: () => import('../../views/devtools/OperationSimulator.vue'),
+    meta: {
+      requiresAuth: true,
+      permission: 'devtools.access'
+    }
   }
 ];
 

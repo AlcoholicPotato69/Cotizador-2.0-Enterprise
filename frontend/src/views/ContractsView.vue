@@ -1,119 +1,139 @@
 <template>
-  <div class="p-6 max-w-7xl mx-auto flex flex-col gap-6 w-full">
-    <div class="flex justify-between items-center">
+  <div class="space-y-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between pb-5 border-b border-surface-200 dark:border-surface-800 gap-4">
       <div>
-        <h1 class="text-3xl font-bold text-slate-900 m-0">Gestin de Contratos</h1>
-        <p class="text-slate-500 m-0 mt-1 text-sm">Flujos legales, reglamentos y firma de contratos</p>
+        <h1 class="text-2xl font-bold text-surface-900 dark:text-surface-50 tracking-tight">Gestión de Contratos</h1>
+        <p class="text-sm text-surface-500">Flujos legales, reglamentos y firma de contratos</p>
       </div>
-      <Button v-if="permissionsStore.can('contracts.create')" label="Nuevo Contrato" icon="pi pi-plus" class="p-button-primary" />
+      <DsButton v-if="permissionsStore.can('contracts.create')" label="Nuevo Contrato" icon="pi pi-plus" @click="createContract" severity="primary" />
     </div>
 
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-      <DataTable 
-        :value="contracts" 
-        :paginator="true" 
+    <!-- Data Table Container -->
+    <div class="bg-surface-0 dark:bg-surface-900 rounded-xl border border-surface-200 dark:border-surface-800 shadow-sm overflow-hidden p-4">
+      <DsTable 
+        :value="contractStore.contracts" 
+        :loading="contractStore.loading" 
+        paginator 
         :rows="10" 
         dataKey="id" 
+        filterDisplay="row" 
         v-model:filters="filters"
-        filterDisplay="menu"
-        :globalFilterFields="['id', 'clientName', 'quoteId']"
-        emptyMessage="No se encontraron contratos."
+        :globalFilterFields="['id', 'clientName', 'quoteId', 'status']"
+        emptyMessage="No se encontraron contratos registrados."
         class="p-datatable-sm"
       >
         <template #header>
-          <div class="flex justify-end mb-3">
-            <span class="p-input-icon-left w-full sm:w-auto">
-              <i class="pi pi-search" />
-              <InputText v-model="filters['global'].value" placeholder="Buscar por ID, Cliente..." class="w-full sm:w-80" />
-            </span>
-          </div>
+            <div class="flex justify-end">
+                <span class="relative">
+                    <i class="pi pi-search absolute top-2/4 -mt-2 left-3 text-surface-400 dark:text-surface-500" />
+                    <DsInput v-model="filters['global'].value" placeholder="Buscar contrato..." class="pl-10 w-full sm:w-auto" />
+                </span>
+            </div>
         </template>
         
-        <Column field="id" header="Folio" sortable>
+        <DsColumn field="id" header="Folio" sortable>
           <template #body="{ data }">
-            <span class="font-mono text-primary-600 font-semibold">{{ data.id }}</span>
+            <button @click="goToDossier(data.id)" class="text-primary-600 hover:underline font-mono focus:outline-none focus:ring-2 focus:ring-primary-500 rounded px-1">
+              {{ data.id || 'N/A' }}
+            </button>
           </template>
-        </Column>
+        </DsColumn>
 
-        <Column field="quoteId" header="Cotizacin" sortable>
+        <DsColumn field="quoteId" header="Cotización" sortable>
           <template #body="{ data }">
-            <span class="font-mono text-slate-500">{{ data.quoteId }}</span>
+            <span class="font-mono text-surface-500 dark:text-surface-400">{{ data.quoteId }}</span>
           </template>
-        </Column>
+        </DsColumn>
         
-        <Column field="clientName" header="Cliente" sortable>
+        <DsColumn field="clientName" header="Cliente" sortable>
           <template #body="{ data }">
-            <span class="font-semibold text-slate-900">{{ data.clientName }}</span>
+            <span class="font-semibold text-surface-900 dark:text-surface-0">{{ data.clientName }}</span>
           </template>
-        </Column>
+        </DsColumn>
 
-        <Column field="amount" header="Monto" sortable>
+        <DsColumn field="amount" header="Monto" sortable>
           <template #body="{ data }">
-            <span class="text-slate-900">{{ formatCurrency(data.amount) }}</span>
+            <span class="font-bold text-surface-900 dark:text-surface-0">{{ formatCurrency(data.amount) }}</span>
           </template>
-        </Column>
+        </DsColumn>
         
-        <Column field="status" header="Estado" sortable>
+        <DsColumn field="status" header="Estado" sortable>
           <template #body="{ data }">
-            <Tag 
-              :severity="getStatusSeverity(data.status)" 
-              :value="data.status" 
-            />
+            <DsTag :value="translateStatus(data.status)" :severity="getStatusSeverity(data.status)" />
           </template>
-        </Column>
+        </DsColumn>
 
-        <Column header="Acciones" :exportable="false" style="min-width:8rem">
+        <DsColumn header="Acciones" :exportable="false" style="min-width:8rem">
           <template #body="{ data }">
-            <Button 
+            <DsButton 
               icon="pi pi-folder-open" 
-              class="p-button-rounded p-button-text p-button-secondary" 
+              outlined
+              rounded
+              severity="info"
               title="Ver Expediente"
               @click="goToDossier(data.id)" 
             />
           </template>
-        </Column>
-      </DataTable>
+        </DsColumn>
+      </DsTable>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { FilterMatchMode } from '@primevue/core/api';
 import { usePermissionsStore } from '../stores/permissionsStore';
+import { useContractStore } from '../stores/contractStore';
 
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
 
 const router = useRouter();
 const permissionsStore = usePermissionsStore();
+const contractStore = useContractStore();
 
 const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+    global: { value: null, matchMode: 'contains' }
 });
 
-const contracts = ref([
-  { id: 'CTR-001', quoteId: 'QT-001', clientName: 'Empresa A', amount: 150000, status: 'FIRMADO' },
-  { id: 'CTR-002', quoteId: 'QT-002', clientName: 'Mara Garca', amount: 45000, status: 'BORRADOR' },
-  { id: 'CTR-003', quoteId: 'QT-005', clientName: 'Juan Prez', amount: 80000, status: 'EN_REVISION' }
-]);
-
-const getStatusSeverity = (status: string) => {
-  if (status === 'FIRMADO') return 'success';
-  if (status === 'BORRADOR') return 'warning';
-  if (status === 'EN_REVISION') return 'info';
-  return 'secondary';
-};
-
-const formatCurrency = (val: number) => {
-  return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(val);
-};
+onMounted(() => {
+  contractStore.fetchContracts();
+});
 
 const goToDossier = (id: string) => {
-  router.push(`/legal/contracts/${id}`);
+    router.push(`/legal/contracts/${id}`);
+};
+
+const createContract = () => {
+    // Redirigir a creador o abrir modal
+};
+
+const formatCurrency = (value: number | undefined) => {
+    if (value === undefined) return '$0.00';
+    return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN' }).format(value);
+};
+
+const translateStatus = (status: string) => {
+    const map: Record<string, string> = {
+        'DRAFT': 'Borrador',
+        'BORRADOR': 'Borrador',
+        'PENDING_SIGNATURE': 'Firma Pendiente',
+        'EN_REVISION': 'En Revisión',
+        'SIGNED': 'Firmado',
+        'FIRMADO': 'Firmado',
+        'ACTIVE': 'Activo',
+        'EXPIRED': 'Expirado',
+        'TERMINATED': 'Terminado'
+    };
+    return map[status?.toUpperCase()] || status;
+};
+
+const getStatusSeverity = (status: string) => {
+    const s = status?.toUpperCase();
+    if (s === 'SIGNED' || s === 'FIRMADO' || s === 'ACTIVE') return 'success';
+    if (s === 'DRAFT' || s === 'BORRADOR') return 'warn';
+    if (s === 'EN_REVISION' || s === 'PENDING_SIGNATURE') return 'info';
+    if (s === 'EXPIRED' || s === 'TERMINATED') return 'danger';
+    return 'secondary';
 };
 </script>
+

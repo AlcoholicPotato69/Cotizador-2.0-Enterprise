@@ -32,6 +32,9 @@ let ClientsRepository = class ClientsRepository {
     async findFirst(where) {
         return this.prisma.client.findFirst({ where });
     }
+    async findMany(where) {
+        return this.prisma.client.findMany({ where });
+    }
     async update(id, tenantId, data) {
         const client = await this.prisma.client.findFirst({
             where: { id, tenantId },

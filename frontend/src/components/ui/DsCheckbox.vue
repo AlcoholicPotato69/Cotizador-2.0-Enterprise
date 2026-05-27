@@ -8,7 +8,7 @@
         box: ({ context }) => ({
           class: [
             'w-5 h-5 flex items-center justify-center rounded border transition-colors',
-            context.checked ? 'bg-primary-600 border-primary-600 text-white' : 'bg-surface-0 dark:bg-surface-950 border-surface-300 dark:border-surface-700'
+            context.checked ? 'bg-primary-600 border-primary-600 text-surface-0 dark:text-surface-900' : 'bg-surface-0 dark:bg-surface-950 border-surface-300 dark:border-surface-700'
           ]
         })
       }"
@@ -21,3 +21,4 @@ import Checkbox from 'primevue/checkbox';
 const modelValue = defineModel<boolean>();
 defineProps({ label: String, disabled: Boolean });
 </script>
+

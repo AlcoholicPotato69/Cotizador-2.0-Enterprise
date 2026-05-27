@@ -21,3 +21,4 @@
 import DsButton from './DsButton.vue';
 defineEmits(['action', 'view']);
 </script>
+

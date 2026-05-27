@@ -58,12 +58,20 @@ const core_1 = require("@nestjs/core");
 const jwt_auth_guard_1 = require("./auth/guards/jwt-auth.guard");
 const permissions_guard_1 = require("./auth/guards/permissions.guard");
 const tenant_isolation_guard_1 = require("./auth/guards/tenant-isolation.guard");
+const serve_static_1 = require("@nestjs/serve-static");
+const path_1 = require("path");
+const dashboard_module_1 = require("./dashboard/dashboard.module");
+const events_module_1 = require("./events/events.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
 exports.AppModule = AppModule = __decorate([
     (0, common_1.Module)({
         imports: [
+            serve_static_1.ServeStaticModule.forRoot({
+                rootPath: (0, path_1.join)(__dirname, '..', '..', 'public'),
+                exclude: ['/api/{*splat}'],
+            }),
             config_1.ConfigModule.forRoot({
                 validate: env_validation_1.validate,
                 isGlobal: true,
@@ -112,6 +120,8 @@ exports.AppModule = AppModule = __decorate([
             reports_module_1.ReportsModule,
             notifications_module_1.NotificationsModule,
             agenda_module_1.AgendaModule,
+            dashboard_module_1.DashboardModule,
+            events_module_1.EventsModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [

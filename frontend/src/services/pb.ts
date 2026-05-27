@@ -7,7 +7,7 @@ export const pb = {
         model: {
             get tenant() {
                 const store = useAuthStore();
-                return store.user?.tenant_id || 'plaza-mayor';
+                return store.user?.tenant_id ?? '';
             }
         }
     },
@@ -17,6 +17,9 @@ export const pb = {
         if (name === 'espacios') endpoint = '/spaces';
         if (name === 'clientes') endpoint = '/clients';
         if (name === 'cotizaciones') endpoint = '/quotes';
+        if (name === 'facturas') endpoint = '/invoices';
+        if (name === 'pagos') endpoint = '/payments';
+        if (name === 'impuestos') endpoint = '/taxes';
 
         return {
             getFullList: async (options?: QueryParams): Promise<any[]> => {

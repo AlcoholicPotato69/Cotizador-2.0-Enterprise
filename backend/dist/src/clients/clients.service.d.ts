@@ -8,11 +8,15 @@ export declare class ClientsService {
     create(data: Omit<Prisma.ClientUncheckedCreateInput, 'tenantId'>): Promise<{
         id: string;
         tenantId: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         deletedBy: string | null;
+        name: string;
         status: import(".prisma/client").$Enums.ClientStatus;
+        phone: string | null;
+        rfc: string | null;
         bankReference: string | null;
         isTaxValidated: boolean;
         isContractBlocked: boolean;
@@ -22,25 +26,51 @@ export declare class ClientsService {
     findById(id: string): Promise<{
         id: string;
         tenantId: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         deletedBy: string | null;
+        name: string;
         status: import(".prisma/client").$Enums.ClientStatus;
+        phone: string | null;
+        rfc: string | null;
         bankReference: string | null;
         isTaxValidated: boolean;
         isContractBlocked: boolean;
         isInvoiceBlocked: boolean;
         isPaymentBlocked: boolean;
     } | null>;
-    update(id: string, data: Prisma.ClientUpdateInput): Promise<{
+    findAll(): Promise<{
         id: string;
         tenantId: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         deletedBy: string | null;
+        name: string;
         status: import(".prisma/client").$Enums.ClientStatus;
+        phone: string | null;
+        rfc: string | null;
+        bankReference: string | null;
+        isTaxValidated: boolean;
+        isContractBlocked: boolean;
+        isInvoiceBlocked: boolean;
+        isPaymentBlocked: boolean;
+    }[]>;
+    update(id: string, data: Prisma.ClientUpdateInput): Promise<{
+        id: string;
+        tenantId: string;
+        email: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+        deletedAt: Date | null;
+        deletedBy: string | null;
+        name: string;
+        status: import(".prisma/client").$Enums.ClientStatus;
+        phone: string | null;
+        rfc: string | null;
         bankReference: string | null;
         isTaxValidated: boolean;
         isContractBlocked: boolean;

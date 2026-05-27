@@ -4,12 +4,12 @@ export class RescheduleReservationDto {
   @IsDateString()
   @IsNotEmpty()
   @IsNotEmpty()
-@IsString()
+  @IsString()
   startTime: string;
 
   @IsDateString()
   @IsNotEmpty()
   @IsNotEmpty()
-@IsString()
+  @IsString()
   endTime: string;
 }

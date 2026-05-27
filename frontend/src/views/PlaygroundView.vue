@@ -7,8 +7,8 @@
 
     <!-- Tenant & Theme Controls -->
     <section class="p-6 rounded-lg border border-surface-200 dark:border-surface-800 bg-surface-0 dark:bg-surface-900 shadow-sm flex flex-wrap gap-4">
-      <DsButton @click="themeStore.toggleMode()" variant="outline">
-        Toggle Mode ({{ themeStore.mode }})
+      <DsButton @click="themeStore.toggleTheme()" variant="outline">
+        Toggle Mode ({{ themeStore.theme }})
       </DsButton>
       <DsButton @click="toggleTenant" variant="outline">
         Switch Tenant ({{ tenantStore.activeTenant?.id === 'pm' ? 'Plaza Mayor' : 'Casa de Piedra' }})
@@ -113,3 +113,4 @@ function toggleTenant() {
   // Tenant switching disabled in secure mode.
 }
 </script>
+

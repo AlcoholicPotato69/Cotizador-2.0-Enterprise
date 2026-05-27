@@ -20,7 +20,7 @@
         <button @click="visible = false" class="flex-1 py-2 px-4 rounded-md border border-surface-300 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800 font-medium transition-colors">
           Cancelar
         </button>
-        <button @click="confirm" class="flex-1 py-2 px-4 rounded-md bg-red-600 hover:bg-red-700 text-white font-medium transition-colors">
+        <button @click="confirm" class="flex-1 py-2 px-4 rounded-md bg-red-600 hover:bg-red-700 text-surface-0 dark:text-surface-900 font-medium transition-colors">
           Confirmar
         </button>
       </div>
@@ -37,3 +37,4 @@ function confirm() {
   emit('confirm');
 }
 </script>
+

@@ -26,7 +26,7 @@
       <div class="p-6 bg-surface-0 dark:bg-surface-900 border rounded-lg">
         <h2 class="font-bold mb-2 font-mono">Stores Inspector</h2>
         <div class="bg-surface-950 text-green-400 p-4 rounded text-xs font-mono overflow-auto h-40">
-          <pre>{{ JSON.stringify({ theme: themeStore.mode, tenant: tenantStore.activeTenant }, null, 2) }}</pre>
+          <pre>{{ JSON.stringify({ theme: themeStore.theme, tenant: tenantStore.activeTenant }, null, 2) }}</pre>
         </div>
       </div>
     </div>
@@ -40,3 +40,4 @@ import { useTenantStore } from '../../stores/tenantStore';
 const themeStore = useThemeStore();
 const tenantStore = useTenantStore();
 </script>
+

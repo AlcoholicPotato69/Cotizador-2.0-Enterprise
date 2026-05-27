@@ -38,6 +38,13 @@ export class ClientsService {
     return this.repo.findById(id, ctx.tenantId);
   }
 
+  async findAll() {
+    const ctx = tenantContext.getStore();
+    if (!ctx || !ctx.tenantId)
+      throw new NotFoundException('Tenant context missing');
+    return this.repo.findMany({ tenantId: ctx.tenantId, deletedAt: null });
+  }
+
   async update(id: string, data: Prisma.ClientUpdateInput) {
     const ctx = tenantContext.getStore();
     if (!ctx || !ctx.tenantId)

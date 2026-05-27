@@ -2,7 +2,9 @@
   <div class="flex flex-col gap-1">
     <label v-if="label" class="text-sm font-medium text-surface-700 dark:text-surface-300">{{ label }}</label>
     <InputText 
-      v-model="model" 
+      v-bind="$attrs"
+      :modelValue="model as any"
+      @update:modelValue="model = $event"
       :placeholder="placeholder"
       :disabled="disabled"
       :class="[
@@ -15,6 +17,8 @@
 </template>
 <script setup lang="ts">
 import InputText from 'primevue/inputtext';
+defineOptions({ inheritAttrs: false });
 defineProps({ label: String, placeholder: String, error: String, disabled: Boolean });
-const model = defineModel<string>();
+const model = defineModel<string | number>();
 </script>
+

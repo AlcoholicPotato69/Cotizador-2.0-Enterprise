@@ -1,156 +1,230 @@
 <template>
-  <div class="p-6 max-w-7xl mx-auto flex flex-col gap-6 w-full">
-    <div class="flex justify-between items-center">
-      <div>
-        <h1 class="text-3xl font-bold text-slate-900 m-0">Directorio de Clientes</h1>
-        <p class="text-slate-600 m-0 mt-1 text-sm">Gestión de prospectos y clientes de la organización</p>
-      </div>
-      <Button label="Nuevo Cliente" icon="pi pi-plus" @click="showNewClientDialog = true" class="p-button-primary" />
-    </div>
-
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-4">
-      <DataTable 
-        :value="clientStore.clients" 
-        scrollable
-        scrollHeight="600px"
-        :virtualScrollerOptions="{ itemSize: 46 }"
-        dataKey="id" 
-        :loading="clientStore.loading"
-        v-model:filters="filters"
-        filterDisplay="menu"
-        :globalFilterFields="['name', 'rfc']"
-        emptyMessage="No se encontraron clientes."
-        class="p-datatable-sm"
-      >
-        <template #header>
-          <div class="flex justify-end mb-3">
-            <span class="p-input-icon-left w-full sm:w-auto">
-              <i class="pi pi-search" aria-hidden="true" />
-              <InputText v-model="filters['global'].value" placeholder="Buscar por nombre o RFC..." aria-label="Buscar por nombre o RFC" class="w-full sm:w-80" />
-            </span>
-          </div>
-        </template>
-        
-        <Column field="name" header="Razón Social / Nombre" sortable>
-          <template #body="{ data }">
-            <span class="font-semibold text-slate-900">{{ data.name }}</span>
-          </template>
-        </Column>
-        
-        <Column field="rfc" header="RFC" sortable></Column>
-
-        <Column field="createdAt" header="Fecha de Alta" sortable>
-          <template #body="{ data }">
-            <span class="text-slate-600">{{ formatDate(data.createdAt) }}</span>
-          </template>
-        </Column>
-        
-        <Column field="status" header="Estado" sortable>
-          <template #body="{ data }">
-            <Tag 
-              :severity="getStatusSeverity(data.status)" 
-              :value="(data.status || 'pendiente').toUpperCase()" 
-            />
-          </template>
-        </Column>
-
-        <Column header="Acciones" :exportable="false" style="min-width:8rem">
-          <template #body="{ data }">
-            <Button 
-              icon="pi pi-folder-open" 
-              class="p-button-rounded p-button-text p-button-secondary" 
-              title="Ver Expediente"
-              aria-label="Ver Expediente"
-              @click="goToDossier(data.id)" 
-            />
-          </template>
-        </Column>
-      </DataTable>
-    </div>
-
-    <Dialog v-model:visible="showNewClientDialog" header="Registrar Cliente" :modal="true" class="p-fluid" style="width: 450px">
-      <div class="flex flex-col gap-4 mt-4">
-        <div class="field">
-          <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nombre o Razón Social</label>
-          <InputText id="name" v-model.trim="newClient.name" required autofocus />
-        </div>
-        <div class="field">
-          <label for="rfc" class="block text-sm font-medium text-slate-700 mb-1">RFC</label>
-          <InputText id="rfc" v-model.trim="newClient.rfc" required />
-        </div>
-        <div class="field">
-          <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Correo (Opcional)</label>
-          <InputText id="email" v-model.trim="newClient.email" />
-        </div>
-      </div>
-      <template #footer>
-        <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="showNewClientDialog = false" />
-        <Button label="Guardar" icon="pi pi-check" @click="saveClient" :loading="saving" />
+  <div class="h-full flex flex-col space-y-6">
+    <DsPageHeader 
+      title="Directorio de Clientes" 
+      subtitle="Gestión de prospectos y contactos comerciales."
+      icon="pi-users"
+    >
+      <template #actions>
+        <DsButton icon="pi pi-user-plus" label="Nuevo Cliente" variant="primary" @click="openCreateDrawer" />
       </template>
-    </Dialog>
+    </DsPageHeader>
+
+    <div class="flex-1 bg-surface-0 dark:bg-surface-800 rounded-3xl border border-surface-200 dark:border-white/5 shadow-sm p-6 flex flex-col min-h-0">
+      
+      <div class="mb-4">
+        <DsSearchBar v-model="searchQuery" placeholder="Buscar por nombre, correo o RFC..." @search="fetchClients" />
+      </div>
+
+      <div class="flex-1 overflow-hidden">
+        <DsLoadingState v-if="loading" message="Cargando directorio..." />
+        <DsTable v-else :value="filteredClients" class="h-full">
+          <DsColumn field="name" header="Nombre / Razón Social">
+            <template #body="{ data }">
+              <span class="font-bold text-surface-900 dark:text-surface-0">{{ data.name }}</span>
+            </template>
+          </DsColumn>
+          <DsColumn field="email" header="Correo Electrónico">
+            <template #body="{ data }">
+              <span class="text-surface-600">{{ data.email || '—' }}</span>
+            </template>
+          </DsColumn>
+          <DsColumn field="phone" header="Teléfono">
+            <template #body="{ data }">
+              <span class="text-surface-600">{{ data.phone || '—' }}</span>
+            </template>
+          </DsColumn>
+          <DsColumn field="rfc" header="RFC">
+            <template #body="{ data }">
+              <span class="text-surface-600 font-mono text-xs uppercase">{{ data.rfc || '—' }}</span>
+            </template>
+          </DsColumn>
+          <DsColumn field="status" header="Estado">
+            <template #body="{ data }">
+              <DsStatusBadge :status="data.status" />
+            </template>
+          </DsColumn>
+          <DsColumn header="Acciones" style="width: 120px">
+            <template #body="{ data }">
+              <div class="flex gap-2">
+                <DsButton icon="pi pi-pencil" variant="text" rounded @click="openEditDrawer(data)" />
+                <DsButton icon="pi pi-folder-open" variant="text" rounded @click="openDossierModal(data)" />
+              </div>
+            </template>
+          </DsColumn>
+        </DsTable>
+      </div>
+
+    </div>
+
+    <!-- Client Drawer -->
+    <DsDrawer v-model:visible="drawerVisible" :header="editingClient ? 'Editar Cliente' : 'Nuevo Cliente'">
+      <div class="space-y-4">
+        <DsFormField label="Nombre / Razón Social" required>
+          <DsInput v-model="form.name" placeholder="Ej. Empresa SA de CV" />
+        </DsFormField>
+        <div class="grid grid-cols-2 gap-4">
+          <DsFormField label="Teléfono">
+            <DsInput v-model="form.phone" placeholder="10 dígitos" />
+          </DsFormField>
+          <DsFormField label="Correo Electrónico">
+            <DsInput v-model="form.email" placeholder="correo@dominio.com" />
+          </DsFormField>
+        </div>
+        <DsFormField label="RFC">
+          <DsInput v-model="form.rfc" placeholder="Opcional" class="uppercase" />
+        </DsFormField>
+      </div>
+      <div class="mt-8 flex justify-end gap-3">
+        <DsButton label="Cancelar" variant="secondary" @click="drawerVisible = false" />
+        <DsButton label="Guardar" variant="primary" icon="pi pi-save" :loading="saving" @click="saveClient" />
+      </div>
+    </DsDrawer>
+
+    <!-- Client Dossier Modal -->
+    <DsModal v-model:visible="dossierVisible" header="Expediente de Cliente" size="lg">
+      <div class="p-4" v-if="selectedDossierClient">
+        <h3 class="font-bold text-lg mb-4">{{ selectedDossierClient.name }}</h3>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-4">
+            <div class="bg-surface-50 dark:bg-surface-900 p-4 rounded-xl border border-surface-200 dark:border-surface-700">
+              <p class="font-bold text-sm mb-2">Acta Constitutiva o Poder</p>
+              <FileUploader 
+                :clientId="selectedDossierClient.id" 
+                documentType="ACTA"
+                @upload-complete="fetchClients"
+              />
+            </div>
+            <div class="bg-surface-50 dark:bg-surface-900 p-4 rounded-xl border border-surface-200 dark:border-surface-700">
+              <p class="font-bold text-sm mb-2">INE / Identificación</p>
+              <FileUploader 
+                :clientId="selectedDossierClient.id" 
+                documentType="INE"
+                @upload-complete="fetchClients"
+              />
+            </div>
+          </div>
+          <div class="space-y-4">
+            <div class="bg-surface-50 dark:bg-surface-900 p-4 rounded-xl border border-surface-200 dark:border-surface-700">
+              <p class="font-bold text-sm mb-2">Comprobante de Domicilio</p>
+              <FileUploader 
+                :clientId="selectedDossierClient.id" 
+                documentType="DOMICILIO"
+                @upload-complete="fetchClients"
+              />
+            </div>
+            <div class="bg-surface-50 dark:bg-surface-900 p-4 rounded-xl border border-surface-200 dark:border-surface-700">
+              <p class="font-bold text-sm mb-2">Constancia de Situación Fiscal</p>
+              <FileUploader 
+                :clientId="selectedDossierClient.id" 
+                documentType="CSF"
+                @upload-complete="fetchClients"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </DsModal>
+
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { FilterMatchMode } from '@primevue/core/api';
-import { useClientStore, type ClientFormData } from '../stores/clientStore';
+import { ref, computed, onMounted } from 'vue';
+import { clientService, type Client } from '../services/clientService';
+import DsPageHeader from '../components/ui/DsPageHeader.vue';
+import DsButton from '../components/ui/DsButton.vue';
+import DsTable from '../components/ui/DsTable.vue';
+import DsColumn from '../components/ui/DsColumn.vue';
+import DsStatusBadge from '../components/ui/DsStatusBadge.vue';
+import DsSearchBar from '../components/ui/DsSearchBar.vue';
+import DsDrawer from '../components/ui/DsDrawer.vue';
+import DsModal from '../components/ui/DsModal.vue';
+import DsFormField from '../components/ui/DsFormField.vue';
+import DsInput from '../components/ui/DsInput.vue';
+import DsLoadingState from '../components/ui/DsLoadingState.vue';
+import FileUploader from '../components/FileUploader.vue';
 
-import DataTable from 'primevue/datatable';
-import Column from 'primevue/column';
-import InputText from 'primevue/inputtext';
-import Button from 'primevue/button';
-import Tag from 'primevue/tag';
-import Dialog from 'primevue/dialog';
+const clients = ref<Client[]>([]);
+const loading = ref(true);
+const searchQuery = ref('');
 
-const router = useRouter();
-const clientStore = useClientStore();
-
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-});
-
-const showNewClientDialog = ref(false);
+const drawerVisible = ref(false);
+const editingClient = ref<Client | null>(null);
 const saving = ref(false);
-const newClient = ref<ClientFormData>({ name: '', rfc: '', email: '' });
-
-onMounted(() => {
-  clientStore.fetchClients();
+const form = ref({
+  name: '',
+  phone: '',
+  email: '',
+  rfc: ''
 });
 
-const formatDate = (dateString: string | undefined) => {
-  if (!dateString) return 'N/A';
-  return new Date(dateString).toLocaleDateString('es-MX', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric'
-  });
+const dossierVisible = ref(false);
+const selectedDossierClient = ref<Client | null>(null);
+
+const filteredClients = computed(() => {
+  if (!searchQuery.value) return clients.value;
+  const q = searchQuery.value.toLowerCase();
+  return clients.value.filter(c => 
+    c.name.toLowerCase().includes(q) || 
+    (c.email && c.email.toLowerCase().includes(q)) || 
+    (c.rfc && c.rfc.toLowerCase().includes(q))
+  );
+});
+
+const fetchClients = async () => {
+  loading.value = true;
+  try {
+    clients.value = await clientService.getAll();
+  } catch (error) {
+    console.error("Failed to fetch clients", error);
+  } finally {
+    loading.value = false;
+  }
 };
 
-const getStatusSeverity = (status: string) => {
-  const s = status?.toLowerCase() || '';
-  if (s === 'aprobado' || s === 'validado') return 'success';
-  if (s === 'pendiente') return 'warning';
-  if (s === 'rechazado') return 'danger';
-  return 'info';
+const openCreateDrawer = () => {
+  editingClient.value = null;
+  form.value = { name: '', phone: '', email: '', rfc: '' };
+  drawerVisible.value = true;
 };
 
-const goToDossier = (id: string) => {
-  router.push(`/clients/${id}/dossier`);
+const openEditDrawer = (client: Client) => {
+  editingClient.value = client;
+  form.value = { 
+    name: client.name, 
+    phone: client.phone || '', 
+    email: client.email || '', 
+    rfc: client.rfc || '' 
+  };
+  drawerVisible.value = true;
 };
 
 const saveClient = async () => {
-  if (!newClient.value.name || !newClient.value.rfc) return;
   saving.value = true;
   try {
-    await clientStore.saveClient(newClient.value);
-    showNewClientDialog.value = false;
-    newClient.value = { name: '', rfc: '', email: '' };
-  } catch (err) {
-    console.error(err);
+    if (editingClient.value) {
+      await clientService.update(editingClient.value.id, form.value);
+    } else {
+      await clientService.create(form.value);
+    }
+    drawerVisible.value = false;
+    fetchClients();
+  } catch (error) {
+    console.error("Failed to save client", error);
   } finally {
     saving.value = false;
   }
 };
+
+const openDossierModal = (client: Client) => {
+  selectedDossierClient.value = client;
+  dossierVisible.value = true;
+};
+
+onMounted(() => {
+  fetchClients();
+});
 </script>
+

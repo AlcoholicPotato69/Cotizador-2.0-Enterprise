@@ -18,7 +18,7 @@ import { Permissions } from '../auth/decorators/permissions.decorator';
 import { Request } from 'express';
 import { tenantContext } from '../prisma/tenant-context';
 import { TenantIsolationGuard } from '../auth/guards/tenant-isolation.guard';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 interface AuthenticatedRequest extends Request {
   user: { id: string; tenantId: string; role: string; permissions: string[] };

@@ -1,11 +1,11 @@
 <template>
   <div v-if="loading" class="flex justify-center p-12">
-    <ProgressSpinner />
+    <DsProgressSpinner />
   </div>
   <DsDocumentViewer v-else-if="snapshotData" mimeType="application/pdf" @close="router.back()">
     <template #document>
       <!-- DsDocumentViewer Header Style -->
-      <div class="p-8 border-b border-surface-200 flex justify-between items-start bg-surface-50 text-black">
+      <div class="p-8 border-b border-surface-200 flex justify-between items-start bg-surface-50 text-surface-900 dark:text-surface-0">
         <div>
           <h2 class="text-3xl font-bold font-mono mb-1">{{ snapshotData.folio }}</h2>
           <span class="px-2 py-1 bg-surface-200 rounded text-xs font-bold uppercase text-surface-600">
@@ -20,7 +20,7 @@
       </div>
 
       <!-- DsDocumentViewer Body -->
-      <div class="p-8 text-black flex-1">
+      <div class="p-8 text-surface-900 dark:text-surface-0 flex-1">
         <h3 class="text-lg font-bold mb-4 border-b border-surface-200 pb-2">Conceptos Cotizados</h3>
         <table class="w-full text-left border-collapse">
           <thead>
@@ -104,7 +104,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { pb } from '../../services/pb';
+import { quoteService } from '../../services/quoteService';
 import DsDocumentViewer from '../../components/ui/DsDocumentViewer.vue';
 
 const route = useRoute();
@@ -114,22 +114,25 @@ const quoteId = route.params.id as string;
 const versionId = route.params.versionId as string;
 
 const loading = ref(true);
-const snapshot = ref<any>(null);
-const snapshotData = ref<any>(null);
+const snapshot = ref<Record<string, any> | null>(null);
+const snapshotData = ref<Record<string, any> | null>(null);
 
 onMounted(async () => {
   try {
     // We fetch the version specific snapshot
     // First, find the version matching the quoteId and version_number
-    const records = await (pb.collection('quote_versions') as any).getList(1, 1, {
-      filter: `quote_id = "${quoteId}" && version_number = ${versionId}`
+    const versionsRes = await quoteService.getQuoteVersions(quoteId, {
+      filter: `version_number = ${versionId}`
     });
     
-    if (records.items.length > 0) {
-      snapshot.value = records.items[0];
-      snapshotData.value = snapshot.value.snapshot_data;
+    // Depending on backend pagination format
+    const items = Array.isArray(versionsRes) ? versionsRes : (versionsRes as any).data || (versionsRes as any).items || [];
+
+    if (items.length > 0) {
+      snapshot.value = items[0];
+      snapshotData.value = snapshot.value?.snapshot_data || null;
     }
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
   } finally {
     loading.value = false;
@@ -164,3 +167,4 @@ const printDoc = () => {
   }
 }
 </style>
+

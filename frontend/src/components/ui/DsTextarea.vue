@@ -17,5 +17,7 @@
 </template>
 <script setup lang="ts">
 import Textarea from 'primevue/textarea';
-defineProps({ modelValue: String, label: String, placeholder: String, error: String, disabled: Boolean, rows: { type: Number, default: 3 } });
+const modelValue = defineModel<string | undefined>();
+defineProps({ label: String, placeholder: String, error: String, disabled: Boolean, rows: { type: Number, default: 3 } });
 </script>
+

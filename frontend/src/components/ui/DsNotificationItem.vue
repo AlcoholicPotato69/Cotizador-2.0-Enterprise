@@ -13,3 +13,4 @@
 <script setup lang="ts">
 defineProps({ title: String, message: String, time: String, isRead: Boolean });
 </script>
+

@@ -31,3 +31,4 @@
 import DsStatusBadge from './DsStatusBadge.vue';
 defineProps({ title: { type: String, required: true }, subtitle: String, status: String, breadcrumbs: { type: Array as () => { label: string, to: string }[], default: () => [] } });
 </script>
+

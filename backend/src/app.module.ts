@@ -55,6 +55,8 @@ import { PermissionsGuard } from './auth/guards/permissions.guard';
 import { TenantIsolationGuard } from './auth/guards/tenant-isolation.guard';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { DashboardModule } from './dashboard/dashboard.module';
+import { EventsModule } from './events/events.module';
 
 @Module({
   imports: [
@@ -110,6 +112,8 @@ import { join } from 'path';
     ReportsModule,
     NotificationsModule,
     AgendaModule,
+    DashboardModule,
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [

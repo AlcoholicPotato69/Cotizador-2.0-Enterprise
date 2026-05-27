@@ -2,7 +2,7 @@
   <div class="permission-simulator card">
     <div class="flex justify-content-between align-items-center mb-4">
        <h3><i class="pi pi-shield mr-2 text-blue-500"></i>Permission Simulator</h3>
-       <p class="text-sm text-slate-500 m-0">Auditoría del Effective Permissions Engine</p>
+       <p class="text-sm text-surface-500 dark:text-surface-400 m-0">Auditoría del Effective Permissions Engine</p>
     </div>
 
     <div class="grid">
@@ -10,43 +10,43 @@
       <div class="col-12 lg:col-4 border-right">
         <div class="flex flex-column gap-3">
            <div>
-             <label class="block text-sm font-bold text-slate-700 mb-1">Seleccionar Usuario</label>
-             <select v-model="selectedUser" class="w-full p-2 border-round border-1 border-slate-300" @change="runSimulation">
+             <label class="block text-sm font-bold text-surface-700 dark:text-surface-200 mb-1">Seleccionar Usuario</label>
+             <select v-model="selectedUser" class="w-full p-2 border-round border-1 border-surface-300 dark:border-surface-600" @change="runSimulation">
                <option value="">Seleccione...</option>
                <option v-for="u in users" :key="u.id" :value="u.id">{{ u.email }}</option>
              </select>
            </div>
            
            <div>
-             <label class="block text-sm font-bold text-slate-700 mb-1">Tenant Activo (Contexto)</label>
-             <select v-model="selectedTenant" class="w-full p-2 border-round border-1 border-slate-300" @change="runSimulation">
+             <label class="block text-sm font-bold text-surface-700 dark:text-surface-200 mb-1">Tenant Activo (Contexto)</label>
+             <select v-model="selectedTenant" class="w-full p-2 border-round border-1 border-surface-300 dark:border-surface-600" @change="runSimulation">
                <option v-for="t in tenants" :key="t.id" :value="t.id">{{ t.name }}</option>
              </select>
            </div>
 
-           <Button label="Ejecutar Simulación" icon="pi pi-play" class="mt-2 w-full" :loading="loading" @click="runSimulation" />
+           <DsButton label="Ejecutar Simulación" icon="pi pi-play" class="mt-2 w-full" :loading="loading" @click="runSimulation" />
         </div>
       </div>
 
       <!-- Resultados -->
       <div class="col-12 lg:col-8">
-        <div v-if="!hasRun" class="flex align-items-center justify-content-center h-full text-slate-400">
+        <div v-if="!hasRun" class="flex align-items-center justify-content-center h-full text-surface-400 dark:text-surface-500">
            Seleccione un usuario y ejecute la simulación.
         </div>
         <div v-else>
            <div class="flex gap-4 mb-4">
-             <div class="stat-box bg-slate-50 border-1 border-slate-200 p-3 border-round flex-1 text-center">
-               <span class="block text-xs text-slate-500 uppercase font-bold">Roles Heredados</span>
-               <span class="text-2xl font-bold text-slate-800">{{ roles.length }}</span>
+             <div class="stat-box bg-surface-50 dark:bg-surface-950 border-1 border-surface-200 dark:border-surface-700 p-3 border-round flex-1 text-center">
+               <span class="block text-xs text-surface-500 dark:text-surface-400 uppercase font-bold">Roles Heredados</span>
+               <span class="text-2xl font-bold text-surface-800 dark:text-surface-100">{{ roles.length }}</span>
              </div>
-             <div class="stat-box bg-blue-50 border-1 border-blue-200 p-3 border-round flex-1 text-center">
-               <span class="block text-xs text-slate-500 uppercase font-bold">Permisos Efectivos Totales</span>
+             <div class="stat-box bg-primary-50 dark:bg-primary-900 border-1 border-blue-200 p-3 border-round flex-1 text-center">
+               <span class="block text-xs text-surface-500 dark:text-surface-400 uppercase font-bold">Permisos Efectivos Totales</span>
                <span class="text-2xl font-bold text-blue-700">{{ effectivePerms.length }}</span>
              </div>
            </div>
 
-           <h4 class="mb-2 text-slate-700">Matriz de Acceso Efectivo</h4>
-           <div v-if="effectivePerms.length === 0" class="text-sm text-slate-500 p-3 bg-red-50 border-round">
+           <h4 class="mb-2 text-surface-700 dark:text-surface-200">Matriz de Acceso Efectivo</h4>
+           <div v-if="effectivePerms.length === 0" class="text-sm text-surface-500 dark:text-surface-400 p-3 bg-red-50 border-round">
               El usuario no tiene acceso a ningún módulo en este Tenant.
            </div>
            <div v-else class="permissions-grid">
@@ -62,24 +62,25 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { pb } from '../services/pb';
-// import { calculateEffectivePermissions } from '../utils/EffectivePermissionsEngine';
-import Button from 'primevue/button';
+import { http } from '../api/http';
+import { userService } from '../services/userService';
+import { tenantService, type Tenant } from '../services/tenantService';
+import type { User } from '../types/user';
 
-const users = ref<any[]>([]);
-const tenants = ref<any[]>([]);
+const users = ref<User[]>([]);
+const tenants = ref<Tenant[]>([]);
 const selectedUser = ref('');
 const selectedTenant = ref('');
 
 const loading = ref(false);
 const hasRun = ref(false);
 
-const roles = ref<any[]>([]);
+const roles = ref<string[]>([]);
 const effectivePerms = ref<string[]>([]);
 
 onMounted(async () => {
-  users.value = await pb.collection('users').getFullList();
-  tenants.value = await pb.collection('tenants').getFullList();
+  users.value = await userService.getUsers();
+  tenants.value = await tenantService.getAccessibleTenants();
   if (tenants.value.length > 0) {
     selectedTenant.value = tenants.value[0].id;
   }
@@ -91,18 +92,41 @@ const runSimulation = async () => {
   
   try {
     // Buscar roles
-    const ur = await pb.collection('rbac_user_roles').getFullList({
-      filter: `user = "${selectedUser.value}" && tenant = "${selectedTenant.value}"`,
-      expand: 'role'
+    const userRolesRes = await http.get('/rbac_user_roles', {
+      params: {
+        filter: `user = "${selectedUser.value}" && tenant = "${selectedTenant.value}"`,
+        expand: 'role'
+      }
     });
-    roles.value = ur.map((u: any) => u.expand?.role?.name);
+    interface ExpandableRole { expand?: { role?: { name: string } } }
+    const userRoles = userRolesRes.data?.data || userRolesRes.data || [];
+    roles.value = userRoles.map((u: ExpandableRole) => u.expand?.role?.name).filter(Boolean) as string[];
 
     // Correr Motor Efectivo
-    const permsSet = { permissions: new Set<string>(['mock.permission']) }; // await calculateEffectivePermissions({ userId: selectedUser.value, tenantId: selectedTenant.value });
+    const permIds = new Set<string>();
     
-    effectivePerms.value = Array.from(permsSet.permissions).sort();
+    for (const ur of userRoles) {
+      if (!ur.role) continue;
+      const rpsRes = await http.get('/rbac_role_permissions', {
+        params: {
+          filter: `role = "${ur.role}"`,
+          expand: 'permission'
+        }
+      });
+      const rps = rpsRes.data?.data || rpsRes.data || [];
+      interface ExpandablePerm { expand?: { permission?: { key: string } } }
+      rps.forEach((rp: ExpandablePerm) => {
+        if (rp.expand?.permission?.key) {
+          permIds.add(rp.expand.permission.key);
+        }
+      });
+    }
+
+    // Add user-specific direct overrides if supported (not in base design but could be)
+    
+    effectivePerms.value = Array.from(permIds).sort();
     hasRun.value = true;
-  } catch (e) {
+  } catch (e: unknown) {
     console.error(e);
   } finally {
     loading.value = false;
@@ -111,10 +135,11 @@ const runSimulation = async () => {
 </script>
 
 <style scoped>
-.card { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid #e2e8f0; }
+.card { background: var(--tenant-surface-0); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); border: 1px solid var(--tenant-surface-200); }
+.dark .card { background: var(--tenant-surface-900); border-color: var(--tenant-surface-700); }
 .border-right { border-right: 1px solid #e2e8f0; }
 .permissions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem; }
-.perm-tag { padding: 0.5rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; font-family: monospace; font-size: 0.85rem; background: #f8fafc; }
+.perm-tag { padding: 0.5rem; border: 1px solid var(--tenant-surface-200); border-radius: 0.5rem; font-family: monospace; font-size: 0.85rem; background: #f8fafc; }
 
 .grid { display: flex; flex-wrap: wrap; margin: -1rem; }
 .col-12 { padding: 1rem; width: 100%; }
@@ -143,18 +168,18 @@ const runSimulation = async () => {
 .font-bold { font-weight: 700; }
 .border-round { border-radius: 0.5rem; }
 .border-1 { border-width: 1px; border-style: solid; }
-.text-slate-700 { color: #334155; }
-.text-slate-500 { color: #64748b; }
-.text-slate-400 { color: #94a3b8; }
+.text-surface-700 { color: #334155; }
+.text-surface-500 { color: #64748b; }
+.text-surface-400 { color: #94a3b8; }
 .text-slate-200 { color: #e2e8f0; }
-.text-slate-800 { color: #1e293b; }
+.text-surface-800 { color: #1e293b; }
 .text-blue-500 { color: #3b82f6; }
 .text-blue-700 { color: #1d4ed8; }
 .text-green-500 { color: #22c55e; }
-.border-slate-300 { border-color: #cbd5e1; }
-.border-slate-200 { border-color: #e2e8f0; }
-.bg-slate-50 { background-color: #f8fafc; }
-.bg-blue-50 { background-color: #eff6ff; }
+.border-surface-300 { border-color: #cbd5e1; }
+.border-surface-200 { border-color: #e2e8f0; }
+.bg-surface-50 { background-color: #f8fafc; }
+.bg-primary-50 { background-color: #eff6ff; }
 .bg-red-50 { background-color: #fef2f2; }
 .border-blue-200 { border-color: #bfdbfe; }
 .flex-1 { flex: 1; }
@@ -162,3 +187,7 @@ const runSimulation = async () => {
 .uppercase { text-transform: uppercase; }
 .h-full { height: 100%; }
 </style>
+
+
+
+

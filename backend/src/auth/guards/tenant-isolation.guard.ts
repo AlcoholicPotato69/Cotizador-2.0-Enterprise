@@ -8,6 +8,26 @@ import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
 
+interface TenantAwareRequestUser {
+  tenantId?: string;
+  permissions?: string[];
+}
+
+const hasPermission = (
+  user: TenantAwareRequestUser,
+  permission: string,
+): boolean => {
+  if (!Array.isArray(user.permissions)) {
+    return false;
+  }
+
+  const dotNotation = permission.replace(/:/g, '.');
+  const colonNotation = permission.replace(/\./g, ':');
+  return user.permissions.includes(permission)
+    || user.permissions.includes(dotNotation)
+    || user.permissions.includes(colonNotation);
+};
+
 @Injectable()
 export class TenantIsolationGuard implements CanActivate {
   constructor(private reflector: Reflector) {}
@@ -22,13 +42,13 @@ export class TenantIsolationGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest<Request>();
-    const user = (request as any).user;
+    const user = (request as Request & { user?: TenantAwareRequestUser }).user;
 
     if (!user) {
       throw new ForbiddenException('User context is missing');
     }
 
-    if (user.role === 'SUPER_ADMIN' || user.role === 'SYSTEM') {
+    if (hasPermission(user, 'tenants.global_access')) {
       return true;
     }
 

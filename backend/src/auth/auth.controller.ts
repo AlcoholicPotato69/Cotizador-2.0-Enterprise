@@ -14,7 +14,7 @@ import { PermissionsGuard } from './guards/permissions.guard';
 import { TenantIsolationGuard } from './guards/tenant-isolation.guard';
 import { Permissions } from './decorators/permissions.decorator';
 import { AuthService } from './auth.service';
-import { ApiTags , ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 /**
  * Controller responsible for handling authentication routes.

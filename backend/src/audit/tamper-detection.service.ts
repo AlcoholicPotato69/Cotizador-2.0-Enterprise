@@ -35,7 +35,7 @@ export class TamperDetectionService {
     const tenants = await this.prisma.tenant.findMany();
 
     const verificationResults: boolean[] = [];
-    
+
     for (const tenant of tenants) {
       try {
         const logs = await this.prisma.auditLog.findMany({

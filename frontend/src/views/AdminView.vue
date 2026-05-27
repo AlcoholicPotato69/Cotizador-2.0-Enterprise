@@ -1,43 +1,53 @@
 <template>
-  <div class="admin-view flex flex-column h-full">
-    <div class="view-header mb-4">
-      <h1 class="title">Tenant Administration Center</h1>
-      <p class="subtitle">Gobernanza centralizada Multi-Tenant. (Configuration Over Code)</p>
-    </div>
+  <div class="flex flex-col h-full bg-surface-50 dark:bg-surface-950">
+    <DsPageHeader 
+      title="Tenant Administration Center" 
+      subtitle="Gobernanza centralizada Multi-Tenant. (Configuration Over Code)"
+      :breadcrumbs="[{label: 'Administración', to: '/admin'}, {label: 'TAC', to: '/admin'}]"
+    />
 
-    <!-- Tabs para los Builders Granulares -->
-    <div class="tabs-nav mb-4 border-bottom overflow-x-auto white-space-nowrap pb-2">
-       <!-- Fase F.1 -->
-       <button class="tab-btn" :class="{'active': activeTab === 'rbac'}" @click="activeTab = 'rbac'" v-permission="'roles.manage'">Roles & Permisos</button>
-       <button class="tab-btn" :class="{'active': activeTab === 'spaces'}" @click="activeTab = 'spaces'" v-permission="'spaces.manage'">Espacios Físicos</button>
-       <button class="tab-btn" :class="{'active': activeTab === 'docs'}" @click="activeTab = 'docs'" v-permission="'config.manage'">Req. Documentales</button>
-       
-       <!-- Fase F.2 (Builders Operativos Avanzados con Snapshot Strategy) -->
-       <button class="tab-btn" :class="{'active': activeTab === 'promotions'}" @click="activeTab = 'promotions'" v-permission="'promotions.read'">Promotions</button>
-       <button class="tab-btn" :class="{'active': activeTab === 'pricing'}" @click="activeTab = 'pricing'" v-permission="'pricing.read'">Pricing Engine</button>
-       <button class="tab-btn" :class="{'active': activeTab === 'taxes'}" @click="activeTab = 'taxes'" v-permission="'taxes.read'">Tax Rules</button>
-       <button class="tab-btn" :class="{'active': activeTab === 'templates'}" @click="activeTab = 'templates'" v-permission="'templates.read'">Templates</button>
-       <button class="tab-btn" :class="{'active': activeTab === 'branding'}" @click="activeTab = 'branding'" v-permission="'branding.read'">Branding</button>
-    </div>
+    <div class="flex-1 p-6 overflow-hidden flex flex-col">
+      <div class="bg-surface-0 dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-800 shadow-sm flex-1 flex flex-col min-h-0 overflow-hidden">
+        <div class="border-b border-surface-200 dark:border-surface-800 px-4 pt-4">
+          <div class="flex space-x-6 overflow-x-auto custom-scroll">
+            <button 
+              v-for="tab in availableTabs" 
+              :key="tab.id"
+              @click="activeTab = tab.id"
+              :class="[
+                'pb-4 px-2 text-sm font-semibold transition-colors border-b-2 whitespace-nowrap',
+                activeTab === tab.id 
+                  ? 'border-primary-500 text-primary-600 dark:text-primary-400' 
+                  : 'border-transparent text-surface-500 hover:text-surface-700 dark:hover:text-surface-300'
+              ]"
+            >
+              <i :class="[tab.icon, 'mr-2']"></i>
+              {{ tab.label }}
+            </button>
+          </div>
+        </div>
 
-    <div class="tab-content flex-1 overflow-auto p-1">
-       <!-- F.1 -->
-       <RbacBuilder v-if="activeTab === 'rbac'" />
-       <SpaceBuilder v-if="activeTab === 'spaces'" />
-       <DocReqBuilder v-if="activeTab === 'docs'" />
-       
-       <!-- F.2 -->
-       <PromotionsBuilder v-if="activeTab === 'promotions'" />
-       <PricingBuilder v-if="activeTab === 'pricing'" />
-       <TaxBuilder v-if="activeTab === 'taxes'" />
-       <TemplateBuilder v-if="activeTab === 'templates'" />
-       <BrandingBuilder v-if="activeTab === 'branding'" />
+        <div class="flex-1 overflow-y-auto p-4 custom-scroll">
+           <!-- F.1 -->
+           <RbacBuilder v-if="activeTab === 'rbac'" />
+           <SpaceBuilder v-if="activeTab === 'spaces'" />
+           <DocReqBuilder v-if="activeTab === 'docs'" />
+           
+           <!-- F.2 -->
+           <PromotionsBuilder v-if="activeTab === 'promotions'" />
+           <PricingBuilder v-if="activeTab === 'pricing'" />
+           <TaxBuilder v-if="activeTab === 'taxes'" />
+           <TemplateBuilder v-if="activeTab === 'templates'" />
+           <BrandingBuilder v-if="activeTab === 'branding'" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { usePermissionsStore } from '../stores/permissionsStore';
 import RbacBuilder from './RbacBuilder.vue';
 import SpaceBuilder from './SpaceBuilder.vue';
 import DocReqBuilder from './DocReqBuilder.vue';
@@ -47,33 +57,29 @@ import TaxBuilder from './TaxBuilder.vue';
 import TemplateBuilder from './TemplateBuilder.vue';
 import BrandingBuilder from './BrandingBuilder.vue';
 
+const permStore = usePermissionsStore();
 const activeTab = ref('rbac');
+
+const allTabs = [
+  { id: 'rbac', label: 'Roles & Permisos', icon: 'pi pi-shield', permission: 'roles.manage' },
+  { id: 'spaces', label: 'Espacios Físicos', icon: 'pi pi-map', permission: 'spaces.manage' },
+  { id: 'docs', label: 'Req. Documentales', icon: 'pi pi-file', permission: 'config.manage' },
+  { id: 'promotions', label: 'Promotions', icon: 'pi pi-star', permission: 'promotions.read' },
+  { id: 'pricing', label: 'Pricing Engine', icon: 'pi pi-money-bill', permission: 'pricing.read' },
+  { id: 'taxes', label: 'Tax Rules', icon: 'pi pi-percentage', permission: 'taxes.read' },
+  { id: 'templates', label: 'Templates', icon: 'pi pi-file-edit', permission: 'templates.read' },
+  { id: 'branding', label: 'Branding', icon: 'pi pi-palette', permission: 'branding.read' }
+];
+
+const availableTabs = computed(() => {
+  return allTabs.filter(tab => permStore.hasPermission(tab.permission));
+});
 </script>
 
 <style scoped>
-.admin-view { height: 100%; display: flex; flex-direction: column; }
-.title { margin: 0; font-size: 1.8rem; font-weight: 900; color: #0f172a; }
-.subtitle { margin: 0.25rem 0 0 0; font-size: 0.95rem; color: #64748b; }
-.mb-4 { margin-bottom: 1.5rem; }
-.pb-2 { padding-bottom: 0.5rem; }
-.p-1 { padding: 0.25rem; }
-.border-bottom { border-bottom: 1px solid #e2e8f0; }
-
-.tabs-nav { display: flex; gap: 1.5rem; align-items: center; }
-.tab-btn { 
-  background: transparent; border: none; border-bottom: 3px solid transparent; 
-  padding: 0.5rem 0; font-size: 0.95rem; font-weight: 700; color: #64748b; 
-  cursor: pointer; transition: all 0.2s; white-space: nowrap;
-}
-.tab-btn:hover { color: #1e293b; }
-.tab-btn.active { color: #3b82f6; border-bottom-color: #3b82f6; }
-
-.tab-content { flex: 1; }
-.flex { display: flex; }
-.flex-column { flex-direction: column; }
-.flex-1 { flex: 1; }
-.h-full { height: 100%; }
-.overflow-x-auto { overflow-x: auto; }
-.overflow-auto { overflow: auto; }
-.white-space-nowrap { white-space: nowrap; }
+.custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+.custom-scroll::-webkit-scrollbar-track { background: transparent; }
+.custom-scroll::-webkit-scrollbar-thumb { background: var(--surface-300); border-radius: 10px; }
+.dark .custom-scroll::-webkit-scrollbar-thumb { background: var(--surface-700); }
 </style>
+

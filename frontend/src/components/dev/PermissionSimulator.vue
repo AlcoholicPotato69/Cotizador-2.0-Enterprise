@@ -31,7 +31,7 @@
       <div class="p-4 border rounded bg-surface-50 dark:bg-surface-950">
         <h3 class="font-bold mb-3 text-blue-500 flex items-center gap-2">
           <span>👥 ROLE Base</span>
-          <span class="text-[10px] bg-blue-100 text-blue-800 px-1 rounded">Prioridad 3</span>
+          <span class="text-[10px] bg-blue-100 text-primary-800 dark:text-primary-200 px-1 rounded">Prioridad 3</span>
         </h3>
         <div class="space-y-2">
           <label class="flex items-center gap-2 text-sm"><input type="checkbox" checked disabled> client.read</label>
@@ -50,3 +50,4 @@
     </div>
   </div>
 </template>
+
