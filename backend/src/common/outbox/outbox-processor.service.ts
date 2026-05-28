@@ -64,12 +64,14 @@ export class OutboxProcessorService {
           `[OUTBOX] Event ID: ${event.id} despachado y completado con éxito.`,
         );
       });
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.code === 'P1001' || error?.message?.includes("Can't reach database server")) {
+        return; // Ignorar silenciosamente si la BD está offline
+      }
       this.logger.error(
-        '[OUTBOX] Error durante el procesamiento del evento',
-        error,
+        '[OUTBOX] Error durante el procesamiento del evento: La base de datos podría estar inaccesible.',
+        error.message || error
       );
-      throw error;
     }
   }
 }

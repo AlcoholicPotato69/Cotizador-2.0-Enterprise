@@ -17,16 +17,16 @@ export declare class ClientsController {
     constructor(clientsService: ClientsService, eligibilityService: EligibilityEngineService);
     create(req: AuthenticatedRequest, data: CreateClientDto): Promise<{
         id: string;
-        email: string | null;
         tenantId: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         deletedBy: string | null;
         name: string;
+        status: import(".prisma/client").$Enums.ClientStatus;
         phone: string | null;
         rfc: string | null;
-        status: import(".prisma/client").$Enums.ClientStatus;
         bankReference: string | null;
         isTaxValidated: boolean;
         isContractBlocked: boolean;
@@ -35,16 +35,16 @@ export declare class ClientsController {
     }>;
     findAll(req: AuthenticatedRequest): Promise<{
         id: string;
-        email: string | null;
         tenantId: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         deletedBy: string | null;
         name: string;
+        status: import(".prisma/client").$Enums.ClientStatus;
         phone: string | null;
         rfc: string | null;
-        status: import(".prisma/client").$Enums.ClientStatus;
         bankReference: string | null;
         isTaxValidated: boolean;
         isContractBlocked: boolean;
@@ -53,16 +53,16 @@ export declare class ClientsController {
     }[]>;
     findById(req: AuthenticatedRequest, id: string): Promise<{
         id: string;
-        email: string | null;
         tenantId: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         deletedBy: string | null;
         name: string;
+        status: import(".prisma/client").$Enums.ClientStatus;
         phone: string | null;
         rfc: string | null;
-        status: import(".prisma/client").$Enums.ClientStatus;
         bankReference: string | null;
         isTaxValidated: boolean;
         isContractBlocked: boolean;
@@ -77,16 +77,16 @@ export declare class ClientsController {
     }>;
     update(req: AuthenticatedRequest, id: string, data: UpdateClientDto): Promise<{
         id: string;
-        email: string | null;
         tenantId: string;
+        email: string | null;
         createdAt: Date;
         updatedAt: Date;
         deletedAt: Date | null;
         deletedBy: string | null;
         name: string;
+        status: import(".prisma/client").$Enums.ClientStatus;
         phone: string | null;
         rfc: string | null;
-        status: import(".prisma/client").$Enums.ClientStatus;
         bankReference: string | null;
         isTaxValidated: boolean;
         isContractBlocked: boolean;

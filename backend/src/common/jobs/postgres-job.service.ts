@@ -84,12 +84,14 @@ export class PostgresJobQueueService {
           `[JOB_QUEUE] Job ID: ${(jobToProcess as { id: string }).id} completado con éxito.`,
         );
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.code === 'P1001' || error?.message?.includes("Can't reach database server")) {
+        return; // Ignorar silenciosamente si la BD está offline
+      }
       this.logger.error(
-        '[JOB_QUEUE] Error durante el procesamiento del trabajo',
-        error,
+        '[JOB_QUEUE] Error durante el procesamiento del trabajo: La base de datos podría estar inaccesible.',
+        error.message || error
       );
-      throw error;
     }
   }
 

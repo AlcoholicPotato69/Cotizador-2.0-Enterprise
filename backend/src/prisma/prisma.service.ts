@@ -24,7 +24,12 @@ export class PrismaService
   }
 
   async onModuleInit() {
-    await this.$connect();
+    try {
+      await this.$connect();
+      console.log('[PrismaService] Conectado exitosamente a la base de datos.');
+    } catch (error) {
+      console.error('[PrismaService] No se pudo conectar a la base de datos al arrancar. El backend iniciará con funcionalidades limitadas hasta que la BD responda.', error.message);
+    }
   }
 
   async onModuleDestroy() {

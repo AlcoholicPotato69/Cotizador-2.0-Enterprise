@@ -1,49 +1,85 @@
 @echo off
-TITLE ERP Cotizador Enterprise - Production Launcher
-REM Resolver raiz del proyecto (directorio donde vive este .bat)
-set "PROJECT_ROOT=%~dp0"
-pushd "%PROJECT_ROOT%"
-set "PROJECT_ROOT=%CD%"
-popd
+setlocal EnableDelayedExpansion
 
-echo ========================================================
-echo INICIADOR DE PRODUCCION INTERACTIVO
-echo ========================================================
+echo =======================================================
+echo Lanzador de Produccion - Cotizador 2.0 Enterprise
+echo =======================================================
+echo.
+echo Este script configurara las IPs y puertos para que la aplicacion
+echo sea accesible en su red local o servidor.
 echo.
 
-set /p SERVER_IP="Ingresa la IP del servidor (Ej: 192.168.1.100): "
-set /p BACKEND_PORT="Ingresa el puerto del Backend [Por defecto: 3000]: "
-set /p DB_HOST="Ingresa el Host de Base de Datos [Por defecto: 127.0.0.1]: "
-set /p DB_PORT="Ingresa el puerto de Base de Datos [Por defecto: 5432]: "
-
-if "%SERVER_IP%"=="" (
-    echo [ERROR] La IP no puede estar vacia.
-    pause
-    exit /b 1
+:: Intentar detectar la IP de la red local
+for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr IPv4') do (
+    set "AUTO_IP=%%a"
 )
-if "%BACKEND_PORT%"=="" set BACKEND_PORT=3000
-if "%DB_HOST%"=="" set DB_HOST=127.0.0.1
-if "%DB_PORT%"=="" set DB_PORT=5432
-
-echo.
-echo [1/4] Inyectando variables de entorno en frontend...
-echo VITE_API_BASE_URL=http://%SERVER_IP%:%BACKEND_PORT%/api/v1> "%PROJECT_ROOT%\frontend\.env.production"
-
-echo [2/4] Recompilando Produccion (Frontend y Backend)...
-if not exist "%PROJECT_ROOT%\production-build\server\main.js" (
-    powershell -ExecutionPolicy Bypass -File "%PROJECT_ROOT%\scripts\dev\build-prod.ps1"
+if "!AUTO_IP!"=="" (
+    set "AUTO_IP=0.0.0.0"
 ) else (
-    echo Produccion ya compilada. Saltando build...
-    echo Si desea recompilar, borre la carpeta production-build.
+    set "AUTO_IP=!AUTO_IP: =!"
 )
 
-echo [3/4] Actualizando app.config.json...
-if not exist "%PROJECT_ROOT%\production-build\config" mkdir "%PROJECT_ROOT%\production-build\config"
-echo { "serverIp": "%SERVER_IP%", "backendPort": %BACKEND_PORT%, "databaseHost": "%DB_HOST%", "databasePort": %DB_PORT% }> "%PROJECT_ROOT%\production-build\config\app.config.json"
+:: Solicitar IP
+set "IP=!AUTO_IP!"
+set /p IP="Ingrese la IP de este servidor (ej. !AUTO_IP!) [!AUTO_IP!]: "
 
-echo [4/4] Levantando el Sistema...
-set PORT=%BACKEND_PORT%
-set NODE_ENV=production
-cd /d "%PROJECT_ROOT%\production-build"
-node server/main.js
+:: Solicitar Puertos
+set "PORT_BACKEND=3000"
+set /p PORT_BACKEND="Ingrese el puerto para el Backend [%PORT_BACKEND%]: "
+
+set "PORT_DIRECTUS=8055"
+set /p PORT_DIRECTUS="Ingrese el puerto para Directus [%PORT_DIRECTUS%]: "
+
+set "PORT_FRONTEND=5173"
+set /p PORT_FRONTEND="Ingrese el puerto para el Frontend [%PORT_FRONTEND%]: "
+
+echo.
+echo =======================================================
+echo Configurando variables de entorno...
+echo =======================================================
+
+:: Actualizar puertos dinamicamente (sin ensuciar los .env)
+echo Variables en memoria listas para inyectarse a los procesos.
+
+echo.
+echo =======================================================
+echo Verificando base de datos PostgreSQL...
+echo =======================================================
+
+netstat -ano | findstr :5432 >nul
+if errorlevel 1 (
+    echo [!] PostgreSQL no detectado en el puerto 5432.
+    echo Intentando revivir el servicio postgresql-x64-18...
+    net start postgresql-x64-18 >nul 2>&1
+    if errorlevel 1 (
+        echo [ERROR] No se pudo iniciar el servicio de BD automaticamente.
+        echo Por favor inicie PostgreSQL manualmente.
+    ) else (
+        echo [OK] PostgreSQL iniciado correctamente.
+    )
+) else (
+    echo [OK] PostgreSQL detectado.
+)
+
+echo.
+echo =======================================================
+echo Levantando servicios de Produccion
+echo =======================================================
+
+:: Iniciar el backend en una nueva ventana
+start "Backend (Produccion)" cmd /c "cd backend && set PORT=%PORT_BACKEND%&& set HOST=%IP%&& npm run start:prod"
+
+:: Iniciar Directus en una nueva ventana
+start "Directus (CMS)" cmd /c "cd directus && set PORT=%PORT_DIRECTUS%&& set HOST=%IP%&& npm run start"
+
+:: Construir y servir el frontend en una nueva ventana
+start "Frontend (Produccion)" cmd /c "cd frontend_generated && set VITE_API_URL=http://%IP%:%PORT_BACKEND%/api/v1&& set VITE_DIRECTUS_URL=http://%IP%:%PORT_DIRECTUS%&& npm run build && npx vite preview --host %IP% --port %PORT_FRONTEND%"
+
+echo.
+echo Los servicios se estan levantando en ventanas independientes.
+echo Acceda al Frontend en: http://%IP%:%PORT_FRONTEND%
+echo Acceda al Backend en:  http://%IP%:%PORT_BACKEND%
+echo Acceda a Directus en:  http://%IP%:%PORT_DIRECTUS%
+echo.
+echo =======================================================
 pause

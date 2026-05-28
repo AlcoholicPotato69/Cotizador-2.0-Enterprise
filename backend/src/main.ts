@@ -22,11 +22,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api/v1');
 
   app.enableCors({
-    origin: [
-      'http://localhost:5173', // Vite dev server
-      'http://localhost:3000', // Production (self-served)
-      'http://localhost:8055', // Directus
-    ],
+    origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     exposedHeaders: ['Content-Disposition'],
